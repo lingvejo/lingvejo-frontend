@@ -1,12 +1,9 @@
-import {useTranslations} from 'next-intl';
-import {Link} from '@/i18n/navigation';
- 
-export default function HomePage() {
-  const t = useTranslations('Error');
+'use client';
+
+import AppShell from '@/components/core/FullscreenAppShell';
+
+export default function Page() {
   return (
-    <div>
-      <h1>{t('title')}</h1>
-      {t('description')}
-    </div>
+    <AppShell />
   );
 }

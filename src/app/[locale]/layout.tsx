@@ -3,7 +3,12 @@ import {Locale, hasLocale, NextIntlClientProvider} from 'next-intl';
 import {getTranslations, setRequestLocale} from 'next-intl/server';
 import {ReactNode} from 'react';
 import {routing} from '@/i18n/routing';
+import '@mantine/core/styles.css';
+import { MantineProvider,
+  ColorSchemeScript, mantineHtmlProps } from '@mantine/core';
+import theme from '@/components/theme/Theme';
 
+// Set locale
 type Props = {
   children: ReactNode;
   params: Promise<{locale: Locale}>;
@@ -11,16 +16,6 @@ type Props = {
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({locale}));
-}
-
-export async function generateMetadata(props: Omit<Props, 'children'>) {
-  const {locale} = await props.params;
-
-  const t = await getTranslations({locale, namespace: 'LocaleLayout'});
-
-  return {
-    title: t('title')
-  };
 }
 
 export default async function LocaleLayout({children, params}: Props) {
@@ -34,10 +29,15 @@ export default async function LocaleLayout({children, params}: Props) {
   setRequestLocale(locale);
 
   return (
-    <html lang={locale}>
+    <html lang={locale} {...mantineHtmlProps}>
+      <head>
+        <ColorSchemeScript />
+      </head>
       <body>
         <NextIntlClientProvider>
-          {children}
+          <MantineProvider theme={theme}>
+            {children}
+          </MantineProvider>
         </NextIntlClientProvider>
       </body>
     </html>
