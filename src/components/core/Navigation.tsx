@@ -4,6 +4,7 @@ import { Group, Stack, Text } from '@mantine/core';
 import theme from '@/components/theme/Theme';
 import { ElementItem } from '@/components/content/NavigationElement';
 import { getSetting } from '@/utils/data';
+import { Drawer } from './Drawer';
 
 // Define the props for the IconStack component
 interface IconStackProps {
@@ -17,7 +18,7 @@ interface IconStackProps {
 // IconStack component
 const IconStack: React.FC<IconStackProps> = ({ type, icon, label, isSelected, onClick }) => (
     <Stack
-        h={type === "bottom" ? 60: 50}
+        h={type === "bottom" ? 60 : 50}
         label={label}
         align='center'
         justify='center'
@@ -28,12 +29,13 @@ const IconStack: React.FC<IconStackProps> = ({ type, icon, label, isSelected, on
         }}
         onClick={onClick}
     >
+        {/* If on the planet, show the description */}
         {type === "planet" ? (
             <Group spacing="xs">
                 {icon}
                 <Text size="sm">{getSetting(label)}</Text>
             </Group>
-            ) : (
+        ) : (
             icon
         )}
     </Stack>
@@ -49,6 +51,7 @@ export interface NavigationProps {
 // Navigation component
 export const Navigation: React.FC<NavigationProps> = ({ type, content, setContent }): JSX.Element => {
     const [icons, setIcons] = useState<ElementItem[]>([]); // State to hold icons
+    const [drawerOpened, setDrawerOpened] = useState(false); // State to control drawer visibility
 
     useEffect(() => {
         const loadIcons = async () => {
@@ -69,18 +72,33 @@ export const Navigation: React.FC<NavigationProps> = ({ type, content, setConten
         loadIcons();
     }, [type]); // Run effect when type changes
 
+    const handleIconClick = (label: string) => {
+        setContent(label);
+        if (type !== "bottom") {
+            setDrawerOpened(true); // Open the drawer if type is not "bottom"
+        }
+    };
+
     return (
-        <Group grow gap={0}>
-            {icons.map(({ icon, label }) => (
-                <IconStack
-                    type={type}
-                    key={label}
-                    icon={icon}
-                    label={label}
-                    isSelected={content === label}
-                    onClick={() => setContent(label)}
-                />
-            ))}
-        </Group>
+        <>
+            <Group grow gap={0}>
+                {icons.map(({ icon, label }) => (
+                    <IconStack
+                        type={type}
+                        key={label}
+                        icon={icon}
+                        label={label}
+                        isSelected={content === label}
+                        onClick={() => handleIconClick(label)} // Use the new click handler
+                    />
+                ))}
+            </Group>
+            <Drawer
+                drawerOpened={drawerOpened}
+                onClose={() => setDrawerOpened(false)}
+                title={"label"}
+                content={<div />}
+            />
+        </>
     );
 };
