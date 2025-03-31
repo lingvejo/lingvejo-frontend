@@ -1,15 +1,23 @@
-// components/LearningPage.js
-import { Container, Button, Text } from '@mantine/core';
+import { Container, Button, Text, Progress } from '@mantine/core';
+import { useState } from 'react';
 
-const LearningPage = ({ onClose }) => {
+export const LearningPageTitle = () => {
   return (
-    <Container style={{ height: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+    <div style={{ width: '85vw' }}>
+      <Progress value={50} />
+    </div>
+  );
+};
+
+
+const LearningPage = () => {
+  return (
+    <Container>
       <Text size="xl" weight={700}>Learning Page</Text>
       <Text size="md" style={{ marginTop: '20px' }}>This is where the learning content will go.</Text>
       <Button
         variant="outline"
         style={{ marginTop: '20px' }}
-        onClick={onClose}
       >
         Close
       </Button>
