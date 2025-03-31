@@ -1,4 +1,5 @@
-import { getLesson, getSetting } from '@/utils/data';
+import { useState } from 'react';
+import { getModules, getSetting } from '@/utils/data';
 import { Container, Button, Text, Progress } from '@mantine/core';
 import { useTranslations } from 'next-intl';
 
@@ -11,35 +12,56 @@ export const LearningPageTitle = () => {
 };
 
 interface LearningPageProps {
+  language: string,
   activeStep: number,
   activeUnit: number,
-  activeLesson: number
+  activeLesson: number,
+  onComplete: () => void // New prop for completion callback
 }
 
 const LearningPage: React.FC<LearningPageProps> = ({
-  activeStep, activeUnit, activeLesson
+  language, activeStep, activeUnit, activeLesson, onComplete
 }) => {
   const t = useTranslations();
-  const lesson = getLesson(getSetting('language'), activeStep, activeUnit, activeLesson);
+  const [currentContentIndex, setCurrentContentIndex] = useState(0);
+
+  const modules = getModules(language, activeStep, activeUnit, activeLesson);  
+  const currentContent = modules.contents[currentContentIndex];
+
+  const handleNext = () => {    
+    if (currentContentIndex < modules.contents.length - 1) {
+      setCurrentContentIndex(currentContentIndex + 1);
+    } else {
+      // Call the onComplete function when finished
+      const haveErrors = false;
+      if (haveErrors) {
+
+      } else onComplete();
+    }
+  };
 
   return (
     <Container style={{ 
-      display: 'flex', // Use flexbox for layout
-      flexDirection: 'column', // Stack items vertically
-      justifyContent: 'space-between', // Space between items
-      height: '87vh', // Full height of the viewport
-      padding: '20px', // Optional padding
+      display: 'flex', 
+      flexDirection: 'column', 
+      justifyContent: 'space-between', 
+      height: '87vh', 
+      padding: '20px', 
     }}>
       <div>
-        <Text size="xl" weight={700}>{lesson.title}</Text>
-        <Container>{lesson.content}</Container>
+        <Text size="xl" weight={700}>{modules.title}</Text>
+        <Container>
+          <Text size="lg" weight={500}>{currentContent.title}</Text>
+          <Text>{currentContent.content}</Text>
+        </Container>
       </div>
       <Button
         variant="outline"
         style={{ 
-          width: '100%', // Full width
-          marginTop: '20px' // Space above the button
+          width: '100%', 
+          marginTop: '20px' 
         }}
+        onClick={handleNext}
       >
         {t("planet.learningPage.next")}
       </Button>

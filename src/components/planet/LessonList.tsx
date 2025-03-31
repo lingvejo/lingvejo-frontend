@@ -1,33 +1,32 @@
-// components/MilestoneList.tsx
 import { Stack } from '@mantine/core';
-import MilestoneUnit from './MilestoneUnit';
+import LessonUnit from './LessonUnit';
 
-interface MilestoneListProps {
-  milestones: { current: number; max: number }[][];
-  latestMilestoneIndex: number;
-  setActiveMilestone: (index: number | null) => void;
+interface LessonListProps {
+  progress: { current: number; max: number }[][];
+  latestLessonIndex: number;
+  setActiveLesson: (index: number | null) => void;
   onStartLearning: () => void;
   setPopupVisible: (visible: boolean) => void;
   focusOnLatestButton: React.Ref<HTMLButtonElement | null>;
 }
 
-const MilestoneList: React.FC<MilestoneListProps> = ({
-  milestones,
-  latestMilestoneIndex,
-  setActiveMilestone,
+const LessonList: React.FC<LessonListProps> = ({
+  progress,
+  latestLessonIndex,
+  setActiveLesson,
   onStartLearning,
   setPopupVisible,
   focusOnLatestButton,
 }) => {
   return (
     <Stack align="center" spacing="xl">
-      {milestones.map((unit, unitIndex) => (
-        <MilestoneUnit
+      {progress.map((unit, unitIndex) => (
+        <LessonUnit
           key={unitIndex}
           unit={unit}
           unitIndex={unitIndex}
-          latestMilestoneIndex={latestMilestoneIndex}
-          setActiveMilestone={setActiveMilestone}
+          latestLessonIndex={latestLessonIndex}
+          setActiveLesson={setActiveLesson}
           onStartLearning={onStartLearning}
           setPopupVisible={setPopupVisible}
           focusOnLatestButton={focusOnLatestButton}
@@ -37,4 +36,4 @@ const MilestoneList: React.FC<MilestoneListProps> = ({
   );
 };
 
-export default MilestoneList;
+export default LessonList;

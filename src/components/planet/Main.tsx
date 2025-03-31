@@ -1,49 +1,59 @@
-// components/Main.tsx
 import { Container, Stack, Group } from '@mantine/core';
-import { useEffect, useRef, useState } from 'react';
-import { getMilestones, getSetting } from '@/utils/data';
-import MilestoneButton from './MilestoneButton';
+import { useRef, useState } from 'react';
+import { getSetting, getStep } from '@/utils/data';
+import LessonButton from './LessonButton';
 import LearningPage, { LearningPageTitle } from './LearningPage';
 import UnitDisplayer from './UnitDisplayer';
 import FullscreenModal from '@/components/core/Modal';
 
 const Main = () => {
-  const milestones = getMilestones(getSetting('language'), getSetting('step'));
-  
-  const activeStep = getSetting("step");
-  const [activeUnit, setActiveUnit] = useState<number>(0);
-  const [activeLesson, setActiveLesson] = useState<number>(0);
+  const planetLanguage = getSetting("planetLanguage");
+  const planetStep = getSetting("planetStep");
+  const planetUnit = getSetting("planetUnit");
+  const planetLesson = getSetting("planetLesson");
+
+  const step = getStep(planetLanguage, planetStep);
+
+  // By default the focus should be on the last learned lesson
+  const [activeUnit, setActiveUnit] = useState(planetStep);
+  const [activeLesson, setActiveLesson] = useState(planetUnit);
   
   const [learningPageVisible, setLearningPageVisible] = useState(false);
-  const latestMilestoneIndex = milestones.flat().findIndex(m => m.current < m.max);
   const focusOnLatestButton = useRef<HTMLButtonElement | null>(null);
-
-
-  const handleStartLearning = () => {
-    setLearningPageVisible(true);
-  };
 
   return (
     <>
       <Stack align="center" gap="xl">
-        {milestones.map((unit, unitIndex) => (
-          <Group key={unitIndex} justify="center" style={{ width: '100%' }}>
-            <UnitDisplayer currentStep={activeStep} currentUnit={unitIndex} />
-            {unit.map((milestone, index) => (
-              <MilestoneButton
-                key={index}
-                milestone={milestone}
-                unit={unitIndex}
-                lesson={index}
-                onStartLearning={handleStartLearning}
-                isLatest={unitIndex === Math.floor(latestMilestoneIndex / unit.length) && index === latestMilestoneIndex % unit.length}
-                ref={unitIndex === Math.floor(latestMilestoneIndex / unit.length) && index === latestMilestoneIndex % unit.length ? focusOnLatestButton : null}
-                setActiveUnit={setActiveUnit}
-                setActiveLesson={setActiveLesson}
-              />
-            ))}
-          </Group>
-        ))}
+        {step.units.map((unit, unitIndex) => {
+          // Calculate the latest unit and lesson indices
+          const latestUnitIndex = Math.floor(planetLesson / step.units.length);
+          const latestLessonIndex = planetLesson % step.units.length;
+
+          return (
+            <Group key={unitIndex} justify="center" style={{ width: '100%' }}>
+              <UnitDisplayer currentStep={planetStep} currentUnit={unitIndex} />
+              {unit.lessons.map((lesson, lessonIndex) => {
+                const isEnabled = unitIndex < latestUnitIndex || (unitIndex === latestUnitIndex && lessonIndex <= latestLessonIndex);
+
+                return (
+                  <LessonButton
+                    key={`${unitIndex}-${lessonIndex}`}
+                    step={planetStep}
+                    unit={unitIndex}
+                    lesson={lessonIndex}
+                    lessonData={lesson}
+                    onStartLearning={() => setLearningPageVisible(true)}
+                    isEnabled={isEnabled}
+                    isLatest={lessonIndex === latestLessonIndex}
+                    ref={isEnabled && unitIndex === latestUnitIndex && lessonIndex === latestLessonIndex ? focusOnLatestButton : null}
+                    setActiveUnit={setActiveUnit}
+                    setActiveLesson={setActiveLesson}
+                  />
+                );
+              })}
+            </Group>
+          );
+        })}
         <Container h={180} />
       </Stack>
       <FullscreenModal
@@ -52,9 +62,11 @@ const Main = () => {
         title={<LearningPageTitle />}
       >
         <LearningPage
-          activeStep={activeStep}
+          language={planetLanguage}
+          activeStep={planetStep}
           activeUnit={activeUnit}
           activeLesson={activeLesson}
+          onComplete={() => setLearningPageVisible(false)}
         />
       </FullscreenModal>
     </>

@@ -1,5 +1,5 @@
 // components/UnitDisplayer.tsx
-import { getSetting, getUnitDescription } from '@/utils/data';
+import { getSetting, getUnit } from '@/utils/data';
 import { Button, Stack, Text } from '@mantine/core';
 import { useTranslations } from 'next-intl';
 
@@ -25,7 +25,7 @@ const UnitDisplayer: React.FC<UnitDisplayerProps> = ({ currentStep, currentUnit 
       <Stack gap="xs">
         {/* Displaying unit index + 1 for user-friendly format */}
         <Text size="sm">{t("planet.unitDescription", { step: currentStep+1, unit: currentUnit+1 })}</Text>
-        <Text size="xl">{getUnitDescription(getSetting("language"), currentStep, currentUnit)}</Text>
+        <Text size="xl">{getUnit(getSetting("language"), currentStep, currentUnit).title}</Text>
       </Stack>
     </Button>
   );

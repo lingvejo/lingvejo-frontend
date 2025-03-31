@@ -15,7 +15,11 @@ class Collection {
     private loadCollection(): void {
         if (typeof window !== 'undefined') {
             const data = localStorage.getItem(this.collectionName);
+            // Ensure that data is parsed correctly and is an array
             this.collection = data ? JSON.parse(data) : [];
+            if (!Array.isArray(this.collection)) {
+                this.collection = []; // Reset to empty array if data is not an array
+            }
         }
     }
 
@@ -81,16 +85,4 @@ class LocalStorageDB {
 }
 
 export const db = new LocalStorageDB();
-
 export const settingsCollection = db.getCollection('settings');
-
-
-// // Accessing the 'settings' collection
-// const settingsCollection = db.getCollection('settings');
-// settingsCollection.insert({ theme: 'dark', language: 'en' });
-// console.log(settingsCollection.find({ theme: 'dark' })); // [{ id: 1, theme: 'dark', language: 'en' }]
-
-// // Accessing the 'app' collection
-// const appCollection = db.getCollection('app');
-// appCollection.insert({ version: '1.0.0', name: 'MyApp' });
-// console.log(appCollection.find({ name: 'MyApp' })); // [{ id: 1, version: '1.0.0', name: 'MyApp' }]

@@ -4,7 +4,6 @@
     "streak": "Streak",
     "pill": "Pill",
     "coin": "Coin",
-    "start": "START",
     "unitDescription": "Step {step}, Unit {unit}",
     "lessonDescription": "Lesson {current} of {max}",
     "startLesson": "GET {xp}XP",

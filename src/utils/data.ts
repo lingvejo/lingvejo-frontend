@@ -1,98 +1,135 @@
-import { settingsCollection } from "./db";
+// import { settingsCollection } from "./db";
 
 export const getSetting = (label: string): any => {
-    const settings = settingsCollection.find({});
-
-    // Check if settings exist and return the value for the given label
-    for (const setting of settings) {
-        if (setting[label] !== undefined) {
-            return setting[label];
-        }
-    }
-
-    // Return undefined if the label is not found
-    return undefined;
+  if (typeof window !== 'undefined' && window.localStorage) {
+      return localStorage.getItem(label);
+  }
+  return null; // or a default value if localStorage is not available
 };
 
 export const setSetting = (label: string, value: any) => {
-    const settings = settingsCollection.find({});
-
-    // Update the setting if it exists
-    for (const setting of settings) {
-        if (setting[label] !== undefined) {
-            setting[label] = value; // Update the value
-            settingsCollection.saveCollection(); // Save the updated collection
-            return;
-        }
-    }
+  if (typeof window !== 'undefined' && window.localStorage) {
+      localStorage.setItem(label, value);
+  }
 };
 
-export const getMilestones = (language: string, step: number) => {
-  return milestones;
+export const getStep = (language: string, step: number) => {
+  if (language === 'eo' && step >= 0 && step < esperanto.length) {
+      return esperanto[step];
+  }
+  return null; // or handle the error appropriately
+};
+
+export const getUnit = (language: string, step: number, unit: number) => {
+  return esperanto[step].units[unit];
 }
 
-export const getUnitDescription = (language: string, step: number, unit: number) => {
-  return units[step][unit];
+export const getLessonTitle = (language: string, step: number, unit: number, lesson: number) => {
+  return esperanto[step].units[unit].lessons[lesson].title;
 }
 
-export const getLesson = (language: string, step: number, unit: number, lesson: number) => {
-  return lessons[step][unit][lesson];
+export const getModules = (language: string, step: number, unit: number, lesson: number) => {
+  return esperanto[step].units[unit].lessons[lesson].modules;
 }
 
-const lessons = [
-  [
-    [
+export const esperanto = [
+  // Step 1
+  {
+    "title": "Komencanto",
+    "description": "Saluton! (Hello!)",
+    "units": [
+      // Unit 1
       {
-        "title": "Saluton! (Hello!)",
-        "content": "Mi estas Rufi. Saluton! Mi havas hundon."
+        "title": "Learn the Alphabet",
+        "description": "How to read?",
+        "lessons": [
+          // Lesson 1
+          {
+            "title": "Let's Load Up",
+            "modules":
+              // Module 1
+              {
+                "title": "Saluton! (Hello!)",
+                "contents": [
+                  {
+                    "title": "Greeting in Esperanto",
+                    "content": "En Esperanto, ni diras 'Saluton' por saluti."
+                  },
+                  {
+                    "title": "Introducing Yourself",
+                    "content": "Vi povas diri 'Mi estas [via nomo]' por prezenti vin."
+                  }
+                ]
+              }
+          },
+          // Lesson 2
+          {
+            "title": "The Alphabet",
+            "modules":
+              // Module 2
+              {
+                "title": "Esperanto Letters",
+                "contents": [
+                  {
+                    "title": "Vowels",
+                    "content": "La vokaloj en Esperanto estas: a, e, i, o, u."
+                  },
+                  {
+                    "title": "Consonants",
+                    "content": "La konsonantoj estas: b, c, ĉ, d, f, g, ĝ, h, j, k, l, m, n, p, r, s, ŝ, t, v, z."
+                  }
+                ]
+              }
+          }
+        ]
       },
+      // Unit 2
       {
-        "title": "La Kato (The Cat)",
-        "content": "Ŝi estas Miau. Ŝi estas malgranda. Mi amas la katon."
-      }
-    ],
-    [
-      {
-        "title": "La Familio (The Family)",
-        "content": "Mi havas familion. Mia patro estas feliĉa. Mia patrino estas bela."
-      },
-      {
-        "title": "La Koloroj (The Colors)",
-        "content": "La hundi estas ruĝa. La kato estas blua. Mi ŝatas la verdan koloron."
-      }
-    ],
-    [
-      {
-        "title": "La Tagoj de la Semajno (The Days of the Week)",
-        "content": "Hodiaŭ estas lundo. Mardo venas post lundo. Mi amas vendredon."
-      },
-      {
-        "title": "La Tempo (The Weather)",
-        "content": "Hodiaŭ estas sunplena. Morgaŭ estos pluva. Mi ŝatas la sunon."
+        "title": "Basic Phrases",
+        "description": "Common expressions in Esperanto.",
+        "lessons": [
+          // Lesson 1
+          {
+            "title": "Everyday Greetings",
+            "modules":
+              // Module 1
+              {
+                "title": "Common Greetings",
+                "contents": [
+                  {
+                    "title": "Good Morning",
+                    "content": "Bonan matenon!"
+                  },
+                  {
+                    "title": "Good Night",
+                    "content": "Bonan nokton!"
+                  }
+                ]
+              }
+          },
+          // Lesson 2
+          {
+            "title": "Polite Expressions",
+            "modules":
+              // Module 2
+              {
+                "title": "Please and Thank You",
+                "contents": [
+                  {
+                    "title": "Please",
+                    "content": "Bonvolu."
+                  },
+                  {
+                    "title": "Thank You",
+                    "content": "Dankon."
+                  }
+                ]
+              }
+          }
+        ]
       }
     ]
-  ]
+  }
 ]
 
-const units = [
-  [
-    "Learn the basics",
-    "Be an advanced speaker",
-    "Saluton, Mondo!"
-  ]
-]
-
-const milestones = [
-  [
-    { current: 5, max: 5, xp: 10, title: "Complete Letter Recognition" }, // Final milestone
-    { current: 5, max: 5, xp: 10, title: "Master Phonemic Awareness" }, // Second milestone
-  ],
-  [
-    { current: 5, max: 5, xp: 10, title: "Complete Basic Math Operations" }, // First milestone in the second unit
-    { current: 1, max: 2, xp: 10, title: "Understand Fractions and Decimals" }, // Second milestone
-  ],
-  [
-    { current: 0, max: 5, xp: 10, title: "Explore Geometry Basics" }, // Fourth milestone
-    { current: 0, max: 5, xp: 10, title: "Introduction to Data Interpretation" }, // Fifth milestone
-  ]
-];
+export default esperanto;
