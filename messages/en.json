@@ -1,4 +1,14 @@
 {
+  "planet": {
+    "language": "Language",
+    "streak": "Streak",
+    "pill": "Pill",
+    "coin": "Coin",
+    "start": "START",
+    "unitDescription": "Step {step}, Unit {unit}",
+    "lessonDescription": "Lesson {current} of {max}",
+    "startLesson": "GET {xp}XP"
+  },
   "Error": {
     "description": "<p>We've unfortunately encountered an error.</p><p>You can try to <retry>reload the page</retry> you were visiting.</p>",
     "title": "Something went wrong!"

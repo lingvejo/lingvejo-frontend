@@ -1,10 +1,12 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import { Group, Stack, Text } from '@mantine/core';
+import { useTranslations } from 'next-intl';
 import theme from '@/components/theme/Theme';
 import { ElementItem } from '@/components/content/NavigationElement';
 import { getSetting } from '@/utils/data';
 import { Drawer } from './Drawer';
+import { renderDrawer } from '../content/Content';
 
 // Define the props for the IconStack component
 interface IconStackProps {
@@ -52,6 +54,9 @@ export interface NavigationProps {
 export const Navigation: React.FC<NavigationProps> = ({ type, content, setContent }): JSX.Element => {
     const [icons, setIcons] = useState<ElementItem[]>([]); // State to hold icons
     const [drawerOpened, setDrawerOpened] = useState(false); // State to control drawer visibility
+    const [drawerTitle, setDrawerTitle] = useState(''); // State for drawer title
+
+    const t = useTranslations();
 
     useEffect(() => {
         const loadIcons = async () => {
@@ -74,6 +79,8 @@ export const Navigation: React.FC<NavigationProps> = ({ type, content, setConten
 
     const handleIconClick = (label: string) => {
         setContent(label);
+        setDrawerTitle(label);
+        
         if (type !== "bottom") {
             setDrawerOpened(true); // Open the drawer if type is not "bottom"
         }
@@ -89,15 +96,15 @@ export const Navigation: React.FC<NavigationProps> = ({ type, content, setConten
                         icon={icon}
                         label={label}
                         isSelected={content === label}
-                        onClick={() => handleIconClick(label)} // Use the new click handler
+                        onClick={() => handleIconClick(label)}
                     />
                 ))}
             </Group>
             <Drawer
                 drawerOpened={drawerOpened}
                 onClose={() => setDrawerOpened(false)}
-                title={"label"}
-                content={<div />}
+                title={t(`${type}.${drawerTitle}`)}
+                content={renderDrawer(drawerTitle)}
             />
         </>
     );

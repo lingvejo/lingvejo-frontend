@@ -5,6 +5,7 @@ export const initSettings = () => {
         settingsCollection.insert({
             locale: 'en',  // app language
             language: 'eo',  // learning language
+            step: 0, // step of learning
             streak: 0,
             pill: 5,
             coin: 500
