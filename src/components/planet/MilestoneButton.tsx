@@ -6,22 +6,20 @@ import React from 'react';
 
 interface MilestoneButtonProps {
   milestone: { current: number; max: number, xp: number, title: string };
-  index: number;
-  setActiveMilestone: (index: number | null) => void;
+  unit: number;
+  lesson: number;
   onStartLearning: () => void;
   isLatest: boolean;
-  setPopupVisible: (visible: boolean) => void;
   ref: React.Ref<HTMLButtonElement>;
+  setActiveUnit: (index: number | null) => void;
+  setActiveLesson: (index: number | null) => void;
 }
 
 const MilestoneButton = React.forwardRef<HTMLButtonElement, MilestoneButtonProps>(
-  ({ milestone, index, setActiveMilestone, onStartLearning, isLatest, setPopupVisible }, ref) => {
+  ({ milestone, unit, lesson, onStartLearning,
+    isLatest, setActiveUnit, setActiveLesson }, ref) => {
     const t = useTranslations();
     const progress = (milestone.current / milestone.max) * 100; // Calculate progress percentage
-
-    const handleClick = () => {
-      setActiveMilestone(index);
-    };
 
     return (
       <Center style={{ position: 'relative' }}>
@@ -59,7 +57,6 @@ const MilestoneButton = React.forwardRef<HTMLButtonElement, MilestoneButtonProps
                 boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)',
                 transition: 'background-color 0.3s ease',
               }}
-              onClick={handleClick}
             >
               {isLatest ? <IconLeaf2 size={40} /> : <IconLeaf size={40} />}
             </Button>
@@ -78,7 +75,8 @@ const MilestoneButton = React.forwardRef<HTMLButtonElement, MilestoneButtonProps
               }}
               onClick={() => {
                 onStartLearning(); // Trigger the learning page
-                setPopupVisible(false); // Ensure the popup is hidden
+                setActiveUnit(unit);
+                setActiveLesson(lesson);
               }}
             >
               {t('planet.startLesson', { xp: milestone.xp })}
