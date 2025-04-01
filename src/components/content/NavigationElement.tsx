@@ -5,6 +5,7 @@ import Planet from '@/components/planet/Planet';
 import Leaderboard from '@/components/leaderboard/Leaderboard';
 import Milestone from '@/components/planet/Milestone';
 import Streak from '@/components/streak/Streak';
+import UserProfile from '../profile/UserProfile';
 
 // Define the interface for each icon item
 export interface ElementItem {
@@ -16,7 +17,7 @@ export interface ElementItem {
 export const bottom: ElementItem[] = [
     { icon: <IconPlanet />, label: 'planet', content: <Planet />},
     { icon: <IconTrophy />, label: 'leaderboard', content: <Leaderboard />},
-    { icon: <IconUser />, label: 'user', content: <>user</>},
+    { icon: <IconUser />, label: 'profile', content: <UserProfile />},
 ];
 
 export const planet: ElementItem[] = [
