@@ -3,10 +3,15 @@ import { getModules, getSetting } from '@/utils/data';
 import { Container, Button, Text, Progress } from '@mantine/core';
 import { useTranslations } from 'next-intl';
 
-export const LearningPageTitle = () => {
+
+interface LearningPageTitleProps {
+  progress: number;
+}
+
+export const LearningPageTitle: React.FC<LearningPageTitleProps> = ({ progress }) => {
   return (
     <div style={{ width: '85vw' }}>
-      <Progress value={50} />
+      <Progress value={progress} />
     </div>
   );
 };
@@ -16,21 +21,29 @@ interface LearningPageProps {
   activeStep: number,
   activeUnit: number,
   activeLesson: number,
-  onComplete: () => void // New prop for completion callback
+  onComplete: () => void,
+  setProgress: (progress: number) => void
 }
 
 const LearningPage: React.FC<LearningPageProps> = ({
-  language, activeStep, activeUnit, activeLesson, onComplete
+  language,
+  activeStep,
+  activeUnit,
+  activeLesson,
+  onComplete,
+  setProgress
 }) => {
   const t = useTranslations();
   const [currentContentIndex, setCurrentContentIndex] = useState(0);
 
   const modules = getModules(language, activeStep, activeUnit, activeLesson);  
   const currentContent = modules.contents[currentContentIndex];
+  const setProgressBar = () => setProgress((currentContentIndex + 1) / modules.contents.length * 100);
 
   const handleNext = () => {    
-    if (currentContentIndex < modules.contents.length - 1) {
+    if ((currentContentIndex + 1) < modules.contents.length) {
       setCurrentContentIndex(currentContentIndex + 1);
+      setProgressBar();
     } else {
       // Call the onComplete function when finished
       const haveErrors = false;
@@ -39,6 +52,8 @@ const LearningPage: React.FC<LearningPageProps> = ({
       } else onComplete();
     }
   };
+
+  setProgressBar();
 
   return (
     <Container style={{ 
@@ -50,10 +65,8 @@ const LearningPage: React.FC<LearningPageProps> = ({
     }}>
       <div>
         <Text size="xl" weight={700}>{modules.title}</Text>
-        <Container>
-          <Text size="lg" weight={500}>{currentContent.title}</Text>
-          <Text>{currentContent.content}</Text>
-        </Container>
+        <Text size="lg" weight={500}>{currentContent.title}</Text>
+        <Text>{currentContent.content}</Text>
       </div>
       <Button
         variant="outline"

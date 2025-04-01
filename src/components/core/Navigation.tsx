@@ -6,7 +6,7 @@ import theme from '@/components/theme/Theme';
 import { ElementItem } from '@/components/content/NavigationElement';
 import { getSetting } from '@/utils/data';
 import { Drawer } from './Drawer';
-import { renderDrawer } from '../content/Content';
+import { renderDrawer } from '../content/ContentRender';
 
 // Define the props for the IconStack component
 interface IconStackProps {
@@ -104,7 +104,7 @@ export const Navigation: React.FC<NavigationProps> = ({ type, content, setConten
                 drawerOpened={drawerOpened}
                 onClose={() => setDrawerOpened(false)}
                 title={drawerTitle ? t(`${type}.${drawerTitle}`) : ''}
-                content={renderDrawer(drawerTitle)}
+                content={drawerTitle ? renderDrawer(drawerTitle) : ''}
             />
         </>
     );

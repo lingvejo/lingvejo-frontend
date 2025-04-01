@@ -2,7 +2,7 @@
 import { AppShell } from '@mantine/core';
 import { useState } from 'react';
 import { BottomNavigation } from './BottomNavigation';
-import { renderContent } from '@/components/content/Content';
+import { renderContent } from '@/components/content/ContentRender';
 
 export default function FullscreenAppShell() {
     const [content, setContent] = useState<string>('planet');

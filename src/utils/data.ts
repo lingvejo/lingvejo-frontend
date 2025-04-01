@@ -1,15 +1,16 @@
 // import { settingsCollection } from "./db";
-
-export const getSetting = (label: string): any => {
-  if (typeof window !== 'undefined' && window.localStorage) {
-      return localStorage.getItem(label);
-  }
-  return null; // or a default value if localStorage is not available
-};
+import { esperanto } from './esperanto';
 
 export const setSetting = (label: string, value: any) => {
   if (typeof window !== 'undefined' && window.localStorage) {
-      localStorage.setItem(label, value);
+      // Store the value as a string
+      localStorage[label] = value // Convert to string
+  }
+};
+
+export const getSetting = (label: string) => {
+  if (typeof window !== 'undefined' && window.localStorage) {
+      return localStorage[label]; // No parsing needed
   }
 };
 
@@ -31,105 +32,3 @@ export const getLessonTitle = (language: string, step: number, unit: number, les
 export const getModules = (language: string, step: number, unit: number, lesson: number) => {
   return esperanto[step].units[unit].lessons[lesson].modules;
 }
-
-export const esperanto = [
-  // Step 1
-  {
-    "title": "Komencanto",
-    "description": "Saluton! (Hello!)",
-    "units": [
-      // Unit 1
-      {
-        "title": "Learn the Alphabet",
-        "description": "How to read?",
-        "lessons": [
-          // Lesson 1
-          {
-            "title": "Let's Load Up",
-            "modules":
-              // Module 1
-              {
-                "title": "Saluton! (Hello!)",
-                "contents": [
-                  {
-                    "title": "Greeting in Esperanto",
-                    "content": "En Esperanto, ni diras 'Saluton' por saluti."
-                  },
-                  {
-                    "title": "Introducing Yourself",
-                    "content": "Vi povas diri 'Mi estas [via nomo]' por prezenti vin."
-                  }
-                ]
-              }
-          },
-          // Lesson 2
-          {
-            "title": "The Alphabet",
-            "modules":
-              // Module 2
-              {
-                "title": "Esperanto Letters",
-                "contents": [
-                  {
-                    "title": "Vowels",
-                    "content": "La vokaloj en Esperanto estas: a, e, i, o, u."
-                  },
-                  {
-                    "title": "Consonants",
-                    "content": "La konsonantoj estas: b, c, ĉ, d, f, g, ĝ, h, j, k, l, m, n, p, r, s, ŝ, t, v, z."
-                  }
-                ]
-              }
-          }
-        ]
-      },
-      // Unit 2
-      {
-        "title": "Basic Phrases",
-        "description": "Common expressions in Esperanto.",
-        "lessons": [
-          // Lesson 1
-          {
-            "title": "Everyday Greetings",
-            "modules":
-              // Module 1
-              {
-                "title": "Common Greetings",
-                "contents": [
-                  {
-                    "title": "Good Morning",
-                    "content": "Bonan matenon!"
-                  },
-                  {
-                    "title": "Good Night",
-                    "content": "Bonan nokton!"
-                  }
-                ]
-              }
-          },
-          // Lesson 2
-          {
-            "title": "Polite Expressions",
-            "modules":
-              // Module 2
-              {
-                "title": "Please and Thank You",
-                "contents": [
-                  {
-                    "title": "Please",
-                    "content": "Bonvolu."
-                  },
-                  {
-                    "title": "Thank You",
-                    "content": "Dankon."
-                  }
-                ]
-              }
-          }
-        ]
-      }
-    ]
-  }
-]
-
-export default esperanto;

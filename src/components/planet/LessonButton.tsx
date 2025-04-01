@@ -13,8 +13,6 @@ interface LessonButtonProps {
   isEnabled: boolean;
   isLatest: boolean;
   ref: React.Ref<HTMLButtonElement>;
-  setActiveUnit: (index: number) => void;
-  setActiveLesson: (index: number) => void;
 }
 
 const LessonButton = React.forwardRef<HTMLButtonElement, LessonButtonProps>(
@@ -26,9 +24,7 @@ const LessonButton = React.forwardRef<HTMLButtonElement, LessonButtonProps>(
       lessonData,
       onStartLearning,
       isEnabled,
-      isLatest,
-      setActiveUnit,
-      setActiveLesson
+      isLatest
     },
     ref
   ) => {
@@ -93,7 +89,7 @@ const LessonButton = React.forwardRef<HTMLButtonElement, LessonButtonProps>(
               {getLessonTitle(getSetting("language"), step, unit, lesson)}
             </Text>
             <Text size="sm">
-              {t('planet.lessonDescription', { current: planetModule, max: maxLength })}
+              {isLatest ? t('planet.lessonDescription', { current: planetModule, max: maxLength }) : ''}
             </Text>
             <Button
               variant="outline"
@@ -105,13 +101,11 @@ const LessonButton = React.forwardRef<HTMLButtonElement, LessonButtonProps>(
               onClick={() => {
                 if (isEnabled) { // Only trigger if not disabled
                   onStartLearning(); // Trigger the learning page
-                  setActiveUnit(unit);
-                  setActiveLesson(lesson);
                 }
               }}
               disabled={!isEnabled} // Set the disabled prop
             >
-              {t('planet.startLesson', { xp: getSetting("planetXpPerLesson") })}
+              {isLatest ? t('planet.startLesson', { xp: getSetting("planetXpPerLesson") }) : t('planet.reviewLesson') }
             </Button>
           </Popover.Dropdown>
         </Popover>
