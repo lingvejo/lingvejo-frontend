@@ -81,7 +81,7 @@ const LessonButton = React.forwardRef<HTMLButtonElement, LessonButtonProps>(
               }}
               disabled={!isEnabled} // Set the disabled prop
             >
-              {isEnabled ? <IconLeaf2 size={40} /> : <IconLeaf size={40} />}
+              {isEnabled && !isLatest ? <IconLeaf2 size={40} /> : <IconLeaf size={40} />}
             </Button>
           </Popover.Target>
           <Popover.Dropdown>
@@ -92,11 +92,9 @@ const LessonButton = React.forwardRef<HTMLButtonElement, LessonButtonProps>(
               {isLatest ? t('planet.lessonDescription', { current: planetModule + 1, max: maxLength }) : ''}
             </Text>
             <Button
-              variant="outline"
               style={{
                 marginTop: '10px',
                 width: '100%', // Full width button
-                color: 'var(--mantine-primary-color-filled)',
               }}
               onClick={() => {
                 if (isEnabled) { // Only trigger if not disabled

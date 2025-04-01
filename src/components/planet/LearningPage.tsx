@@ -1,8 +1,7 @@
-import { useState } from 'react';
-import { getModules, getSetting } from '@/utils/data';
-import { Container, Button, Text, Progress } from '@mantine/core';
+import { useState, useEffect } from 'react';
+import { getModules } from '@/utils/data';
+import { Container, Button, Text, Progress, Group } from '@mantine/core';
 import { useTranslations } from 'next-intl';
-
 
 interface LearningPageTitleProps {
   progress: number;
@@ -23,7 +22,8 @@ interface LearningPageProps {
   activeLesson: number,
   activeModule: number,
   onComplete: () => void,
-  setProgress: (progress: number) => void
+  setProgress: (progress: number) => void,
+  isReviewMode: boolean
 }
 
 const LearningPage: React.FC<LearningPageProps> = ({
@@ -33,28 +33,37 @@ const LearningPage: React.FC<LearningPageProps> = ({
   activeLesson,
   activeModule,
   onComplete,
-  setProgress
+  setProgress,
+  isReviewMode // New prop for review mode
 }) => {
   const t = useTranslations();
   const [currentContentIndex, setCurrentContentIndex] = useState(0);
 
   const modules = getModules(language, activeStep, activeUnit, activeLesson);  
-  const currentContent = modules[activeModule][currentContentIndex];
-  const setProgressBar = () => setProgress((currentContentIndex + 1) / modules[activeModule].length * 100);
+  const currentModule = isReviewMode ? modules.flat() : modules[activeModule];
 
-  const handleNext = () => {    
-    if ((currentContentIndex + 1) < modules[activeModule].length) {
-      setCurrentContentIndex(currentContentIndex + 1);
-      setProgressBar();
-    } else {
-      const haveErrors = false;
-      if (haveErrors) {
+  // Check if currentModule exists and has content
+  const currentContent = currentModule && currentModule.length > 0 ? currentModule[currentContentIndex] : null;
 
-      } else onComplete();
+  const setProgressBar = () => {
+    if (currentModule) {
+      setProgress(((currentContentIndex + 1) / currentModule.length) * 100);
     }
   };
 
-  setProgressBar();
+  const handleNext = () => {    
+    if (currentContentIndex + 1 < (currentModule ? currentModule.length : 0)) {
+      // Move to the next content within the current module
+      setCurrentContentIndex(currentContentIndex + 1);
+      setProgressBar();
+    } else {
+      onComplete();
+    }
+  };
+
+  useEffect(() => {
+    setProgressBar(); // Set progress when the component mounts or updates
+  }, [currentContentIndex, activeModule]);
 
   return (
     <Container style={{ 
@@ -65,19 +74,40 @@ const LearningPage: React.FC<LearningPageProps> = ({
       padding: '20px', 
     }}>
       <div>
-        <Text size="lg" weight={500}>{currentContent.title}</Text>
-        <Text>{currentContent.content}</Text>
+        {currentContent && (
+          <>
+            <Text size="lg" weight={500}>{currentContent.title}</Text>
+            <Text>{currentContent.content}</Text>
+          </>
+        )}
       </div>
-      <Button
-        variant="outline"
-        style={{ 
-          width: '100%', 
-          marginTop: '20px' 
-        }}
-        onClick={handleNext}
-      >
-        {t("planet.learningPage.next")}
-      </Button>
+      <Group position="apart" style={{ marginTop: '20px' }}>
+        <Button
+          variant="outline"
+          style={{
+            flex: 1,
+            opacity: currentContentIndex === 0 ? 0.5 : 1
+          }}
+          onClick={() => {
+            if (currentContentIndex > 0) {
+              setCurrentContentIndex(currentContentIndex - 1);
+            }
+          }}
+          disabled={currentContentIndex === 0}
+        >
+          {t("planet.learningPage.previous")}
+        </Button>
+        <Button
+          onClick={handleNext}
+          disabled={!currentContent}
+          autoFocus
+          style={{
+            flex: 1
+          }}
+        >
+          {isReviewMode ? t("planet.learningPage.next") : t("planet.learningPage.check")}
+        </Button>
+      </Group>
     </Container>
   );
 };

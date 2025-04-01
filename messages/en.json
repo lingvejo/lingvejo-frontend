@@ -9,7 +9,10 @@
     "startLesson": "GET {xp}XP",
     "reviewLesson": "REVIEW",
     "learningPage": {
-      "next": "Next"
+      "previous": "Previous",
+      "next": "Next",
+      "check": "Check",
+      "finish": "Finish"
     }
   },
   "bottom": {

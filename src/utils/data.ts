@@ -15,10 +15,13 @@ export const getSetting = (label: string) => {
 };
 
 export const getStep = (language: string, step: number) => {
-  if (language === 'eo' && step >= 0 && step < esperanto.length) {
-      return esperanto[step];
+  try {
+    if (language === 'eo') return esperanto[step];
+  } catch (error) {
+    console.error("Error fetching step:", error);
+    // Return a default object in case of an error
+    return { title: "", description: "", units: [] };
   }
-  return null; // or handle the error appropriately
 };
 
 export const getUnit = (language: string, step: number, unit: number) => {
@@ -26,9 +29,17 @@ export const getUnit = (language: string, step: number, unit: number) => {
 }
 
 export const getLessonTitle = (language: string, step: number, unit: number, lesson: number) => {
-  return esperanto[step].units[unit].lessons[lesson].title;
+  try {
+    return esperanto[step].units[unit].lessons[lesson].title;
+  } catch (e) {
+    return '';
+  }
 }
 
 export const getModules = (language: string, step: number, unit: number, lesson: number) => {
-  return esperanto[step].units[unit].lessons[lesson].modules;
+  try {
+    return esperanto[step].units[unit].lessons[lesson].modules;
+  } catch (e) {
+    return [];
+  }
 }

@@ -18,18 +18,16 @@ export const esperanto = [
                   {
                     "title": "Introducing Yourself",
                     "content": "Vi povas diri 'Mi estas [via nomo]' por prezenti vin."
+                  },
+                  {
+                    "title": "Vowels",
+                    "content": "La vokaloj en Esperanto estas: a, e, i, o, u."
+                  },
+                  {
+                    "title": "Consonants",
+                    "content": "La konsonantoj estas: b, c, ĉ, d, f, g, ĝ, h, j, k, l, m, n, p, r, s, ŝ, t, v, z."
                   }
-                ],
-                [
-                    {
-                      "title": "Vowels",
-                      "content": "La vokaloj en Esperanto estas: a, e, i, o, u."
-                    },
-                    {
-                      "title": "Consonants",
-                      "content": "La konsonantoj estas: b, c, ĉ, d, f, g, ĝ, h, j, k, l, m, n, p, r, s, ŝ, t, v, z."
-                    }
-                  ]
+                ]
               ]
             },
             {
@@ -39,10 +37,16 @@ export const esperanto = [
                   {
                     "title": "Vowels",
                     "content": "La vokaloj en Esperanto estas: a, e, i, o, u."
-                  },
+                  }
+                ],
+                [
                   {
                     "title": "Consonants",
                     "content": "La konsonantoj estas: b, c, ĉ, d, f, g, ĝ, h, j, k, l, m, n, p, r, s, ŝ, t, v, z."
+                  },
+                  {
+                    "title": "Special Characters",
+                    "content": "La specialaj literoj estas: ĉ, ĝ, ĥ, ĵ, ŝ."
                   }
                 ]
               ]
@@ -65,6 +69,12 @@ export const esperanto = [
                     "title": "Good Night",
                     "content": "Bonan nokton!"
                   }
+                ],
+                [
+                  {
+                    "title": "How Are You?",
+                    "content": "Kiel vi fartas?"
+                  }
                 ]
               ]
             },
@@ -80,6 +90,16 @@ export const esperanto = [
                     "title": "Thank You",
                     "content": "Dankon."
                   }
+                ],
+                [
+                  {
+                    "title": "Excuse Me",
+                    "content": "Pardonu min."
+                  },
+                  {
+                    "title": "You're Welcome",
+                    "content": "Nedankinde."
+                  }
                 ]
               ]
             }
@@ -88,4 +108,4 @@ export const esperanto = [
       ]
     }
   ];
-  
+   
