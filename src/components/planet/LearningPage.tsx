@@ -21,6 +21,7 @@ interface LearningPageProps {
   activeStep: number,
   activeUnit: number,
   activeLesson: number,
+  activeModule: number,
   onComplete: () => void,
   setProgress: (progress: number) => void
 }
@@ -30,6 +31,7 @@ const LearningPage: React.FC<LearningPageProps> = ({
   activeStep,
   activeUnit,
   activeLesson,
+  activeModule,
   onComplete,
   setProgress
 }) => {
@@ -37,15 +39,14 @@ const LearningPage: React.FC<LearningPageProps> = ({
   const [currentContentIndex, setCurrentContentIndex] = useState(0);
 
   const modules = getModules(language, activeStep, activeUnit, activeLesson);  
-  const currentContent = modules.contents[currentContentIndex];
-  const setProgressBar = () => setProgress((currentContentIndex + 1) / modules.contents.length * 100);
+  const currentContent = modules[activeModule][currentContentIndex];
+  const setProgressBar = () => setProgress((currentContentIndex + 1) / modules[activeModule].length * 100);
 
   const handleNext = () => {    
-    if ((currentContentIndex + 1) < modules.contents.length) {
+    if ((currentContentIndex + 1) < modules[activeModule].length) {
       setCurrentContentIndex(currentContentIndex + 1);
       setProgressBar();
     } else {
-      // Call the onComplete function when finished
       const haveErrors = false;
       if (haveErrors) {
 
@@ -64,7 +65,6 @@ const LearningPage: React.FC<LearningPageProps> = ({
       padding: '20px', 
     }}>
       <div>
-        <Text size="xl" weight={700}>{modules.title}</Text>
         <Text size="lg" weight={500}>{currentContent.title}</Text>
         <Text>{currentContent.content}</Text>
       </div>

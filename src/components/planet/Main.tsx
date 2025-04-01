@@ -34,7 +34,7 @@ const Main = () => {
     const currentLesson = step.units[planetUnit].lessons[planetLesson];
 
     // Check if the module is full
-    if (newModule >= currentLesson.modules.contents.length) { // Compare with modules.length
+    if (newModule >= currentLesson.modules.length) { // Compare with modules.length
       // Reset the module and increment the lesson
       newModule = 0;
       setSetting('planetModule', newModule);
@@ -109,6 +109,7 @@ const Main = () => {
           activeStep={planetStep}
           activeUnit={planetUnit}
           activeLesson={planetLesson}
+          activeModule={planetModule}
           onComplete={LearningPageOnComplete}
           setProgress={setLearningProgress}
         />

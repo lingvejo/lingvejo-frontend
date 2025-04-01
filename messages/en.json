@@ -5,7 +5,7 @@
     "pill": "Pill",
     "coin": "Coin",
     "unitDescription": "Step {step}, Unit {unit}",
-    "lessonDescription": "Module {current} of {max}",
+    "lessonDescription": "{current} of {max}",
     "startLesson": "GET {xp}XP",
     "reviewLesson": "REVIEW",
     "learningPage": {

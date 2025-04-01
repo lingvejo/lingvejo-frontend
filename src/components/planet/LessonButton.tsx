@@ -30,8 +30,8 @@ const LessonButton = React.forwardRef<HTMLButtonElement, LessonButtonProps>(
   ) => {
     const t = useTranslations();
 
-    const planetModule = getSetting("planetModule");
-    const maxLength = lessonData.modules.contents.length;
+    const planetModule = Number(getSetting("planetModule"));
+    const maxLength = lessonData.modules.length;
 
     let buttonColor = isEnabled ? 'var(--mantine-primary-color-filled)' : 'var(--mantine-color-gray-5)';
     if (isEnabled && isLatest) {
@@ -89,7 +89,7 @@ const LessonButton = React.forwardRef<HTMLButtonElement, LessonButtonProps>(
               {getLessonTitle(getSetting("language"), step, unit, lesson)}
             </Text>
             <Text size="sm">
-              {isLatest ? t('planet.lessonDescription', { current: planetModule, max: maxLength }) : ''}
+              {isLatest ? t('planet.lessonDescription', { current: planetModule + 1, max: maxLength }) : ''}
             </Text>
             <Button
               variant="outline"
