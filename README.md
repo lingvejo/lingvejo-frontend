@@ -2,7 +2,7 @@
 
 Welcome, adventurer, to **Lingvejo**, a world born from the magic of words and the power of languages. As you step onto this distant planet, be prepared for a journey that will test your mind, unlock ancient secrets, and help you communicate with the very fabric of reality.
 
----
+
 
 ## 🔮 **A Land Beyond the Stars**
 
@@ -10,13 +10,13 @@ You have awakened on a faraway planet, far from the comforts of home. In this st
 
 Here in **Lingvejo**, your quest is not only to master the magic of this world but also the **magic of language**. Through the study of ancient tongues and modern phrases, you will unlock the secrets that bind this planet together.
 
----
+
 
 ## 🌍 **The Power of Language**
 
 In **Lingvejo**, language is more than just a tool for communication—**it is the key to magic itself**. Words are not merely sounds; they are the spells that open portals, unlock hidden powers, and even change the course of destiny. You must embark on a journey of discovery, learning each language's subtle nuances to gain the ability to cast the most powerful of spells.
 
----
+
 
 ## ✨ **What Awaits You**
 
@@ -26,7 +26,7 @@ In **Lingvejo**, language is more than just a tool for communication—**it is t
 - **Progress** through mystical milestones and challenges, each one bringing you closer to your true potential.
 - **Collect Resources** in your quest, from potions to ancient artifacts, to aid in your growth.
 
----
+
 
 ## 📜 **Your Quest Begins Now**
 
@@ -34,13 +34,13 @@ You are no mere wanderer; you are a **seeker of knowledge**, a **master of tongu
 
 Prepare yourself, adventurer. The **language of magic** awaits you.
 
----
+
 
 ## ✨ **Ready to Begin?**
 
 Your journey begins with but a single step—a word, a sentence, and soon, an entire world to explore. **Lingvejo** is waiting. **The magic is yours to discover.**
 
----
+
 
 ### Why an Esperanto name?
 
@@ -50,7 +50,7 @@ Long ago, the **ancient wizards** of Lingvejo knew that to unify the world and i
 
 But know this, young adventurer: Esperanto is but a starting point. A stepping stone. As you traverse this enchanted world, you will encounter more tongues, each with its own arcane power. Your mastery of language will be your most powerful weapon in the battles ahead.
 
----
+
 
 ### Legal
 
