@@ -1,17 +1,18 @@
 import { settingsCollection } from './db';
 
 export const initSettings = () => {
-    localStorage.locale = 'en'
-    localStorage.streak = 0
-    localStorage.pill = 5
-    localStorage.coin = 500
-    localStorage.language = 'eo'
-    localStorage.planetStep = 0
-    localStorage.planetUnit = 0
-    localStorage.planetLesson = 0
-    localStorage.planetModule = 0
-    localStorage.planetXpPerLesson = 40
+    localStorage.setItem('locale', 'en');
+    localStorage.setItem('streak', JSON.stringify(0));
+    localStorage.setItem('potion', JSON.stringify(5));
+    localStorage.setItem('gold', JSON.stringify(500));
+    localStorage.setItem('language', 'eo');
+    localStorage.setItem('planetStep', JSON.stringify(0));
+    localStorage.setItem('planetUnit', JSON.stringify(0));
+    localStorage.setItem('planetLesson', JSON.stringify(0));
+    localStorage.setItem('planetModule', JSON.stringify(0));
+    localStorage.setItem('planetXpPerLesson', JSON.stringify(40));
 };
+
 
 export const init = () => {
     initSettings();

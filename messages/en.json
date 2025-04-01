@@ -2,7 +2,7 @@
   "planet": {
     "language": "Language",
     "streak": "Streak",
-    "pill": "Pill",
+    "inventory": "Inventory",
     "coin": "Coin",
     "unitDescription": "Step {step}, Unit {unit}",
     "lessonDescription": "{current} of {max}",

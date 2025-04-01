@@ -31,15 +31,7 @@ const IconStack: React.FC<IconStackProps> = ({ type, icon, label, isSelected, on
         }}
         onClick={onClick}
     >
-        {/* If on the planet, show the description */}
-        {type === "planet" ? (
-            <Group spacing="xs">
-                {icon}
-                <Text size="sm">{getSetting(label)}</Text>
-            </Group>
-        ) : (
-            icon
-        )}
+        {icon}
     </Stack>
 );
 
