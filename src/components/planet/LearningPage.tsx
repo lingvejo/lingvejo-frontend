@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { getModules } from '@/utils/data';
 import { Container, Button, Text, Progress, Group } from '@mantine/core';
 import { useTranslations } from 'next-intl';
+import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react';
 
 interface LearningPageTitleProps {
   progress: number;
@@ -76,6 +77,7 @@ const LearningPage: React.FC<LearningPageProps> = ({
       <div>
         {currentContent && (
           <>
+            {/* {isReviewMode && <Text>REVIEW MODE</Text>} */}
             <Text size="lg" weight={500}>{currentContent.title}</Text>
             <Text>{currentContent.content}</Text>
           </>
@@ -95,7 +97,7 @@ const LearningPage: React.FC<LearningPageProps> = ({
           }}
           disabled={currentContentIndex === 0}
         >
-          {t("planet.learningPage.previous")}
+          <IconChevronLeft />
         </Button>
         <Button
           onClick={handleNext}
@@ -105,7 +107,7 @@ const LearningPage: React.FC<LearningPageProps> = ({
             flex: 1
           }}
         >
-          {isReviewMode ? t("planet.learningPage.next") : t("planet.learningPage.check")}
+          <IconChevronRight />
         </Button>
       </Group>
     </Container>

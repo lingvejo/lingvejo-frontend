@@ -6,7 +6,7 @@ import LearningPage, { LearningPageTitle } from './LearningPage';
 import UnitDisplayer from './UnitDisplayer';
 import FullscreenModal from '@/components/core/Modal';
 
-const Main = () => {
+const Milestone = () => {
   const planetLanguage = getSetting("language");
   const planetStep = Number(getSetting("planetStep")); // Convert to number
   const planetUnit = Number(getSetting("planetUnit")); // Convert to number
@@ -137,4 +137,4 @@ const Main = () => {
   );  
 };
 
-export default Main;
+export default Milestone;

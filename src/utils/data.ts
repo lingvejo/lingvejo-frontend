@@ -1,5 +1,6 @@
 // import { settingsCollection } from "./db";
 import { esperanto } from './esperanto';
+import { leaderboard } from './leaderboard';
 
 export const setSetting = (label: string, value: any) => {
   if (typeof window !== 'undefined' && window.localStorage) {
@@ -43,3 +44,5 @@ export const getModules = (language: string, step: number, unit: number, lesson:
     return [];
   }
 }
+
+export const getLeaderboardData = () => leaderboard;

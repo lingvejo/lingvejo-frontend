@@ -79,11 +79,10 @@ export const Navigation: React.FC<NavigationProps> = ({ type, content, setConten
 
     const handleIconClick = (label: string) => {
         setContent(label);
-        setDrawerTitle(label);
-        
-        if (type !== "bottom") {
-            setDrawerOpened(true); // Open the drawer if type is not "bottom"
-        }
+        setDrawerTitle(label);        
+        // if (type !== "bottom") {
+        //     setDrawerOpened(true); // Open the drawer if type is not "bottom"
+        // }
     };
 
     return (
