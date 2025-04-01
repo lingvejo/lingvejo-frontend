@@ -1,4 +1,11 @@
 {
+  "intro": {
+    "1": "I wake up, disoriented, surrounded by unfamiliar sights. Where am I?",
+    "2": "I try to speak to those around me, but my tongue can't grasp their meaning.",
+    "3": "As night falls, my body aches. I curl up under a tree, too drained to resist sleep.",
+    "4": "And then... a voice. Soft but clear. \"Hello,\" she says, in a language I can understand.",
+    "5": "\"You've come for a reason. Let me show you the way forward.\""
+  },
   "planet": {
     "language": "Language",
     "streak": "Streak",
