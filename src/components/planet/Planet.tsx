@@ -5,7 +5,7 @@ import { TopNavigation } from '@/components/core/TopNavigation';
 import { getPlanetContentByLabel } from '../content/NavigationElement';
 
 const Planet = () => {
-    const [content, setContent] = useState<string>('language');
+    const [content, setContent] = useState<string>('adventure');
 
     return (
         <AppShell

@@ -3,13 +3,17 @@ import { Container, Stack, Title, Text } from '@mantine/core';
 import InventoryManager from './InventoryManager';
 import { getSetting, setSetting } from '@/utils/data';
 
-const Dashboard: React.FC = () => {
+const Inventory: React.FC = () => {
   const [potion, setPotion] = useState(0);
   const [gold, setGold] = useState(0);
+  const [doubleXpPotions, setDoubleXpPotions] = useState(0); // New state for Double XP potions
+  const [magicItems, setMagicItems] = useState<number>(0); // New state for magical items
 
   useEffect(() => {
     setPotion(Number(getSetting('potion')));
     setGold(Number(getSetting('gold')));
+    setDoubleXpPotions(Number(getSetting('doubleXpPotions'))); // Retrieve Double XP potion count
+    setMagicItems(Number(getSetting('magicItems'))); // Retrieve magic items count
   }, []);
 
   const updatePotion = (newPotion: number) => {
@@ -20,6 +24,16 @@ const Dashboard: React.FC = () => {
   const updateGold = (newGold: number) => {
     setGold(newGold);
     setSetting('gold', newGold);
+  };
+
+  const updateDoubleXpPotions = (newDoubleXpPotions: number) => {
+    setDoubleXpPotions(newDoubleXpPotions);
+    setSetting('doubleXpPotions', newDoubleXpPotions);
+  };
+
+  const updateMagicItems = (newMagicItems: number) => {
+    setMagicItems(newMagicItems);
+    setSetting('magicItems', newMagicItems);
   };
 
   return (
@@ -34,6 +48,10 @@ const Dashboard: React.FC = () => {
 
         <InventoryManager type="potion" potion={potion} gold={gold} setPotion={updatePotion} setGold={updateGold} />
         <InventoryManager type="gold" potion={potion} gold={gold} setPotion={updatePotion} setGold={updateGold} />
+        
+        {/* Add Inventory Managers for Double XP potions and Magic Items */}
+        <InventoryManager type="doubleXpPotion" potion={potion} gold={gold} setPotion={updatePotion} setGold={updateGold} />
+        <InventoryManager type="magicItem" potion={potion} gold={gold} setPotion={updatePotion} setGold={updateGold} />
 
         <Container mt="xl" />
       </Stack>
@@ -41,4 +59,4 @@ const Dashboard: React.FC = () => {
   );
 };
 
-export default Dashboard;
+export default Inventory;

@@ -29,6 +29,7 @@
     "@tsparticles/react": "^3.0.0",
     "dayjs": "^1.11.13",
     "framer-motion": "^12.6.3",
+    "lucide-react": "^0.486.0",
     "next": "15.2.4",
     "next-intl": "^4.0.2",
     "react": "^19.0.0",

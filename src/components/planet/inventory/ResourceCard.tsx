@@ -3,7 +3,7 @@ import { Card, Text, Button, Group, Stack, Notification, Alert, NumberInput } fr
 import { IconShoppingCart, IconCoin, IconBottle } from '@tabler/icons-react';
 
 interface ResourceCardProps {
-  type: 'potion' | 'gold';
+  type: 'potion' | 'gold' | 'doubleXpPotion' | 'magicItem'; // Add other resource types here
   balance: number;
   goldBalance?: number;
   price?: number;
@@ -35,11 +35,21 @@ const ResourceCard: React.FC<ResourceCardProps> = ({
   };
 
   const isPotion = type === 'potion';
-  const title = isPotion ? 'Potion' : 'Gold';
-  const icon = isPotion ? <IconBottle size={32} color="#4caf50" /> : <IconCoin size={32} color="gold" />;
-  const canBuyPotion = isPotion && goldBalance !== undefined && goldBalance >= 10;
-  const canBuyGold = type === 'gold';
+  const isGold = type === 'gold';
+  const isDoubleXpPotion = type === 'doubleXpPotion';
+  const isMagicItem = type === 'magicItem';
+  const title = isPotion ? 'Potion' : isGold ? 'Gold' : isDoubleXpPotion ? 'Double XP Potion' : 'Magic Item';
+  const icon = isPotion
+    ? <IconBottle size={32} color="#4caf50" />
+    : isGold
+    ? <IconCoin size={32} color="gold" />
+    : isDoubleXpPotion
+    ? <IconBottle size={32} color="#ff9800" />  // Adjust the color for Double XP potion
+    : <IconCoin size={32} color="purple" />; // Adjust color for Magic Item
 
+  const canBuyPotion = isPotion && goldBalance !== undefined && goldBalance >= 10;
+  const canBuyGold = isGold && price && goldBalance !== undefined && goldBalance >= price;
+  
   return (
     <Card 
       shadow="sm" 

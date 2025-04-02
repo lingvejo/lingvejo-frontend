@@ -2,7 +2,7 @@ import { settingsCollection } from './db';
 
 export const initSettings = () => {
     localStorage.setItem('locale', 'en');
-    localStorage.setItem('isIntroFinished', 'false');
+    localStorage.setItem('isIntroFinished', 'true'); // DEBUG: auto finish intro
     localStorage.setItem('streak', JSON.stringify(0));
     localStorage.setItem('potion', JSON.stringify(5));
     localStorage.setItem('gold', JSON.stringify(500));

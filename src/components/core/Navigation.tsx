@@ -4,7 +4,6 @@ import { Group, Stack, Text } from '@mantine/core';
 import { useTranslations } from 'next-intl';
 import theme from '@/components/theme/Theme';
 import { ElementItem } from '@/components/content/NavigationElement';
-import { getSetting } from '@/utils/data';
 import { Drawer } from './Drawer';
 import { renderDrawer } from '../content/ContentRender';
 
@@ -60,6 +59,14 @@ export const Navigation: React.FC<NavigationProps> = ({ type, content, setConten
                 case "planet":
                     const { planet } = await import('@/components/content/NavigationElement');
                     setIcons(planet);
+                    break;
+                case "leaderboard":
+                    const { leaderboard } = await import('@/components/content/NavigationElement');
+                    setIcons(leaderboard);
+                    break;
+                case "profile":
+                    const { profile } = await import('@/components/content/NavigationElement');
+                    setIcons(profile);
                     break;
                 default:
                     setIcons([]); // Handle default case

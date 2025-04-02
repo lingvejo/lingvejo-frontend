@@ -5,6 +5,14 @@ import LessonButton from './LessonButton';
 import LearningPage, { LearningPageTitle } from './LearningPage';
 import UnitDisplayer from './UnitDisplayer';
 import FullscreenModal from '@/components/core/Modal';
+import WizardNPC from '@/components/npc/WizardNPC';
+
+const conversations = [
+  "Welcome to the planet, adventurer!",
+  "I’ll help you learn the language here.",
+  "Mastering this language will unlock powerful abilities.",
+  "Let’s start with some basic words and phrases."
+];
 
 const Milestone = () => {
   const planetLanguage = getSetting("language");
@@ -14,6 +22,8 @@ const Milestone = () => {
   const planetModule = Number(getSetting("planetModule"));
 
   const step = getStep(planetLanguage, planetStep);
+
+  const [wizardHere, setWizardHere] = useState(true); // Set the initial state to true
   
   const [isReviewMode, setIsReviewMode] = useState(false);
   const [learningPageVisible, setLearningPageVisible] = useState(false);
@@ -56,6 +66,8 @@ const Milestone = () => {
             let newStep = planetStep + 1;
             setSetting('planetStep', newStep);
             setSetting('planetUnit', 0);
+            // Unlock magical reward on reaching next step
+            alert('You have unlocked the magical artifact of Wisdom!');
           } else {
             setSetting('planetUnit', newUnit);
           }
@@ -115,6 +127,16 @@ const Milestone = () => {
           isReviewMode={isReviewMode}
         />
       </FullscreenModal>
+      {wizardHere && (
+        <WizardNPC
+          wizardHere={wizardHere} // Passed from parent to control visibility
+          isAutoDismiss={false}
+          canBeForcedToLeave={true}
+          conversations={conversations}
+          type="wizard" // Dynamically set the wizard type
+          onLeave={() => setWizardHere(false)} // Handle wizard leaving
+        />
+      )}
     </>
   );  
 };

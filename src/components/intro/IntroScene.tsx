@@ -123,7 +123,7 @@ const IntroScene: React.FC<IntroSceneProps> = ({ onComplete }) => {
                         backgroundImage: `url(${narrativeData[scene - 1].image})`,
                         backgroundSize: 'cover',
                         backgroundPosition: 'center',
-                        filter: 'blur(1px)', 
+                        filter: 'blur(3px)', 
                     }}
                 />
             )}
