@@ -41,6 +41,7 @@
     "react-dom": "^19.0.0",
     "react-markdown": "^10.1.0",
     "react-speech-recognition": "^4.0.0",
+    "react-swipeable": "^7.0.2",
     "recharts": "^2.15.1"
   },
   "devDependencies": {

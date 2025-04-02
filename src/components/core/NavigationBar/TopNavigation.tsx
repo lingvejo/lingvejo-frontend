@@ -1,6 +1,6 @@
 'use client';
 import { AppShell } from '@mantine/core';
-import { Navigation, NavigationProps } from './Navigation';
+import { Navigation, NavigationProps } from '../Navigation';
 
 export function TopNavigation({ type, content, setContent }: NavigationProps): JSX.Element {
     return (

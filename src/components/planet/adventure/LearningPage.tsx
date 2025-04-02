@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { getModules } from '@/utils/data';
-import { Container, Button, Text, Progress, Group } from '@mantine/core';
+import { Container, Button, Title, Progress, Group, Stack } from '@mantine/core';
 import { useTranslations } from 'next-intl';
 import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react';
 import EditModeActions from './editor/EditModeActions';
@@ -77,14 +77,14 @@ const LearningPage: React.FC<LearningPageProps> = ({
     }}>
       <div>
         {currentContent && (
-          <>
-            <Text size="lg" weight={500}>{currentContent.title}</Text>
+          <Stack align="stretch" justify="space-around" gap="md">
+            <Title order={3}>{currentContent.title}</Title>
             {currentContent.type === 'markdown' ? (
               <MarkdownRenderer content={currentContent.content} />
             ) : (
               <CustomModuleRenderer module={currentContent} />
             )}
-          </>
+          </Stack>
         )}
       </div>
       <EditModeActions 

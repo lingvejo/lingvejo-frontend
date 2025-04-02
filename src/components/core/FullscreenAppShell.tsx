@@ -1,7 +1,7 @@
 'use client';
 import { AppShell } from '@mantine/core';
 import { useState, useEffect } from 'react';
-import { BottomNavigation } from './BottomNavigation';
+import { BottomNavigation } from './NavigationBar/BottomNavigation';
 import { renderContent } from '@/components/content/ContentRender';
 import { getSetting } from '@/utils/data'; // Assuming you have getSetting/setSetting functions
 import IntroScene from '@/components/intro/IntroScene'; // Import the IntroScene component
