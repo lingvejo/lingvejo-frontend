@@ -1,7 +1,7 @@
-import { IconPlanet, IconTrophy, IconUser, IconMap,
+import { IconPlanet, IconTrophy, IconStar, IconMap,
     IconCompass, IconFlame, IconBox, IconPentagonNumber1,
-    IconWand, IconSwords, IconStar, IconChecklist,
-    IconPencil } from '@tabler/icons-react';
+    IconWand, IconSwords, IconUsers, IconChecklist,
+    IconPencil, IconUserCircle, IconChartArrowsVertical } from '@tabler/icons-react';
 import { ReactNode } from 'react';
 import Planet from '@/components/planet/Planet';
 import Leaderboard from '@/components/leaderboard/Leaderboard';
@@ -17,6 +17,7 @@ import MultiplayerMode from '../leaderboard/multiplayer/MultiplayerMode';
 import Missions from '../planet/mission/MissionsPage';
 import UserProfile from '../profile/user/UserProfile';
 import LanguageJournal from '../profile/journal/LanguageJournal';
+import ProgressTracker from '../profile/progress/ProgressTracker';
 
 // Define the interface for each icon item
 export interface ElementItem {
@@ -27,8 +28,8 @@ export interface ElementItem {
 
 export const bottom: ElementItem[] = [
     { icon: <IconPlanet />, label: 'planet', content: <Planet />},
-    { icon: <IconStar />, label: 'leaderboard', content: <Leaderboard />},
-    { icon: <IconUser />, label: 'profile', content: <Profile />},
+    { icon: <IconUsers />, label: 'leaderboard', content: <Leaderboard />},
+    { icon: <IconStar />, label: 'profile', content: <Profile />},
     { icon: <IconMap />, label: 'worldmap', content: <WorldMap />},
 ];
 
@@ -46,9 +47,10 @@ export const leaderboard: ElementItem[] = [
 ];
 
 export const profile: ElementItem[] = [
-    { icon: <IconTrophy />, label: 'user', content: <UserProfile />},
+    { icon: <IconChartArrowsVertical />, label: 'progress', content: <ProgressTracker />},
     { icon: <IconPentagonNumber1 />, label: 'mysticalTrophies', content: <MysticalTrophies /> },
     { icon: <IconPencil />, label: 'languageJournal', content: <LanguageJournal /> },
+    { icon: <IconUserCircle />, label: 'user', content: <UserProfile />},
 ];
 
 export const getPlanetContentByLabel = (label: string) => planet.find(item => item.label === label)?.content;

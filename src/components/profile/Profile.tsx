@@ -5,7 +5,7 @@ import { TopNavigation } from '@/components/core/TopNavigation';
 import { getProfileContentByLabel } from '../content/NavigationElement';
 
 const Profile = () => {
-    const [content, setContent] = useState<string>('user');
+    const [content, setContent] = useState<string>('progress');
 
     return (
         <AppShell

@@ -25,6 +25,10 @@ export const getStep = (language: string, step: number) => {
   }
 };
 
+export const getCourse = (language: string) => {
+  return esperanto;
+}
+
 export const getUnit = (language: string, step: number, unit: number) => {
   return esperanto[step].units[unit];
 }

@@ -1,4 +1,4 @@
-import { Container, Stack, Group, Card, Text, Button, Divider } from '@mantine/core';
+import { Container, Stack, Group, Card, Text, Divider, Drawer } from '@mantine/core';
 import { useRef, useState } from 'react';
 import { getSetting, getStep, setSetting } from '@/utils/data';
 import LessonButton from './LessonButton';
@@ -6,6 +6,8 @@ import LearningPage, { LearningPageTitle } from './LearningPage';
 import UnitDisplayer from './UnitDisplayer';
 import FullscreenModal from '@/components/core/Modal';
 import WizardNPC from '@/components/npc/WizardNPC';
+import CourseManager from './CourseManager';
+import EditModeActions from './editor/EditModeActions';
 
 const conversations = [
   "Welcome to the planet, adventurer!",
@@ -23,13 +25,15 @@ const Milestone = () => {
 
   const step = getStep(planetLanguage, planetStep);
 
-  const [wizardHere, setWizardHere] = useState(true); // Set the initial state to true
-  
+  const [wizardHere, setWizardHere] = useState(true);
   const [isReviewMode, setIsReviewMode] = useState(false);
   const [learningPageVisible, setLearningPageVisible] = useState(false);
   const [learningProgress, setLearningProgress] = useState<number>(0);
   const [learningPageLocation, setLearningPageLocation] = useState({ step: 0, unit: 0, lesson: 0, module: 0 });
   const focusOnLatestButton = useRef<HTMLButtonElement | null>(null);
+
+  const [isCourseManagerOpen, setIsCourseManagerOpen] = useState(false);
+
 
   const handleStartLearning = (stepIndex: number, unitIndex: number, lessonIndex: number) => {
     let moduleIndex = 0;
@@ -66,7 +70,6 @@ const Milestone = () => {
             let newStep = planetStep + 1;
             setSetting('planetStep', newStep);
             setSetting('planetUnit', 0);
-            // Unlock magical reward on reaching next step
             alert('You have unlocked the magical artifact of Wisdom!');
           } else {
             setSetting('planetUnit', newUnit);
@@ -89,7 +92,6 @@ const Milestone = () => {
             </Text>
             <Divider my="sm" />
             <Group justify="center" style={{ width: '100%' }}>
-              
               {unit.lessons.map((lesson, lessonIndex) => {
                 const isEnabled = unitIndex < planetUnit || (unitIndex === planetUnit && lessonIndex <= planetLesson);
                 return (
@@ -129,14 +131,28 @@ const Milestone = () => {
       </FullscreenModal>
       {wizardHere && (
         <WizardNPC
-          wizardHere={wizardHere} // Passed from parent to control visibility
+          wizardHere={wizardHere}
           isAutoDismiss={false}
           canBeForcedToLeave={true}
           conversations={conversations}
-          type="wizard" // Dynamically set the wizard type
-          onLeave={() => setWizardHere(false)} // Handle wizard leaving
+          type="wizard"
+          onLeave={() => setWizardHere(false)}
         />
       )}
+      <EditModeActions 
+        onEdit={() => console.log('Edit mode')} 
+        onAdd={() => console.log('Add new module')} 
+        onDelete={() => console.log('Delete module')} 
+      />
+      <Drawer
+        opened={isCourseManagerOpen}
+        onClose={() => setIsCourseManagerOpen(false)}
+        position="left"
+        size="lg"
+        title="Manage Courses"
+      >
+        <CourseManager language={planetLanguage} />
+      </Drawer>
     </>
   );  
 };

@@ -3,6 +3,9 @@ import { getModules } from '@/utils/data';
 import { Container, Button, Text, Progress, Group } from '@mantine/core';
 import { useTranslations } from 'next-intl';
 import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react';
+import EditModeActions from './editor/EditModeActions';
+import MarkdownRenderer from './renderer/MarkdownRenderer';
+import CustomModuleRenderer from './renderer/CustomModuleRenderer';
 
 interface LearningPageTitleProps {
   progress: number;
@@ -17,14 +20,14 @@ export const LearningPageTitle: React.FC<LearningPageTitleProps> = ({ progress }
 };
 
 interface LearningPageProps {
-  language: string,
-  activeStep: number,
-  activeUnit: number,
-  activeLesson: number,
-  activeModule: number,
-  onComplete: () => void,
-  setProgress: (progress: number) => void,
-  isReviewMode: boolean
+  language: string;
+  activeStep: number;
+  activeUnit: number;
+  activeLesson: number;
+  activeModule: number;
+  onComplete: () => void;
+  setProgress: (progress: number) => void;
+  isReviewMode: boolean;
 }
 
 const LearningPage: React.FC<LearningPageProps> = ({
@@ -35,15 +38,14 @@ const LearningPage: React.FC<LearningPageProps> = ({
   activeModule,
   onComplete,
   setProgress,
-  isReviewMode // New prop for review mode
+  isReviewMode
 }) => {
   const t = useTranslations();
   const [currentContentIndex, setCurrentContentIndex] = useState(0);
 
-  const modules = getModules(language, activeStep, activeUnit, activeLesson);  
+  const modules = getModules(language, activeStep, activeUnit, activeLesson);
   const currentModule = isReviewMode ? modules.flat() : modules[activeModule];
 
-  // Check if currentModule exists and has content
   const currentContent = currentModule && currentModule.length > 0 ? currentModule[currentContentIndex] : null;
 
   const setProgressBar = () => {
@@ -52,9 +54,8 @@ const LearningPage: React.FC<LearningPageProps> = ({
     }
   };
 
-  const handleNext = () => {    
+  const handleNext = () => {
     if (currentContentIndex + 1 < (currentModule ? currentModule.length : 0)) {
-      // Move to the next content within the current module
       setCurrentContentIndex(currentContentIndex + 1);
       setProgressBar();
     } else {
@@ -63,7 +64,7 @@ const LearningPage: React.FC<LearningPageProps> = ({
   };
 
   useEffect(() => {
-    setProgressBar(); // Set progress when the component mounts or updates
+    setProgressBar();
   }, [currentContentIndex, activeModule]);
 
   return (
@@ -77,12 +78,20 @@ const LearningPage: React.FC<LearningPageProps> = ({
       <div>
         {currentContent && (
           <>
-            {/* {isReviewMode && <Text>REVIEW MODE</Text>} */}
             <Text size="lg" weight={500}>{currentContent.title}</Text>
-            <Text>{currentContent.content}</Text>
+            {currentContent.type === 'markdown' ? (
+              <MarkdownRenderer content={currentContent.content} />
+            ) : (
+              <CustomModuleRenderer module={currentContent} />
+            )}
           </>
         )}
       </div>
+      <EditModeActions 
+        onEdit={() => console.log('Edit mode')} 
+        onAdd={() => console.log('Add new module')} 
+        onDelete={() => console.log('Delete module')} 
+      />
       <Group position="apart" style={{ marginTop: '20px' }}>
         <Button
           variant="outline"

@@ -50,7 +50,7 @@ const WizardNPC: React.FC<WizardNPCProps> = ({
           bottom: 0,
           left: 0,
           width: '100%',
-          zIndex: 999,
+          zIndex: 2000,
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
@@ -90,7 +90,7 @@ const WizardNPC: React.FC<WizardNPCProps> = ({
                 padding: 0,
                 minWidth: 'auto',
                 borderRadius: '100%',
-                zIndex: 10,
+                zIndex: 2000,
               }}
               onClick={onLeave}
             >
