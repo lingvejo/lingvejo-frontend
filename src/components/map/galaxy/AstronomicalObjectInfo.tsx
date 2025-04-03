@@ -1,7 +1,7 @@
 import React from 'react';
 import { Modal, Paper, Title, Text, Divider, Group, Badge } from '@mantine/core';
 
-interface Planet {
+export interface Planet {
   name: string;
   iso: string;
   orbitWidth: number;
@@ -9,8 +9,10 @@ interface Planet {
   duration: number;
   adventurers: number;
   wizards: number;
-  discovered: { date: string; by: string };
-  lastObserved: { date: string; by: string };
+  discoveredDate: string;
+  discoveredBy: string;
+  lastObservedDate: string;
+  lastObservedBy: string;
 }
 
 interface AstronomicalObjectInfoProps {
@@ -47,12 +49,12 @@ const AstronomicalObjectInfo: React.FC<AstronomicalObjectInfoProps> = ({ planet,
 
         <Group position="center" spacing="xs">
           <Text size="sm" color="dimmed">🔍 Discovered:</Text>
-          <Text size="sm" weight={500}>{planet.discovered.date} by {planet.discovered.by}</Text>
+          <Text size="sm" weight={500}>{planet.discoveredDate} by {planet.discoveredBy}</Text>
         </Group>
         <Divider my="md" />
         <Group position="center" spacing="xs">
           <Text size="sm" color="dimmed">🔭 Last Observed:</Text>
-          <Text size="sm" weight={500}>{planet.lastObserved.date} by {planet.lastObserved.by}</Text>
+          <Text size="sm" weight={500}>{planet.lastObservedDate} by {planet.lastObservedBy}</Text>
         </Group>
 
         <Divider my="md" />

@@ -1,13 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Center, Breadcrumbs, Anchor, Box, Flex, Text } from '@mantine/core';
 import { IconChevronRight } from '@tabler/icons-react';
-import { getGalaxy } from '@/utils/data';
+import { getSolarSystemData } from '@/utils/data/getter/getSolarSystemData';
 import StarSystemView from './StarSystemView';
 import GalaxyView from './GalaxyView';
 
 const GalaxyMap = () => {
-  const systems = getGalaxy();
+  const [systems, setSystems] = useState([]);
   const [selectedSystem, setSelectedSystem] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await getSolarSystemData();
+      console.log("Systems:", data);
+      setSystems(data);
+    };
+    fetchData();
+  }, []);
 
   const breadcrumbItems = [
     <Anchor
@@ -25,7 +34,7 @@ const GalaxyMap = () => {
     </Anchor>,
     selectedSystem && (
       <Text key="system" size="sm" color="dimmed" style={{ fontWeight: 500 }}>
-        {selectedSystem.systemName}
+        {selectedSystem.name}
       </Text>
     ),
   ].filter(Boolean);
@@ -55,7 +64,7 @@ const GalaxyMap = () => {
             <GalaxyView systems={systems} selectedSystem={selectedSystem} setSelectedSystem={setSelectedSystem} />
           ) : (
             <StarSystemView
-              systemName={selectedSystem.systemName}
+              systemName={selectedSystem.name}
               planets={selectedSystem.planets}
               onPlanetClick={() => {}}
               planetInfoOpened={false}

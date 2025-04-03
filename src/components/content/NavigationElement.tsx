@@ -1,11 +1,12 @@
 import { IconPlanet, IconTrophy, IconStar, IconMap,
     IconCompass, IconFlame, IconBox, IconPentagonNumber1,
     IconWand, IconSwords, IconUsers, IconChecklist,
-    IconPencil, IconUserCircle, IconChartArrowsVertical, IconGalaxy } from '@tabler/icons-react';
+    IconPencil, IconUserCircle, IconChartArrowsVertical,
+    IconGalaxy, IconHammer, IconAffiliate } from '@tabler/icons-react';
 import { ReactNode } from 'react';
 import Planet from '@/components/planet/Planet';
 import Leaderboard from '@/components/leaderboard/Leaderboard';
-import Adventure from '@/components/planet/adventure/Milestone';
+import Adventure from '@/components/planet/adventure/Adventure';
 import Streak from '@/components/planet/streak/Streak';
 import Profile from '@/components/profile/Profile';
 import Inventory from '@/components/planet/inventory/Inventory';
@@ -15,10 +16,12 @@ import MysticalTrophies from '@/components/profile/trophy/MysticalTrophies';
 import Spells from '@/components/planet/spell/Spells';
 import MultiplayerMode from '@/components/leaderboard/multiplayer/MultiplayerMode';
 import Missions from '@/components/planet/mission/MissionsPage';
-import UserProfile from '@/components/profile/user/UserProfile';
+import Voyager from '@/components/profile/voyager/Voyager';
 import LanguageJournal from '@/components/profile/journal/LanguageJournal';
 import ProgressTracker from '@/components/profile/progress/ProgressTracker';
 import GalaxyMap from '@/components/map/galaxy/GalaxyMap';
+import Test from '../test/Test';
+import Guild from '@/components/leaderboard/guild/Guild';
 
 // Define the interface for each icon item
 export interface ElementItem {
@@ -44,6 +47,7 @@ export const planet: ElementItem[] = [
 
 export const leaderboard: ElementItem[] = [
     { icon: <IconTrophy />, label: 'league', content: <League />},
+    { icon: <IconAffiliate />, label: 'guild', content: <Guild />},
     { icon: <IconSwords />, label: 'multiplayerMode', content: <MultiplayerMode />},
 ];
 
@@ -51,11 +55,12 @@ export const profile: ElementItem[] = [
     { icon: <IconChartArrowsVertical />, label: 'progress', content: <ProgressTracker />},
     { icon: <IconPentagonNumber1 />, label: 'mysticalTrophies', content: <MysticalTrophies /> },
     { icon: <IconPencil />, label: 'languageJournal', content: <LanguageJournal /> },
-    { icon: <IconUserCircle />, label: 'user', content: <UserProfile />},
+    { icon: <IconUserCircle />, label: 'user', content: <Voyager />},
 ];
 
 export const map: ElementItem[] = [
     { icon: <IconGalaxy />, label: 'galaxy', content: <GalaxyMap />},
+    { icon: <IconHammer />, label: "test", content: <Test /> },
 ];
 
 const getContentByLabel = (data: { label: string; content: any }[], label: string) => 

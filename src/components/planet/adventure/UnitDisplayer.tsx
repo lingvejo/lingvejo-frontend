@@ -1,14 +1,13 @@
-// components/UnitDisplayer.tsx
-import { getSetting, getUnit } from '@/utils/data';
 import { Button, Stack, Text } from '@mantine/core';
 import { useTranslations } from 'next-intl';
 
 interface UnitDisplayerProps {
   currentStep: number;
   currentUnit: number;
+  unitTitle: string;  // Added new prop for the unit title
 }
 
-const UnitDisplayer: React.FC<UnitDisplayerProps> = ({ currentStep, currentUnit }) => {
+const UnitDisplayer: React.FC<UnitDisplayerProps> = ({ currentStep, currentUnit, unitTitle }) => {
   const t = useTranslations();
 
   return (
@@ -23,9 +22,8 @@ const UnitDisplayer: React.FC<UnitDisplayerProps> = ({ currentStep, currentUnit 
       }}
     >
       <Stack gap="xs">
-        {/* Displaying unit index + 1 for user-friendly format */}
-        <Text size="sm">{t("planet.unitDescription", { step: currentStep+1, unit: currentUnit+1 })}</Text>
-        <Text size="xl">{getUnit(getSetting("language"), currentStep, currentUnit).title}</Text>
+        <Text size="sm">{t("planet.unitDescription", { step: currentStep, unit: currentUnit })}</Text>
+        <Text size="xl">{unitTitle}</Text> {/* Display the unit title passed as a prop */}
       </Stack>
     </Button>
   );

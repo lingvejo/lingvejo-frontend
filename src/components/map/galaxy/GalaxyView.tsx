@@ -4,7 +4,9 @@ import { Center, Tooltip } from '@mantine/core';
 import StarSystemView from './StarSystemView';
 
 type System = {
-  systemName: string;
+  id: number;
+  name: string;
+  iso: string;
   planets: any[];
 };
 
@@ -15,8 +17,8 @@ type GalaxyViewProps = {
 };
 
 const calculateOrbitData = (systems: System[]) => {
-  const baseOrbit = 5;
-  const orbitIncrement = 6;
+  const baseOrbit = 1;
+  const orbitIncrement = 3;
   const baseDuration = 90;
 
   return systems.map((system, index) => {
@@ -33,7 +35,7 @@ const GalaxyView: React.FC<GalaxyViewProps> = ({ systems, selectedSystem, setSel
   const calculatedSystems = calculateOrbitData(systems);
 
   return (
-    <Center style={{ position: 'relative', width: '70vw', height: '70vh', overflow: 'hidden' }}>
+    <Center style={{ position: 'relative', width: '100vw', height: '100vh', overflow: 'hidden' }}>
       {!selectedSystem ? (
         <>
           <Tooltip label="Galaxy" withArrow position="bottom">
@@ -57,7 +59,7 @@ const GalaxyView: React.FC<GalaxyViewProps> = ({ systems, selectedSystem, setSel
 
           {calculatedSystems.map((system) => (
             <motion.div
-              key={system.systemName}
+              key={system.id} // Changed from system.systemName to system.id
               animate={{ rotate: [system.startAngle, system.startAngle + 360] }}
               transition={{ duration: system.duration, repeat: Infinity, ease: 'linear' }}
               style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}
@@ -76,7 +78,7 @@ const GalaxyView: React.FC<GalaxyViewProps> = ({ systems, selectedSystem, setSel
                   animate={{ rotate: [0, 360] }}
                   transition={{ duration: 60, repeat: Infinity, ease: 'linear' }}
                 >
-                  <Tooltip label={system.systemName} withArrow position="bottom" opened>
+                  <Tooltip label={system.name} withArrow position="bottom" opened>
                     <IconSun
                       size={30}
                       color="orange"
@@ -90,7 +92,7 @@ const GalaxyView: React.FC<GalaxyViewProps> = ({ systems, selectedSystem, setSel
         </>
       ) : (
         <StarSystemView
-          systemName={selectedSystem.systemName}
+          systemName={selectedSystem.name} // Fixed from selectedSystem.systemName
           planets={selectedSystem.planets}
           onPlanetClick={() => {}}
           planetInfoOpened={false}

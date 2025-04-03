@@ -7,10 +7,6 @@
     "5": "\"You've come for a reason. Let me show you the way forward.\""
   },
   "planet": {
-    "language": "Language",
-    "streak": "Streak",
-    "inventory": "Inventory",
-    "coin": "Coin",
     "unitDescription": "Step {step}, Unit {unit}",
     "lessonDescription": "{current} of {max}",
     "startLesson": "GET {xp}XP",
@@ -22,13 +18,16 @@
       "finish": "Finish"
     }
   },
-  "bottom": {
-    "planet": "Planet",
-    "leaderboard": "Leaderboard",
-    "profile": "Profile"
+  "loading": {
+    "summoningSpells": "Summoning enchanted spells...",
+    "brewingEnergies": "Brewing ancient energies...",
+    "unlockingMysteries": "Unlocking hidden mysteries...",
+    "castingIncantations": "Casting powerful incantations...",
+    "drawingFromForces": "Drawing from ancient forces...",
+    "channelingMagic": "Channeling cosmic magic...",
+    "weavingWisdom": "Weaving ancient wisdom..."
   },
-  "Error": {
-    "description": "<p>We've unfortunately encountered an error.</p><p>You can try to <retry>reload the page</retry> you were visiting.</p>",
-    "title": "Something went wrong!"
+  "league": {
+    "noVoyagers": "This path is quiet… The stars await their champions. ⭐"
   }
 }

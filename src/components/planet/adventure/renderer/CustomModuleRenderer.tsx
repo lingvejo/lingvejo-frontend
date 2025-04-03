@@ -1,16 +1,16 @@
 import React from "react";
 import { Stack } from "@mantine/core";
-import SpeechRecognitionModule from "./modules/SpeechRecognitionModule";
-import AudioMatchingModule from "./modules/AudioMatchingModule";
-import DragAndDropModule from "./modules/DragAndDropModule";
-import FillInTheBlankModule from "./modules/FillInTheBlankModule";
-import DialoguePracticeModule from "./modules/DialoguePracticeModule";
-import ChallengeModule from "./modules/ChallengeModule";
-import MiniGameModule from "./modules/MiniGameModule";
-import ImageAssociationModule from "./modules/ImageAssociationModule";
-import StoryModule from "./modules/StoryModule";
-import ExplorationModule from "./modules/ExplorationModule";
-import RoleplayModule from "./modules/RoleplayModule";
+import SpeechRecognitionModule from "../modules/SpeechRecognitionModule";
+import AudioMatchingModule from "../modules/AudioMatchingModule";
+import DragAndDropModule from "../modules/DragAndDropModule";
+import FillInTheBlankModule from "../modules/FillInTheBlankModule";
+import DialoguePracticeModule from "../modules/DialoguePracticeModule";
+import ChallengeModule from "../modules/ChallengeModule";
+import MiniGameModule from "../modules/MiniGameModule";
+import ImageAssociationModule from "../modules/ImageAssociationModule";
+import StoryModule from "../modules/StoryModule";
+import ExplorationModule from "../modules/ExplorationModule";
+import RoleplayModule from "../modules/RoleplayModule";
 
 interface CustomModuleProps {
   module: {

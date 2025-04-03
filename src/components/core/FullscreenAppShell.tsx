@@ -1,5 +1,5 @@
 'use client';
-import { AppShell } from '@mantine/core';
+import { AppShell, Container, Stack } from '@mantine/core';
 import { useState, useEffect } from 'react';
 import { BottomNavigation } from './NavigationBar/BottomNavigation';
 import { renderContent } from '@/components/content/ContentRender';
@@ -17,11 +17,32 @@ export default function FullscreenAppShell() {
     }, []);
 
     return (
-        <AppShell padding="md">
+        <AppShell
+            padding={0}
+            style={{
+                display: 'flex',
+                flexDirection: 'column',
+                height: '100vh',
+                overflow: 'hidden', // Prevents the overall scrollbar from appearing
+            }}
+        >
             {/* Conditionally render either the IntroScene or the Main AppShell */}
             {isIntroFinished ? (
                 <>
-                    <AppShell.Main>{renderContent(content)}</AppShell.Main>
+                    <AppShell.Main
+                        style={{
+                            paddingTop: 20, // Adjust space at the top of the page
+                            paddingBottom: 40, // Adjust space at the bottom to make room for BottomNavigation
+                            flex: 1,
+                            overflowY: 'auto', // Allows scrolling if content exceeds the screen
+                        }}
+                    >
+                        <Container>
+                            <Stack spacing="md">
+                                {renderContent(content)}
+                            </Stack>
+                        </Container>
+                    </AppShell.Main>
                     <BottomNavigation type="bottom" content={content} setContent={setContent} />
                 </>
             ) : (

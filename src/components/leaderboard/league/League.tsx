@@ -1,154 +1,134 @@
-import React, { useRef, useState, useEffect } from 'react';
-import { Container, Progress, Text, List, ScrollArea, Card, Divider, Burger, Box, NavLink, Button, Textarea, Group } from '@mantine/core';
-import { getLeaderboardData } from '@/utils/data';
-import { IconArrowBadgeDown, IconRocket, IconMessageCircle, IconUsers } from '@tabler/icons-react';
+import { useState, useEffect } from "react";
+import { Card, Text, Avatar, Stack, Group, Breadcrumbs, Pagination, Center } from "@mantine/core";
+import { getAllLeagues } from "@/utils/data/getter/getAllLeagues";
+import { getVoyagersInLeague } from "@/utils/data/getter/getVoyagersInLeague";
+import LoadingScreen from "@/components/core/LoadingScreen";
+import { useTranslations } from "next-intl";
 
-const Leaderboard: React.FC = () => {
-  const leaderboardData = getLeaderboardData();
-  const userRefs = useRef<(HTMLLIElement | null)[]>([]);
-  const [selectedLevel, setSelectedLevel] = useState<string>(leaderboardData[0].level);
-  const [navbarOpened, setNavbarOpened] = useState<boolean>(false);
-  const [message, setMessage] = useState<string>('');
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+// Define types
+interface League {
+  id: number;
+  name: string;
+  minXP: number;
+  maxXP?: number | null;
+}
 
+interface Voyager {
+  id: number;
+  username: string;
+  profilePicture?: string | null;
+}
+
+export default function LeaguePage() {
+  const t = useTranslations("league");
+
+  const [leagues, setLeagues] = useState<League[]>([]);
+  const [selectedLeague, setSelectedLeague] = useState<League | null>(null);
+  const [voyagers, setVoyagers] = useState<Voyager[]>([]);
+  const [page, setPage] = useState<number>(1);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [loadingVoyagers, setLoadingVoyagers] = useState<boolean>(false);
+  const [itemsPerPage, setItemsPerPage] = useState<number>(3);
+
+  // Calculate number of items per page dynamically
   useEffect(() => {
-    setTimeout(() => setIsLoading(false), 1000);
+    function updateItemsPerPage() {
+      const cardHeight = 50; // Estimated height of each card
+      const viewportHeight = window.innerHeight;
+      const availableSpace = viewportHeight - 420; // Adjust for headers, margins
+      const newItemsPerPage = Math.max(3, Math.floor(availableSpace / cardHeight));
+
+      setItemsPerPage(newItemsPerPage);
+    }
+
+    updateItemsPerPage();
+    window.addEventListener("resize", updateItemsPerPage);
+    return () => window.removeEventListener("resize", updateItemsPerPage);
   }, []);
 
-  const focusUser = (levelIndex: number) => {
-    if (userRefs.current[levelIndex]) {
-      userRefs.current[levelIndex]?.focus();
+  useEffect(() => {
+    async function fetchLeagues() {
+      setLoading(true);
+      const data = await getAllLeagues();
+      setLeagues(data);
+      setLoading(false);
     }
-  };
+    fetchLeagues();
+  }, []);
 
-  const renderUserList = (level: string) => {
-    const tier = leaderboardData.find(t => t.level === level);
-    if (!tier) return null;
+  useEffect(() => {
+    async function fetchVoyagers() {
+      if (selectedLeague) {
+        setLoadingVoyagers(true);
+        const data = await getVoyagersInLeague(selectedLeague.minXP, selectedLeague.maxXP ?? 999999);
+        setVoyagers(data);
+        setPage(1);
+        setLoadingVoyagers(false);
+      }
+    }
+    fetchVoyagers();
+  }, [selectedLeague]);
 
-    return (
-      <ScrollArea style={{ height: 250 }}>
-        <List spacing="sm" size="sm" center icon={<IconRocket size={16} />}>
-          {tier.users.map((user, userIndex) => (
-            <List.Item
-              key={user}
-              ref={(el) => (userRefs.current[userIndex] = el)}
-              tabIndex={0}
-              onFocus={() => focusUser(userIndex)}
-              style={{ padding: '10px', borderRadius: '4px', transition: 'background-color 0.2s', cursor: 'pointer' }}
-              onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#f0f0f0')}
-              onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
-            >
-              {user}
-              <Button 
-                variant="subtle" 
-                lefticon={<IconMessageCircle />} 
-                size="xs" 
-                style={{ marginLeft: '8px' }}
-                onClick={() => alert(`Send a message to ${user}`)} // Implement messaging feature
-              >
-                Message
-              </Button>
-              <Button 
-                variant="subtle" 
-                lefticon={<IconUsers />} 
-                size="xs" 
-                style={{ marginLeft: '8px' }}
-                onClick={() => alert(`Send a friend request to ${user}`)} // Implement friend request feature
-              >
-                Add Friend
-              </Button>
-            </List.Item>
-          ))}
-        </List>
-      </ScrollArea>
-    );
-  };
+  if (loading) {
+    return <LoadingScreen />;
+  }
 
-  const handleMessageChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setMessage(e.target.value);
-  };
-
-  const handleSendMessage = () => {
-    alert('Message sent!');
-  };
-
-  const handleJoinGroup = () => {
-    alert('Joined a study group!');
-  };
+  const paginatedVoyagers = voyagers.slice((page - 1) * itemsPerPage, page * itemsPerPage);
 
   return (
-    <Container>
-      <Box style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px' }}>
-        <Burger opened={navbarOpened} onClick={() => setNavbarOpened((o) => !o)} />
-        <Text size="lg" weight={500}>{selectedLevel}</Text>
-      </Box>
-      
-      <Container style={{ display: navbarOpened ? 'block' : 'none', padding: '10px' }}>
-        {leaderboardData.map((tier) => (
-          <NavLink
-            key={tier.level}
-            label={
-              <div style={{ display: 'flex', alignItems: 'center' }}>
-                <IconArrowBadgeDown size={20} style={{ marginRight: 8 }} />
-                {tier.level}
-              </div>
-            }
-            onClick={() => {
-              setSelectedLevel(tier.level);
-              setNavbarOpened(false);
-            }}
-            style={{
-              cursor: 'pointer',
-              padding: '10px',
-              borderRadius: '4px',
-              transition: 'background-color 0.2s',
-              backgroundColor: '#f9f9f9'
-            }}
-            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#e9ecef')}
-            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
-          />
-        ))}
-      </Container>
+    <Stack spacing="md">
+      {/* Breadcrumbs */}
+      <Breadcrumbs>
+        <Text component="span" style={{ cursor: "pointer" }} onClick={() => setSelectedLeague(null)}>
+          Leagues
+        </Text>
+        {selectedLeague && <Text>{selectedLeague.name}</Text>}
+      </Breadcrumbs>
 
-      {!navbarOpened && (
+      {/* League Selection */}
+      {!selectedLeague ? (
+        <Stack spacing="sm">
+          {leagues.map((league) => (
+            <Card key={league.id} withBorder shadow="sm" onClick={() => setSelectedLeague(league)} style={{ cursor: "pointer" }}>
+              <Text size="lg" weight={600}>{league.name}</Text>
+              <Text size="sm" color="gray">{league.minXP} - {league.maxXP ?? "∞"} XP</Text>
+            </Card>
+          ))}
+        </Stack>
+      ) : (
         <>
-          {isLoading ? (
-            <Card shadow="sm" padding="lg" mb="md">
-              <Progress size="xl" animate value={100} />
-            </Card>
+          {loadingVoyagers ? (
+            <LoadingScreen />
           ) : (
-            <Card shadow="sm" padding="lg" mb="md">
-              {renderUserList(selectedLevel)}
-            </Card>
+            <>
+              {/* Voyagers List */}
+              <Stack spacing="xs">
+               {paginatedVoyagers.length === 0 ? (
+                  <Text align="center" color="dimmed" italic>
+                    {t("noVoyagers")}
+                  </Text>
+                ) : (
+                  paginatedVoyagers.map((voyager) => (
+                    <Card key={voyager.id} withBorder shadow="xs" p="xs" style={{ cursor: "pointer", height: "50px" }}>
+                      <Group spacing="sm">
+                        <Avatar size="sm" src={voyager.profilePicture ?? undefined} />
+                        <Text>{voyager.username}</Text>
+                      </Group>
+                    </Card>
+                  ))
+                )}
+              </Stack>
+
+              {/* Centered Pagination */}
+              {voyagers.length > itemsPerPage && (
+                <Center>
+                  <Pagination total={Math.ceil(voyagers.length / itemsPerPage)} page={page} onChange={setPage} />
+                </Center>
+              )}
+            </>
           )}
-
-          <Divider my="lg" />
-          
-          {/* Social Interaction Section */}
-          <Text align="center" size="md" weight={500}>Message Board</Text>
-          <Textarea
-            placeholder="Send a message to the leaderboard"
-            value={message}
-            onChange={handleMessageChange}
-            size="md"
-            autosize
-          />
-          <Group position="center" mt="sm">
-            <Button variant="filled" color="blue" onClick={handleSendMessage}>Send Message</Button>
-          </Group>
-
-          <Divider my="lg" />
-          
-          {/* Group Challenges Section */}
-          <Text align="center" size="md" weight={500}>Join Study Group</Text>
-          <Button variant="outline" color="green" onClick={handleJoinGroup}>Join Group</Button>
-
-          <Divider my="lg" />
-          <Text align="center" size="sm" color="dimmed">Updated as of {new Date().toLocaleDateString()}</Text>
         </>
       )}
-    </Container>
+    </Stack>
   );
-};
-
-export default Leaderboard;
+}

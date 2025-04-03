@@ -1,42 +1,48 @@
-import { getLessonTitle, getSetting } from '@/utils/data';
 import { Center, Button, Text, Popover } from '@mantine/core';
 import { IconLeaf, IconLeaf2, IconArrowDown } from '@tabler/icons-react';
 import { useTranslations } from 'next-intl';
 import React from 'react';
 
+// Define interface for the LessonButton props
 interface LessonButtonProps {
-  step: number;
-  unit: number;
-  lesson: number;
-  lessonData: any;
-  onStartLearning: () => void;
-  isEnabled: boolean;
-  isLatest: boolean;
-  ref: React.Ref<HTMLButtonElement>;
+  lessonData: any; // The lesson data that contains module information
+  onStartLearning: () => void; // Function to trigger when the lesson starts
+  isEnabled: boolean; // Flag to indicate if the button is enabled
+  isLatest: boolean; // Flag to indicate if this is the latest lesson
+  lessonTitle: string; // The title of the lesson
+  currentModule: number; // Current module number (for progress)
+  lessonId: string; // Unique lesson ID
+  unitId: string; // Unique unit ID
+  userProgress: { [lessonId: string]: { completed: boolean; progressPercentage: number } }; // User's progress state
 }
 
 const LessonButton = React.forwardRef<HTMLButtonElement, LessonButtonProps>(
   (
     {
-      step,
-      unit,
-      lesson,
       lessonData,
       onStartLearning,
       isEnabled,
-      isLatest
+      isLatest,
+      lessonTitle,
+      currentModule,
+      lessonId, // Lesson ID passed as prop
+      unitId, // Unit ID passed as prop
+      userProgress, // User progress passed as prop
     },
     ref
   ) => {
     const t = useTranslations();
 
-    const planetModule = Number(getSetting("planetModule"));
     const maxLength = lessonData.modules.length;
 
+    // Check if the lesson is completed based on user progress
+    const isCompleted = userProgress[lessonId]?.completed;
+
     let buttonColor = isEnabled ? 'var(--mantine-primary-color-filled)' : 'var(--mantine-color-gray-5)';
+    
+    // If the lesson is enabled and is the latest, show progress
     if (isEnabled && isLatest) {
-      // Module learning percentage
-      const percentage = Math.min((planetModule / maxLength) * 100, 100); // Ensure percentage does not exceed 100
+      const percentage = Math.min((currentModule / maxLength) * 100, 100); // Ensure progress doesn't exceed 100
       buttonColor = `linear-gradient(
         to right,
         var(--mantine-primary-color-filled) ${percentage}%, 
@@ -79,17 +85,19 @@ const LessonButton = React.forwardRef<HTMLButtonElement, LessonButtonProps>(
                 transition: 'background-color 0.3s ease',
                 cursor: isEnabled ? 'pointer' : 'not-allowed', // Change cursor based on disabled state
               }}
-              disabled={!isEnabled} // Set the disabled prop
+              disabled={!isEnabled} // Disable button if not enabled
             >
               {isEnabled && !isLatest ? <IconLeaf2 size={40} /> : <IconLeaf size={40} />}
             </Button>
           </Popover.Target>
           <Popover.Dropdown>
             <Text size="lg" weight={500}>
-              {getLessonTitle(getSetting("language"), step, unit, lesson)}
+              {lessonTitle} {/* Display the title of the lesson */}
             </Text>
             <Text size="sm">
-              {isLatest ? t('planet.lessonDescription', { current: planetModule + 1, max: maxLength }) : ''}
+              {isLatest && !isCompleted
+                ? t('planet.lessonDescription', { current: currentModule + 1, max: maxLength })
+                : ''} {/* Show description only if it's the latest lesson and not completed */}
             </Text>
             <Button
               style={{
@@ -97,13 +105,13 @@ const LessonButton = React.forwardRef<HTMLButtonElement, LessonButtonProps>(
                 width: '100%', // Full width button
               }}
               onClick={() => {
-                if (isEnabled) { // Only trigger if not disabled
-                  onStartLearning(); // Trigger the learning page
+                if (isEnabled) {
+                  onStartLearning(); // Trigger learning when clicked
                 }
               }}
-              disabled={!isEnabled} // Set the disabled prop
+              disabled={!isEnabled} // Disable button if not enabled
             >
-              {isLatest ? t('planet.startLesson', { xp: getSetting("planetXpPerLesson") }) : t('planet.reviewLesson') }
+              {isCompleted ? t('planet.completedLesson') : t('planet.startLesson', { xp: 30 })}
             </Button>
           </Popover.Dropdown>
         </Popover>

@@ -2,20 +2,7 @@ import React, { useState } from 'react';
 import { Center, Tooltip } from '@mantine/core';
 import { motion } from 'framer-motion';
 import { IconPlanet, IconSun } from '@tabler/icons-react';
-import AstronomicalObjectInfo from './AstronomicalObjectInfo';
-
-interface Planet {
-  name: string;
-  iso: string;
-  orbitWidth: number;
-  orbitHeight: number;
-  duration: number;
-  adventurers: number;
-  wizards: number;
-  discovered: { date: string; by: string };
-  lastObserved: { date: string; by: string };
-  color: string;
-}
+import AstronomicalObjectInfo, { Planet } from './AstronomicalObjectInfo';
 
 interface StarSystemViewProps {
   systemName: string;
@@ -23,8 +10,8 @@ interface StarSystemViewProps {
 }
 
 const calculateOrbitData = (planets: Planet[]) => {
-  const baseOrbit = 12;
-  const orbitIncrement = 6;
+  const baseOrbit = 1;
+  const orbitIncrement = 3;
   const baseDuration = 90;
 
   return planets.map((planet, index) => {
