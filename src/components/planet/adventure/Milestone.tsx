@@ -132,8 +132,6 @@ const Milestone = () => {
       {wizardHere && (
         <WizardNPC
           wizardHere={wizardHere}
-          isAutoDismiss={false}
-          canBeForcedToLeave={true}
           conversations={conversations}
           type="wizard"
           onLeave={() => setWizardHere(false)}

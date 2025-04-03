@@ -18,7 +18,7 @@ import Missions from '@/components/planet/mission/MissionsPage';
 import UserProfile from '@/components/profile/user/UserProfile';
 import LanguageJournal from '@/components/profile/journal/LanguageJournal';
 import ProgressTracker from '@/components/profile/progress/ProgressTracker';
-import Galaxy from '@/components/map/galaxy/Galaxy';
+import GalaxyMap from '@/components/map/galaxy/GalaxyMap';
 
 // Define the interface for each icon item
 export interface ElementItem {
@@ -55,10 +55,12 @@ export const profile: ElementItem[] = [
 ];
 
 export const map: ElementItem[] = [
-    { icon: <IconGalaxy />, label: 'galaxy', content: <Galaxy />},
-    { icon: <IconSwords />, label: 'multiplayerMode', content: <MultiplayerMode />},
+    { icon: <IconGalaxy />, label: 'galaxy', content: <GalaxyMap />},
 ];
 
-export const getPlanetContentByLabel = (label: string) => planet.find(item => item.label === label)?.content;
-export const getLeaderboardContentByLabel = (label: string) => leaderboard.find(item => item.label === label)?.content;
-export const getProfileContentByLabel = (label: string) => profile.find(item => item.label === label)?.content;
+const getContentByLabel = (data: { label: string; content: any }[], label: string) => 
+  data.find(item => item.label === label)?.content;
+
+export const getPlanetContentByLabel = (label: string) => getContentByLabel(planet, label);
+export const getLeaderboardContentByLabel = (label: string) => getContentByLabel(leaderboard, label);
+export const getProfileContentByLabel = (label: string) => getContentByLabel(profile, label);
