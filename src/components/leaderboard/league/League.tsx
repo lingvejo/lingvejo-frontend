@@ -60,7 +60,10 @@ export default function LeaguePage() {
     async function fetchVoyagers() {
       if (selectedLeague) {
         setLoadingVoyagers(true);
-        const data = await getVoyagersInLeague(selectedLeague.minXP, selectedLeague.maxXP ?? 999999);
+        const data = await getVoyagersInLeague(
+          selectedLeague.minXP,
+          selectedLeague.maxXP ?? 999999
+        );
         setVoyagers(data);
         setPage(1);
         setLoadingVoyagers(false);
@@ -73,13 +76,20 @@ export default function LeaguePage() {
     return <LoadingScreen />;
   }
 
-  const paginatedVoyagers = voyagers.slice((page - 1) * itemsPerPage, page * itemsPerPage);
+  const paginatedVoyagers = voyagers.slice(
+    (page - 1) * itemsPerPage,
+    page * itemsPerPage
+  );
 
   return (
     <Stack spacing="md">
       {/* Breadcrumbs */}
       <Breadcrumbs>
-        <Text component="span" style={{ cursor: "pointer" }} onClick={() => setSelectedLeague(null)}>
+        <Text
+          component="span"
+          style={{ cursor: "pointer" }}
+          onClick={() => setSelectedLeague(null)}
+        >
           Leagues
         </Text>
         {selectedLeague && <Text>{selectedLeague.name}</Text>}
@@ -87,45 +97,79 @@ export default function LeaguePage() {
 
       {/* League Selection */}
       {!selectedLeague ? (
-        <Stack spacing="sm">
-          {leagues.map((league) => (
-            <Card key={league.id} withBorder shadow="sm" onClick={() => setSelectedLeague(league)} style={{ cursor: "pointer" }}>
-              <Text size="lg" weight={600}>{league.name}</Text>
-              <Text size="sm" color="gray">{league.minXP} - {league.maxXP ?? "∞"} XP</Text>
-            </Card>
-          ))}
-        </Stack>
+        <>
+          <Stack spacing="sm">
+            {leagues
+              .slice((page - 1) * itemsPerPage, page * itemsPerPage)
+              .map((league) => (
+                <Card
+                  key={league.id}
+                  withBorder
+                  shadow="sm"
+                  onClick={() => setSelectedLeague(league)}
+                  style={{ cursor: "pointer" }}
+                >
+                  <Text size="lg" weight={600}>
+                    {league.name}
+                  </Text>
+                  <Text size="sm" color="gray">
+                    {league.minXP} - {league.maxXP ?? "∞"} XP
+                  </Text>
+                </Card>
+              ))}
+          </Stack>
+
+          {/* Pagination for leagues */}
+          {leagues.length > itemsPerPage && (
+            <Center pb="5rem" mt="md">
+              <Pagination
+                total={Math.ceil(leagues.length / itemsPerPage)}
+                page={page}
+                onChange={setPage}
+              />
+            </Center>
+          )}
+        </>
+      ) : loadingVoyagers ? (
+        <LoadingScreen />
       ) : (
         <>
-          {loadingVoyagers ? (
-            <LoadingScreen />
-          ) : (
-            <>
-              {/* Voyagers List */}
-              <Stack spacing="xs">
-               {paginatedVoyagers.length === 0 ? (
-                  <Text align="center" color="dimmed" italic>
-                    {t("noVoyagers")}
-                  </Text>
-                ) : (
-                  paginatedVoyagers.map((voyager) => (
-                    <Card key={voyager.id} withBorder shadow="xs" p="xs" style={{ cursor: "pointer", height: "50px" }}>
-                      <Group spacing="sm">
-                        <Avatar size="sm" src={voyager.profilePicture ?? undefined} />
-                        <Text>{voyager.username}</Text>
-                      </Group>
-                    </Card>
-                  ))
-                )}
-              </Stack>
+          {/* Voyagers List */}
+          <Stack spacing="xs">
+            {paginatedVoyagers.length === 0 ? (
+              <Text align="center" color="dimmed" italic>
+                {t("noVoyagers")}
+              </Text>
+            ) : (
+              paginatedVoyagers.map((voyager) => (
+                <Card
+                  key={voyager.id}
+                  withBorder
+                  shadow="xs"
+                  p="xs"
+                  style={{ cursor: "pointer", height: "50px" }}
+                >
+                  <Group spacing="sm">
+                    <Avatar
+                      size="sm"
+                      src={voyager.profilePicture ?? undefined}
+                    />
+                    <Text>{voyager.username}</Text>
+                  </Group>
+                </Card>
+              ))
+            )}
+          </Stack>
 
-              {/* Centered Pagination */}
-              {voyagers.length > itemsPerPage && (
-                <Center>
-                  <Pagination total={Math.ceil(voyagers.length / itemsPerPage)} page={page} onChange={setPage} />
-                </Center>
-              )}
-            </>
+          {/* Bottom Pagination */}
+          {voyagers.length > itemsPerPage && (
+            <Center pb="5rem" mt="md">
+              <Pagination
+                total={Math.ceil(voyagers.length / itemsPerPage)}
+                page={page}
+                onChange={setPage}
+              />
+            </Center>
           )}
         </>
       )}

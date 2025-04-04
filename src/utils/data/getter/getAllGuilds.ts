@@ -28,15 +28,15 @@ interface Guild {
 }
 
 // Function to get all guilds
-export async function getAllGuilds(): Promise<Guild[] | null> {
+export async function getAllGuilds(): Promise<Guild[] | []> {
   try {
     const { data } = await client.query({
       query: GET_ALL_GUILDS,
     });
 
-    return data?.guild ?? null; // Return the list of guilds
+    return data?.guild ?? []; // Return the list of guilds
   } catch (error) {
     handleError(error);
-    return null; // Return null if there is an error
+    return []; // Return [] if there is an error
   }
 }

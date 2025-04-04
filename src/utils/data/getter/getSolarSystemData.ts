@@ -11,7 +11,14 @@ const GET_SOLAR_SYSTEMS_WITH_PLANETS = gql`
       planets {
         id
         name
+        iso
         description
+        discoveredDate
+        discoveredBy
+        lastObservedDate
+        lastObservedBy
+        adventurers
+        wizards
       }
     }
   }

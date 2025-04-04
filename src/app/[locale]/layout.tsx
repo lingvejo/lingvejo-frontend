@@ -1,12 +1,13 @@
 import {notFound} from 'next/navigation';
 import {Locale, hasLocale, NextIntlClientProvider} from 'next-intl';
-import {getTranslations, setRequestLocale} from 'next-intl/server';
+import {setRequestLocale} from 'next-intl/server';
 import {ReactNode} from 'react';
 import {routing} from '@/i18n/routing';
-import '@mantine/core/styles.css';
 import { MantineProvider,
   ColorSchemeScript, mantineHtmlProps } from '@mantine/core';
 import theme from '@/components/theme/Theme';
+import '@mantine/core/styles.css';
+import '@mantine/dates/styles.css';
 
 // Set locale
 type Props = {

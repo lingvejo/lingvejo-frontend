@@ -19,19 +19,19 @@ interface League {
   id: number;
   name: string;
   minXP: number;
-  maxXP: number | null;
+  maxXP: number | [];
 }
 
 // Function to get all leagues
-export async function getAllLeagues(): Promise<League[] | null> {
+export async function getAllLeagues(): Promise<League[] | []> {
   try {
     const { data } = await client.query({
       query: GET_ALL_LEAGUES,
     });
 
-    return data?.league ?? null; // Return the list of leagues
+    return data?.league ?? []; // Return the list of leagues
   } catch (error) {
     handleError(error);
-    return null; // Return null if there is an error
+    return []; // Return [] if there is an error
   }
 }

@@ -17,7 +17,7 @@ import Spells from '@/components/planet/spell/Spells';
 import MultiplayerMode from '@/components/leaderboard/multiplayer/MultiplayerMode';
 import Missions from '@/components/planet/mission/MissionsPage';
 import Voyager from '@/components/profile/voyager/Voyager';
-import LanguageJournal from '@/components/profile/journal/LanguageJournal';
+import VoyagersJournal from '@/components/profile/journal/VoyagersJournal';
 import ProgressTracker from '@/components/profile/progress/ProgressTracker';
 import GalaxyMap from '@/components/map/galaxy/GalaxyMap';
 import Test from '../test/Test';
@@ -54,7 +54,7 @@ export const leaderboard: ElementItem[] = [
 export const profile: ElementItem[] = [
     { icon: <IconChartArrowsVertical />, label: 'progress', content: <ProgressTracker />},
     { icon: <IconPentagonNumber1 />, label: 'mysticalTrophies', content: <MysticalTrophies /> },
-    { icon: <IconPencil />, label: 'languageJournal', content: <LanguageJournal /> },
+    { icon: <IconPencil />, label: 'VoyagersJournal', content: <VoyagersJournal /> },
     { icon: <IconUserCircle />, label: 'user', content: <Voyager />},
 ];
 
