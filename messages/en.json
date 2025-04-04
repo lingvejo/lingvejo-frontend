@@ -29,5 +29,45 @@
   },
   "league": {
     "noVoyagers": "This path is quiet… The stars await their champions. ⭐"
-  }
+  },
+  "journal": {
+    "title": "The Voyager’s Journal",
+    "description": "Record your journey through distant realms. Only today’s tale may change, only you may read it—never share secrets.",
+    "edit": "Summon the quill",
+    "save": "Seal the spell",
+    "cancel": "Let the winds erase it",
+    "placeholder": "Whisper your tale into the void of stars...",
+    "noEntry": "The parchment bears no tale for this day."
+  },
+  "avatarEditor": {
+    "title": "Shape Your Essence",
+    "randomize": "Cast a New Form",
+    "sex": "Type",
+    "earSize": "Ears",
+    "hairStyle": "Hair",
+    "hatStyle": "Hat",
+    "eyeStyle": "Eyes",
+    "glassesStyle": "Crystals",
+    "noseStyle": "Nose",
+    "mouthStyle": "Mouth",
+    "shirtStyle": "Robe",
+    "faceColor": "Face",
+    "hairColor": "Hair",
+    "hatColor": "Hat",
+    "shirtColor": "Shirt",
+    "bgColor": "Background",
+    "save": "Imprint the charm",
+    "cancel": "Don't do the enchantment",
+    "savedTitle": "Transformation Complete",
+    "savedMessage": "Your magical form has been etched into the stars.",
+    "errorTitle": "Spell Misfire",
+    "errorMessage": "The enchantment failed to bind. Try again, brave voyager."  
+  },
+  "hallOfLegends": {
+    "title": "Hall of Legends",
+    "empty": {
+      "title": "The Hall awaits your legend...",
+      "description": "Venture forth, brave soul, and let your story be written in starlight."
+    }
+  }  
 }

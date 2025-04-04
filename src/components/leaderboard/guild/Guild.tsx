@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getAllGuilds } from '@/utils/data/getter/getAllGuilds';
+import { getAllGuilds } from '@/utils/data/getters/getAllGuilds';
 import {
   Card,
   Image,

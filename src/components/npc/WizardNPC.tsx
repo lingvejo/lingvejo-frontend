@@ -1,13 +1,14 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import { Modal, Paper, Avatar, Text, Button, Group } from '@mantine/core';
+import { Modal, Paper, Text, Button, Group } from '@mantine/core';
+import AvatarPreview from '@/components/avatar/AvatarPreview';
+import { wizardBaseAvatar } from '@/components/avatar/wizardBaseAvatar';
 
 interface WizardNPCProps {
   wizardHere: boolean;
   isAutoDismiss?: boolean;
   canBeForcedToLeave?: boolean;
   conversations: string[];
-  type: string;
   hasChoice?: boolean;
   yesLabel?: string;
   noLabel?: string;
@@ -20,7 +21,6 @@ const WizardNPC: React.FC<WizardNPCProps> = ({
   isAutoDismiss = false,
   canBeForcedToLeave = true,
   conversations = [],
-  type,
   hasChoice = false,
   yesLabel = 'Yes',
   noLabel = 'No',
@@ -52,8 +52,6 @@ const WizardNPC: React.FC<WizardNPCProps> = ({
     onLeave();
   };
 
-  const wizardImageSrc = `/images/npc/${type}.png`;
-
   return (
     <Modal
       opened={wizardHere}
@@ -78,10 +76,10 @@ const WizardNPC: React.FC<WizardNPCProps> = ({
           gap: '1rem',
         }}
       >
-        <Avatar src={wizardImageSrc} size={80} radius="50%" />
+        <AvatarPreview avatar={wizardBaseAvatar} size={100} />
 
         <Text size="lg" weight={600} style={{ lineHeight: 1.4 }}>
-          {conversations[dialogIndex] || '...'}
+          {conversations[dialogIndex] || '@/components.'}
         </Text>
 
         <Group position="center" mt="md">

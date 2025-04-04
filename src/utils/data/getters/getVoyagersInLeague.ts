@@ -7,6 +7,7 @@ const GET_VOYAGERS_IN_LEAGUE = gql`
     voyager(where: { totalXP: { _gte: $minXP, _lte: $maxXP } }) {
       id
       username # ✅ Use 'username' instead of 'name'
+      avatar
     }
   }
 `;

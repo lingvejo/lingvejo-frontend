@@ -68,6 +68,20 @@ const AstronomicalObjectInfo: React.FC<AstronomicalObjectInfoProps> = ({
 
           <Divider my="sm" />
 
+          <Group position="center" spacing="xs">
+            <Badge color="blue" variant="light">
+              🧑‍🚀 Adventurers: {planet.adventurers}
+            </Badge>
+            <Badge color="grape" variant="light">
+              🧙 Wizards: {planet.wizards}
+            </Badge>
+            <Badge color="teal" variant="filled">
+              🌍 Total Inhabitants: {planet.adventurers + planet.wizards}
+            </Badge>
+          </Group>
+
+          <Divider my="sm" />
+
           <Group position="apart">
             <Text style={labelStyle}>🧭 Galactic Designation Code:</Text>
             <Text weight={500}>{planet.iso.toUpperCase()}</Text>
@@ -108,21 +122,6 @@ const AstronomicalObjectInfo: React.FC<AstronomicalObjectInfoProps> = ({
             </Text>
           </Group>
 
-          <Divider my="sm" />
-
-          <Group position="center" spacing="xs">
-            <Badge color="blue" variant="light">
-              🧑‍🚀 Adventurers: {planet.adventurers}
-            </Badge>
-            <Badge color="grape" variant="light">
-              🧙 Wizards: {planet.wizards}
-            </Badge>
-          </Group>
-          <Group position="center" spacing="xs" mt="xs">
-            <Badge color="teal" variant="filled">
-              🌍 Total Inhabitants: {planet.adventurers + planet.wizards}
-            </Badge>
-          </Group>
         </Stack>
       </Paper>
     </Modal>

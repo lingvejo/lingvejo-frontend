@@ -15,7 +15,6 @@ export function Drawer({ drawerOpened, onClose, title, content }: DrawerProps) {
         <MantineDrawer
             opened={drawerOpened}
             onClose={onClose}
-            title={title}
             padding="md"
             size="lg"
             position="top"

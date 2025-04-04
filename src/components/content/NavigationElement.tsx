@@ -12,7 +12,7 @@ import Profile from '@/components/profile/Profile';
 import Inventory from '@/components/planet/inventory/Inventory';
 import Map from '@/components/map/Map';
 import League from '@/components/leaderboard/league/League';
-import MysticalTrophies from '@/components/profile/trophy/MysticalTrophies';
+import HallofLegends from '@/components/profile/hallOfLegends/HallOfLegends';
 import Spells from '@/components/planet/spell/Spells';
 import MultiplayerMode from '@/components/leaderboard/multiplayer/MultiplayerMode';
 import Missions from '@/components/planet/mission/MissionsPage';
@@ -32,8 +32,8 @@ export interface ElementItem {
 
 export const bottom: ElementItem[] = [
     { icon: <IconPlanet />, label: 'planet', content: <Planet />},
-    { icon: <IconUsers />, label: 'leaderboard', content: <Leaderboard />},
     { icon: <IconStar />, label: 'profile', content: <Profile />},
+    { icon: <IconUsers />, label: 'leaderboard', content: <Leaderboard />},
     { icon: <IconMap />, label: 'map', content: <Map />},
 ];
 
@@ -53,7 +53,7 @@ export const leaderboard: ElementItem[] = [
 
 export const profile: ElementItem[] = [
     { icon: <IconChartArrowsVertical />, label: 'progress', content: <ProgressTracker />},
-    { icon: <IconPentagonNumber1 />, label: 'mysticalTrophies', content: <MysticalTrophies /> },
+    { icon: <IconPentagonNumber1 />, label: 'HallofLegends', content: <HallofLegends /> },
     { icon: <IconPencil />, label: 'VoyagersJournal', content: <VoyagersJournal /> },
     { icon: <IconUserCircle />, label: 'user', content: <Voyager />},
 ];

@@ -7,9 +7,9 @@ import UnitDisplayer from './UnitDisplayer';
 import FullscreenModal from '@/components/core/Modal';
 import WizardNPC from '@/components/npc/WizardNPC';
 import EditModeActions from './editor/EditModeActions';
-import { getUnits } from '@/utils/data/getter/getUnits';
-import { getLatestProgress } from '@/utils/data/getter/getLatestProgress'; // Import getLatestProgress
-import { getProgress } from '@/utils/data/getter/getProgress'; // Import getProgress
+import { getUnits } from '@/utils/data/getters/getUnits';
+import { getLatestProgress } from '@/utils/data/getters/getLatestProgress'; // Import getLatestProgress
+import { getProgress } from '@/utils/data/getters/getProgress'; // Import getProgress
 
 const conversations = [
   "Welcome to the planet, adventurer!",
@@ -133,7 +133,6 @@ const Adventure = () => {
         <WizardNPC
           wizardHere={wizardHere}
           conversations={conversations}
-          type="wizard"
           onLeave={() => setWizardHere(false)}
         />
       )}

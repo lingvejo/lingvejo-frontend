@@ -1,6 +1,7 @@
 import { gql } from "@apollo/client";
 import client from "@/utils/apolloClient";
 import { handleError } from "@/utils/errorHandler";
+import { Voyager } from "@/contexts/VoyagerContext";
 
 const GET_VOYAGER = gql`
   query GetVoyager($id: Int!) {
@@ -10,7 +11,6 @@ const GET_VOYAGER = gql`
       email
       firstName
       lastName
-      profilePicture
       bio
       createdAt
       updatedAt
@@ -19,40 +19,17 @@ const GET_VOYAGER = gql`
       totalXP
       completedTutorial
       isActive
+      avatar
       guildVoyagers(where: { voyagerId: { _eq: $id } }) {
-        guild {
-          name  # Only the name, not the whole guild data
-        }
         role
+        guild {
+          name
+          emblem
+        }
       }
     }
   }
 `;
-
-interface Guild {
-  id: number;
-  name: string;
-  emblem: string | null;
-  role: string;
-}
-
-interface Voyager {
-  id: number;
-  username: string;
-  email: string;
-  firstName: string;
-  lastName: string;
-  profilePicture: string | null;
-  bio: string | null;
-  createdAt: string;
-  updatedAt: string;
-  lastLogin: string | null;
-  language: string;
-  totalXP: number;
-  completedTutorial: boolean;
-  isActive: boolean;
-  guildVoyagers: Guild[];
-}
 
 export async function getVoyager(id: number): Promise<Voyager | null> {
   try {

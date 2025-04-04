@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
-import { Card, Text, Avatar, Stack, Group, Breadcrumbs, Pagination, Center } from "@mantine/core";
-import { getAllLeagues } from "@/utils/data/getter/getAllLeagues";
-import { getVoyagersInLeague } from "@/utils/data/getter/getVoyagersInLeague";
+import { Card, Text, Stack, Group, Breadcrumbs, Pagination, Center } from "@mantine/core";
+import { getAllLeagues } from "@/utils/data/getters/getAllLeagues";
+import { getVoyagersInLeague } from "@/utils/data/getters/getVoyagersInLeague";
 import LoadingScreen from "@/components/core/LoadingScreen";
 import { useTranslations } from "next-intl";
+import AvatarPreview from "@/components/avatar/AvatarPreview";
+import { Voyager } from "@/contexts/VoyagerContext";
 
 // Define types
 interface League {
@@ -11,12 +13,6 @@ interface League {
   name: string;
   minXP: number;
   maxXP?: number | null;
-}
-
-interface Voyager {
-  id: number;
-  username: string;
-  profilePicture?: string | null;
 }
 
 export default function LeaguePage() {
@@ -150,10 +146,7 @@ export default function LeaguePage() {
                   style={{ cursor: "pointer", height: "50px" }}
                 >
                   <Group spacing="sm">
-                    <Avatar
-                      size="sm"
-                      src={voyager.profilePicture ?? undefined}
-                    />
+                    <AvatarPreview avatar={voyager.avatar} size={27} />
                     <Text>{voyager.username}</Text>
                   </Group>
                 </Card>

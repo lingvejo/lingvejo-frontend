@@ -1,112 +1,185 @@
+'use client';
+
 import React, { useState, useEffect } from 'react';
-import { Container, Avatar, TextInput, Text, Button, Group, Divider, Title, Textarea, Progress, Flex, Loader, useMantineTheme } from '@mantine/core';
-import { IconEdit, IconRocket, IconUser, IconMail, IconPhone, IconMapPin } from '@tabler/icons-react';
-import { getVoyager } from '@/utils/data/getter/getVoyager'; // Assuming this is a custom async function
-import { getVoyagerLeague } from '@/utils/data/getter/getVoyagerLeague';
+import {
+  Avatar,
+  Button,
+  Container,
+  Divider,
+  Group,
+  Paper,
+  Progress,
+  Stack,
+  Text,
+  TextInput,
+  Textarea,
+  Title,
+  Tooltip,
+  Flex,
+  Box,
+  ActionIcon
+} from '@mantine/core';
+import { IconEdit, IconCheck, IconX, IconUser, IconMail } from '@tabler/icons-react';
+import { getVoyagerLeague } from '@/utils/data/getters/getVoyagerLeague';
 import LoadingScreen from '@/components/core/LoadingScreen';
+import { useVoyager } from '@/contexts/VoyagerContext';
+import AvatarEditor from '@/components/avatar/AvatarEditor';
+import AvatarPreview from '@/components/avatar/AvatarPreview';
 
 const VoyagerProfile: React.FC = () => {
-  const theme = useMantineTheme(); // Access Mantine theme
-  const [isEditing, setIsEditing] = useState<boolean>(false);
-  const [league, setLeague] = useState<string>('');  // State for the voyager's league
-  const [voyager, setVoyager] = useState<any>(null);  // State to hold voyager data
-  const [loading, setLoading] = useState<boolean>(true);  // Loading state
-  const [error, setError] = useState<string | null>(null);  // Error state
-  const testVoyagerId = 2; // Change this to test with different IDs
+  const { voyager, loading } = useVoyager();
+  const [isEditing, setIsEditing] = useState(false);
+  const [league, setLeague] = useState('');
+  const [showAvatarEditor, setShowAvatarEditor] = useState(false);
 
-  // Fetch voyager data using getVoyager function
   useEffect(() => {
-    const fetchVoyager = async () => {
-      try {
-        setLoading(true);
-        const data = await getVoyager(testVoyagerId);
-        setVoyager(data);
-        // Fetch the voyager's league based on their totalXP
-        const voyagerLeague = getVoyagerLeague(data.totalXP);
-        setLeague(voyagerLeague);
-        setLoading(false);
-      } catch (err) {
-        setError('Error fetching voyager data');
-        setLoading(false);
-      }
+    if (!voyager) return;
+  
+    const fetchLeague = async () => {
+      const leagueName = await getVoyagerLeague(voyager.totalXP);
+      setLeague(leagueName);
     };
+  
+    fetchLeague();
+  }, [voyager]);
+  
 
-    fetchVoyager();
-  }, [testVoyagerId]);
-
-  if (loading) return <LoadingScreen />;
-  if (error) return <Text align="center" color="red">{error}</Text>;
-
-  // Define fields to be rendered dynamically
-  const fields = [
-    { label: 'First Name', value: voyager.firstName, key: 'firstName', icon: <IconUser size={16} /> },
-    { label: 'Last Name', value: voyager.lastName, key: 'lastName', icon: <IconUser size={16} /> },
-    { label: 'Email', value: voyager.email, key: 'email', icon: <IconMail size={16} /> },
-    { label: 'Bio', value: voyager.bio || '', key: 'bio', icon: null },
-    { label: 'Language', value: voyager.language || '', key: 'language', icon: null },
-  ];
+  if (loading || !voyager) return <LoadingScreen />;
 
   return (
-    <Container fluid style={{ padding: '20px', maxWidth: '1000px', margin: '0 auto' }}>
-      <Group position="center" direction="column" mb="md" style={{ textAlign: 'center' }}>
-        <Avatar size={120} src={voyager.profilePicture || "https://via.placeholder.com/120"} alt="User Avatar" radius="xl" />
-        <Title order={2} weight={700}>{voyager.username}</Title>
-        <Text size="sm" color="dimmed">{voyager.email}</Text>
-      </Group>
+    <Container size="xs" px="sm" mt="md" mb="xl">
+      {showAvatarEditor ? (
+        <AvatarEditor onClose={() => setShowAvatarEditor(false)} />
+      ) : (
+        <Paper withBorder p="xl" radius="md">
+          <Flex justify="center" mb="md">
+            <Box pos="relative">
+              <AvatarPreview avatar={voyager.avatar} size={100} />
+              <Tooltip label="Edit Avatar" position="bottom">
+                <ActionIcon
+                  size="sm"
+                  variant="filled"
+                  color="var(--mantine-primary-color-filled)"
+                  style={{ position: 'absolute', bottom: 0, right: 0, transform: 'translate(25%, 25%)' }}
+                  onClick={() => setShowAvatarEditor(true)}
+                >
+                  <IconEdit size={14} />
+                </ActionIcon>
+              </Tooltip>
+            </Box>
+          </Flex>
 
-      <Divider my="sm" />
+          <Title order={3} align="center" mb="xs">
+            {voyager.username}
+          </Title>
+          <Text align="center" size="sm" color="dimmed" mb="md">
+            {voyager.email}
+          </Text>
 
-      <Group direction="column" spacing="md" mb="md">
-        {fields.map((field) => (
-          <TextInput
-            key={field.key}
-            label={field.label}
-            value={field.value}
-            onChange={(e) => console.log(`Update ${field.key}`)} // Add logic to handle input change
-            disabled={!isEditing}
-            icon={field.icon}
-            size="md"
-            required
-            styles={{ input: { borderRadius: '8px' } }}
-          />
-        ))}
-        <Textarea
-          label="Bio"
-          value={voyager.bio || ''}
-          onChange={(e) => console.log('Update bio')} // Add logic to handle bio change
-          disabled={!isEditing}
-          placeholder="Tell us something about yourself"
-          size="md"
-          required
-          styles={{ input: { borderRadius: '8px' }, textarea: { borderRadius: '8px' } }}
-        />
-      </Group>
+          <Divider my="md" />
 
-      <Divider my="sm" />
+          <Stack spacing="sm">
+            <TextInput
+              label="First Name"
+              icon={<IconUser size={16} />}
+              value={voyager.firstName}
+              onChange={() => {}}
+              disabled={!isEditing}
+            />
+            <TextInput
+              label="Last Name"
+              icon={<IconUser size={16} />}
+              value={voyager.lastName}
+              onChange={() => {}}
+              disabled={!isEditing}
+            />
+            <TextInput
+              label="Email"
+              icon={<IconMail size={16} />}
+              value={voyager.email}
+              onChange={() => {}}
+              disabled={!isEditing}
+            />
+            <TextInput
+              label="Language"
+              value={voyager.language}
+              onChange={() => {}}
+              disabled={!isEditing}
+            />
+            <Textarea
+              label="Bio"
+              value={voyager.bio || ''}
+              onChange={() => {}}
+              placeholder="A wandering soul in search of words and wonders..."
+              disabled={!isEditing}
+              autosize
+              minRows={3}
+              maxRows={5}
+              styles={{
+                input: { backgroundColor: 'transparent', fontFamily: 'serif', fontSize: 14 },
+              }}
+            />
+          </Stack>
 
-      {/* Level and XP Section */}
-      <Group direction="column" spacing="md" mb="md">
-        <Text size="lg" weight={700}>League: {league || "Loading..."}</Text>
-        <Progress value={(voyager.totalXP / 200) * 100} color="blue" size="xl" label={`XP: ${voyager.totalXP}/200`} />
-        <Text color="dimmed" size="sm">Complete tasks to earn XP and level up!</Text>
-      </Group>
+          <Divider my="lg" />
 
-      <Divider my="sm" />
+          <Stack spacing="xs" align="center">
+            <Text size="sm" color="dimmed">
+              League: <strong>{league}</strong>
+            </Text>
+            <Progress
+              value={(voyager.totalXP / 200) * 100}
+              color="var(--mantine-primary-color-filled)"
+              size="lg"
+              radius="xl"
+              label={`XP: ${voyager.totalXP}/200`}
+            />
+          </Stack>
 
-      {/* Edit Profile Button */}
-      <Flex justify="center" mt="md">
-        <Button
-          onClick={() => setIsEditing(!isEditing)}
-          leftIcon={isEditing ? <IconRocket size={16} /> : <IconEdit size={16} />}
-          size="md"
-          color="blue"
-          fullWidth
-          variant="outline"
-          style={{ borderRadius: '8px' }}
-        >
-          {isEditing ? 'Save Changes' : 'Edit Profile'}
-        </Button>
-      </Flex>
+          <Divider my="lg" />
+
+          <Group position="right" spacing="xs">
+            {isEditing ? (
+              <>
+                <Tooltip label="Save">
+                  <Button
+                    size="xs"
+                    color="var(--mantine-primary-color-filled)"
+                    variant="light"
+                    onClick={() => {
+                      // TODO: Save changes
+                      setIsEditing(false);
+                    }}
+                  >
+                    <IconCheck size={16} />
+                  </Button>
+                </Tooltip>
+                <Tooltip label="Cancel">
+                  <Button
+                    size="xs"
+                    variant="subtle"
+                    color="gray"
+                    onClick={() => setIsEditing(false)}
+                  >
+                    <IconX size={16} />
+                  </Button>
+                </Tooltip>
+              </>
+            ) : (
+              <Tooltip label="Edit">
+                <Button
+                  size="xs"
+                  variant="light"
+                  onClick={() => setIsEditing(true)}
+                  color="var(--mantine-primary-color-filled)"
+                >
+                  <IconEdit size={16} />
+                </Button>
+              </Tooltip>
+            )}
+          </Group>
+        </Paper>
+      )}
     </Container>
   );
 };

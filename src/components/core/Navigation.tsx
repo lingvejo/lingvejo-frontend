@@ -70,7 +70,6 @@ export const Navigation: React.FC<NavigationProps> = ({ type, content, setConten
             <Drawer
                 drawerOpened={drawerOpened}
                 onClose={() => setDrawerOpened(false)}
-                title={drawerTitle ? t(`${type}.${drawerTitle}`) : ''}
                 content={drawerTitle ? renderDrawer(drawerTitle) : ''}
             />
         </>

@@ -6,8 +6,12 @@ import {routing} from '@/i18n/routing';
 import { MantineProvider,
   ColorSchemeScript, mantineHtmlProps } from '@mantine/core';
 import theme from '@/components/theme/Theme';
+import { VoyagerProvider } from '@/contexts/VoyagerContext';
+import { Notifications } from '@mantine/notifications';
+
 import '@mantine/core/styles.css';
 import '@mantine/dates/styles.css';
+import '@mantine/notifications/styles.css';
 
 // Set locale
 type Props = {
@@ -16,7 +20,7 @@ type Props = {
 };
 
 export function generateStaticParams() {
-  return routing.locales.map((locale) => ({locale}));
+  return routing.locales.map((locale: any) => ({locale}));
 }
 
 export default async function LocaleLayout({children, params}: Props) {
@@ -37,7 +41,10 @@ export default async function LocaleLayout({children, params}: Props) {
       <body>
         <NextIntlClientProvider>
           <MantineProvider theme={theme}>
-            {children}
+            <Notifications position="top-right" zIndex={10000} />
+            <VoyagerProvider>
+              {children}
+            </VoyagerProvider>
           </MantineProvider>
         </NextIntlClientProvider>
       </body>

@@ -1,191 +1,234 @@
 'use client';
 
-import {
-  Button,
-  Container,
-  Indicator,
-  Paper,
-  Stack,
-  Text,
-  Textarea,
-  Title,
-  Divider,
-  Group,
-  Transition,
-} from '@mantine/core';
+import React, { useEffect, useState } from 'react';
 import { Calendar } from '@mantine/dates';
 import {
+  Indicator,
+  Paper,
+  Text,
+  Textarea,
+  Group,
+  Divider,
+  Title,
+  Center,
+  Container,
+  Box,
+  ActionIcon,
+  Tooltip,
+  Flex
+} from '@mantine/core';
+import {
   IconEdit,
-  IconX,
   IconDeviceFloppy,
+  IconX,
 } from '@tabler/icons-react';
-import { useEffect, useMemo, useState } from 'react';
 import dayjs from 'dayjs';
+import { useTranslations } from 'next-intl';
+import { getJournalEntriesForMonth } from '@/utils/data/getters/getJournalEntriesForMonth';
+import { getMonthRange } from '@/utils/date/getMonthRange';
+import { setJournalEntry } from '@/utils/data/setters/setJournalEntry';
+import { useVoyager } from '@/contexts/VoyagerContext';
+import LoadingScreen from '@/components/core/LoadingScreen';
 
-const MAX_LENGTH = 280;
-const today = new Date();
+const textMaxLength = 140;
 
-export default function VoyagerJournal() {
-  const [entries, setEntries] = useState<Record<string, string>>({});
-  const [selectedDate, setSelectedDate] = useState<Date>(today);
-  const [editContent, setEditContent] = useState('');
-  const [editMode, setEditMode] = useState(false);
+const VoyagerJournal = () => {
+  const t = useTranslations('journal');
+  const { voyager, loading } = useVoyager();
+  const voyagerId = voyager?.id;
 
-  const selectedKey = useMemo(
-    () => selectedDate.toDateString(),
-    [selectedDate]
-  );
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [monthDate, setMonthDate] = useState(dayjs().startOf('month').toDate());
+  const [lastLoadedMonth, setLastLoadedMonth] = useState('');
+  const [entriesMap, setEntriesMap] = useState<Record<string, string>>({});
+  const [draft, setDraft] = useState('');
+  const [isEditing, setIsEditing] = useState(false);
 
-  const hasEntry = useMemo(
-    () => !!entries[selectedKey],
-    [entries, selectedKey]
-  );
+  const selectedDateStr = dayjs(selectedDate).format('YYYY-MM-DD');
+  const isToday = dayjs(selectedDate).isSame(dayjs(), 'day');
 
-  const isToday = selectedKey === today.toDateString();
+  const handleMonthChange = (date: Date) => {
+    setMonthDate(dayjs(date).startOf('month').toDate());
+  };
 
-  const formattedDate = dayjs(selectedDate).format('dddd, MMMM D');
-
-  // Load existing entry on date change
   useEffect(() => {
-    if (!editMode) {
-      setEditContent(entries[selectedKey] || '');
-    }
-  }, [selectedKey, entries, editMode]);
+    if (!voyagerId || !monthDate) return;
 
-  const handleSave = () => {
-    const trimmed = editContent.trim();
-    if (trimmed.length > 0 && trimmed.length <= MAX_LENGTH) {
-      setEntries((prev) => ({ ...prev, [selectedKey]: trimmed }));
-      setEditMode(false);
+    const monthKey = dayjs(monthDate).format('YYYY-MM');
+    if (lastLoadedMonth === monthKey) return;
+
+    const { start, end } = getMonthRange(monthDate);
+    getJournalEntriesForMonth(voyagerId, start, end).then((entries) => {
+      const map: Record<string, string> = {};
+      entries.forEach((e) => {
+        map[e.entryDate] = e.content;
+      });
+      setEntriesMap((prev) => ({ ...prev, ...map }));
+      setLastLoadedMonth(monthKey);
+    });
+  }, [voyagerId, monthDate, lastLoadedMonth]);
+
+  useEffect(() => {
+    if (selectedDateStr in entriesMap) {
+      setDraft(entriesMap[selectedDateStr]);
+      setIsEditing(false);
+    } else {
+      setDraft('');
+    }
+  }, [selectedDateStr, entriesMap]);
+
+  const handleSave = async () => {
+    if (!voyagerId) return;
+    const success = await setJournalEntry(voyagerId, selectedDateStr, draft);
+    if (success) {
+      setEntriesMap((prev) => ({ ...prev, [selectedDateStr]: draft }));
+      setIsEditing(false);
     }
   };
 
-  const handleCancel = () => {
-    setEditContent(entries[selectedKey] || '');
-    setEditMode(false);
-  };
+  if (loading || !voyager) return <LoadingScreen />;
 
   return (
-    <Container size="sm" py="lg">
-      <Stack gap="xl">
-        <Stack gap="xs" align="center">
-          <Title order={2}>The Voyager’s Journal</Title>
-          <Text c="dimmed" size="sm">
-            Select a date to view your log of that day’s journey.
-          </Text>
-        </Stack>
+    <Container size="xs" px="sm" mt="md" mb={80}>
+      <Paper withBorder p="xl" radius="md">
+        <Center mb="sm">
+          <Title order={3}>{t('title')}</Title>
+        </Center>
 
-        {/* 📆 Calendar */}
-        <Paper radius="md" shadow="sm" p="md">
-          <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
-            <Calendar
-              fullWidth
-              value={selectedDate}
-              onChange={(date) => {
-                if (date) {
-                  setSelectedDate(date);
-                  setEditMode(false);
-                }
-              }}
-              maxDate={today}
-              renderDay={(date) => {
-                const key = date.toDateString();
-                const exists = !!entries[key];
-                return (
-                  <Indicator
-                    size={6}
-                    color="var(--mantine-primary-color-filled)"
-                    offset={-2}
-                    disabled={!exists}
-                  >
-                    <div>{date.getDate()}</div>
-                  </Indicator>
-                );
-              }}
-              styles={{
-                calendarBase: { width: '100%', maxWidth: '100%' },
-                root: { width: '100%' },
-              }}
-            />
-          </div>
-        </Paper>
+        <Text align="center" color="dimmed" mb="md">
+          {t('description')}
+        </Text>
 
-        {/* 📜 Journal */}
+        <Flex justify="center">
+          <Calendar
+            value={selectedDate}
+            onChange={setSelectedDate}
+            getDayProps={(date) => ({
+              selected: dayjs(date).isSame(selectedDate, 'date'),
+              onClick: () => setSelectedDate(date),
+            })}
+            renderDay={(date) => {
+              const dateStr = dayjs(date).format('YYYY-MM-DD');
+              const hasEntry = !!entriesMap[dateStr];
+              const day = date.getDate();
+
+              return (
+                <Indicator
+                  size={6}
+                  color="var(--mantine-primary-color-filled)"
+                  offset={-2}
+                  disabled={!hasEntry}
+                >
+                  <div>{day}</div>
+                </Indicator>
+              );
+            }}
+            onNextMonth={handleMonthChange}
+            onPreviousMonth={handleMonthChange}
+            onNextYear={handleMonthChange}
+            onPreviousYear={handleMonthChange}
+            onYearSelect={handleMonthChange}
+            onMonthSelect={handleMonthChange}
+            minDate={new Date('2020-01-01')}
+            maxDate={new Date()}
+          />
+        </Flex>
+
+        <Divider my="xl" />
+
         <Paper
+          withBorder
+          p="lg"
           radius="md"
           shadow="sm"
-          p="md"
-          style={{
-            minHeight: 200,
-          }}
+          style={{ border: '1px solid var(--mantine-color-gray-3)' }}
         >
-          <Group justify="space-between" mb="xs">
-            <Text fw={500}>{formattedDate}</Text>
-            {isToday && !editMode && (
-              <Button
-                onClick={() => setEditMode(true)}
-                size="xs"
-                leftSection={<IconEdit size={14} />}
-                variant="light"
-              >
-                Write Entry
-              </Button>
-            )}
-            {editMode && (
-              <Text size="xs" c="dimmed">
-                {editContent.length}/{MAX_LENGTH}
-              </Text>
+          <Group position="apart" mb="xs">
+            <Text fw={600}>
+              {dayjs(selectedDate).format('dddd, MMMM D')}
+            </Text>
+
+            {!isEditing && isToday && (
+              <Tooltip label={t('edit')}>
+                <ActionIcon
+                  variant="subtle"
+                  color="var(--mantine-primary-color-filled)"
+                  onClick={() => setIsEditing(true)}
+                >
+                  <IconEdit size={18} />
+                </ActionIcon>
+              </Tooltip>
             )}
           </Group>
 
-          <Divider my="sm" />
+          <Divider mb="sm" />
 
-          {/* 📝 Entry Area */}
-          <Transition mounted={!editMode} transition="fade" duration={200}>
-            {(styles) =>
-              hasEntry ? (
-                <Text style={styles}>{entries[selectedKey]}</Text>
-              ) : (
-                <Text c="dimmed" style={styles}>
-                  No journal entry found for this day.
-                </Text>
-              )
-            }
-          </Transition>
-
-          {editMode && (
-            <Stack gap="xs" mt="xs">
+          {isEditing ? (
+            <>
               <Textarea
-                value={editContent}
-                onChange={(e) => setEditContent(e.currentTarget.value)}
+                value={draft}
+                onChange={(e) => setDraft(e.currentTarget.value)}
+                placeholder={t('placeholder')}
                 autosize
-                minRows={3}
-                maxLength={MAX_LENGTH}
-                placeholder="Describe today’s discovery, adventurer..."
+                minRows={4}
+                maxRows={8}
+                maxLength={textMaxLength}
+                variant="unstyled"
+                styles={{
+                  input: {
+                    backgroundColor: 'transparent',
+                    fontFamily: 'serif',
+                    fontSize: '16px',
+                    lineHeight: 1.6,
+                    padding: 0,
+                  },
+                }}
               />
-
-              <Group justify="flex-start">
-                <Button
-                  size="xs"
-                  onClick={handleSave}
-                  leftSection={<IconDeviceFloppy size={14} />}
-                >
-                  Save
-                </Button>
-                <Button
-                  variant="subtle"
-                  size="xs"
-                  color="gray"
-                  onClick={handleCancel}
-                  leftSection={<IconX size={14} />}
-                >
-                  Cancel
-                </Button>
+              <Text size="xs" color="dimmed" align="right" mt="xs">
+                {draft.length}/{textMaxLength}
+              </Text>
+              <Group position="right" mt="sm" spacing="xs">
+                <Tooltip label={t('save')}>
+                  <ActionIcon
+                    variant="filled"
+                    color="var(--mantine-primary-color-filled)"
+                    onClick={handleSave}
+                  >
+                    <IconDeviceFloppy size={16} />
+                  </ActionIcon>
+                </Tooltip>
+                <Tooltip label={t('cancel')}>
+                  <ActionIcon
+                    variant="light"
+                    color="gray"
+                    onClick={() => setIsEditing(false)}
+                  >
+                    <IconX size={16} />
+                  </ActionIcon>
+                </Tooltip>
               </Group>
-            </Stack>
+            </>
+          ) : entriesMap[selectedDateStr] ? (
+            <Text
+              style={{
+                fontFamily: 'serif',
+                fontSize: '16px',
+                lineHeight: 1.6,
+                whiteSpace: 'pre-wrap',
+                wordBreak: 'break-word',
+              }}
+            >
+              {entriesMap[selectedDateStr]}
+            </Text>
+          ) : (
+            <Text color="dimmed" fs="italic">
+              {t('noEntry')}
+            </Text>
           )}
         </Paper>
-      </Stack>
+      </Paper>
     </Container>
   );
-}
+};
+
+export default VoyagerJournal;
