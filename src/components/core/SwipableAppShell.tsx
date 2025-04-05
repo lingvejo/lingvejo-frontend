@@ -1,7 +1,7 @@
 'use client';
 import { AppShell } from '@mantine/core';
 import { useState } from 'react';
-import { TopNavigation } from '@/components/core/NavigationBar/TopNavigation';
+import { TopNavigation } from '@/components/core/navbar/TopNavigation';
 import { useSwipeable } from 'react-swipeable';
 
 interface SwipableAppShellProps {

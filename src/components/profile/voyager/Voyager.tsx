@@ -20,7 +20,7 @@ import {
   ActionIcon
 } from '@mantine/core';
 import { IconEdit, IconCheck, IconX, IconUser, IconMail } from '@tabler/icons-react';
-import { getVoyagerLeague } from '@/utils/data/getters/getVoyagerLeague';
+import { getVoyagerLeague } from '@/utils/data/queries/getVoyagerLeague';
 import LoadingScreen from '@/components/core/LoadingScreen';
 import { useVoyager } from '@/contexts/VoyagerContext';
 import AvatarEditor from '@/components/avatar/AvatarEditor';
@@ -51,7 +51,7 @@ const VoyagerProfile: React.FC = () => {
       {showAvatarEditor ? (
         <AvatarEditor onClose={() => setShowAvatarEditor(false)} />
       ) : (
-        <Paper withBorder p="xl" radius="md">
+        <Paper shadow="md" radius="md" withBorder p="xl">
           <Flex justify="center" mb="md">
             <Box pos="relative">
               <AvatarPreview avatar={voyager.avatar} size={100} />

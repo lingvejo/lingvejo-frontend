@@ -1,93 +1,168 @@
-import React, { useState } from 'react';
-import { Container, Title, Text, Button, TextInput, Group, Progress, Badge, Stack, Tooltip } from '@mantine/core';
+'use client';
 
-const Streak: React.FC = () => {
-  const [goal, setGoal] = useState<number | ''>(5); // Default goal
-  const [streak, setStreak] = useState<number>(0); // User's current streak
-  const [dates, setDates] = useState<Date[]>([]); // Dates for the streak
-  const [level, setLevel] = useState<number>(1); // Level of the user
-  const [showBadge, setShowBadge] = useState<boolean>(false); // Badge for streak achievements
+import {
+  Container,
+  Title,
+  Text,
+  Button,
+  Progress,
+  Badge,
+  Stack,
+  Paper,
+  Group,
+  Tooltip,
+  Notification,
+  useMantineTheme,
+  rem,
+} from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
+import { Calendar } from '@mantine/dates';
+import { IconCheck, IconFlame, IconSparkles, IconRefresh } from '@tabler/icons-react';
+import { useState } from 'react';
+import dayjs from 'dayjs';
 
-  const handleGoalChange = (value: string) => {
-    setGoal(value ? parseInt(value) : '');
-  };
+export default function Streak() {
+  const theme = useMantineTheme();
+  const [goal, setGoal] = useState(7);
+  const [dates, setDates] = useState<Date[]>([]);
+  const [level, setLevel] = useState(1);
+  const [showCongrats, { open, close }] = useDisclosure(false);
 
-  const handleDateChange = (date: Date | null) => {
-    if (date && !dates.includes(date)) {
-      setDates((prev) => [...prev, date]);
-      setStreak((prev) => prev + 1); // Increment streak
-      if (streak % 5 === 0) { // Display badge at every 5-day milestone
-        setShowBadge(true);
-      }
+  const isTodayLogged = dates.some((d) => dayjs(d).isSame(new Date(), 'day'));
+  const streak = dates.length;
+  const progress = Math.min((streak / goal) * 100, 100);
+
+  const handleMarkToday = () => {
+    if (!isTodayLogged) {
+      const newDates = [...dates, new Date()];
+      setDates(newDates);
+
+      const newStreak = newDates.length;
+      if (newStreak % 5 === 0) open();
+      if (newStreak >= level * 5) setLevel((lvl) => lvl + 1);
     }
   };
 
-  const handleResetStreak = () => {
-    setStreak(0);
-    setLevel(1); // Reset level when streak is reset
-    setShowBadge(false);
+  const handleReset = () => {
+    setDates([]);
+    setLevel(1);
+    close();
   };
 
-  // Calculate progress as percentage
-  const progress = (streak / (goal || 1)) * 100;
-
-  // Increase level as streak increases
-  if (streak >= level * 5) {
-    setLevel(level + 1);
-  }
-
   return (
-    <Container size="sm">
-      <Stack align="center" spacing="xl">
-        <Title order={2} align="center">Your Streak</Title>
-        <Text align="center" size="lg">Your current streak: {streak} day{streak !== 1 ? 's' : ''}</Text>
-        
-        {/* Progress bar */}
-        <Progress value={progress} size="xl" color="teal" />
+    <Container size="xs" py="xl">
+      <Stack spacing="lg" align="center">
+        <Stack spacing={4} align="center">
+          <Text size="xs" c="dimmed" tt="uppercase" fw={700} letterSpacing={0.5}>
+            Daily Mission
+          </Text>
+          <Title order={2} ta="center" fw={700}>
+            🌠 Ritual Streak
+          </Title>
+          <Text ta="center" c="dimmed" size="sm">
+            Mark your daily rituals to keep your streak alive.
+          </Text>
+        </Stack>
 
-        {/* Streak level */}
-        <Text align="center" size="md">
-          Level {level} - Keep going to reach the next milestone!
-        </Text>
+        <Paper
+          withBorder
+          radius="md"
+          p="lg"
+          shadow="md"
+          style={{
+            background: 'rgba(255,255,255,0.05)',
+            backdropFilter: 'blur(6px)',
+            width: '100%',
+          }}
+        >
+          <Stack spacing="md">
+            <Group position="apart">
+              <Text fw={600} size="sm">
+                🧙 Level {level}
+              </Text>
+              <Badge
+                color="var(--mantine-primary-color-filled)"
+                radius="sm"
+                size="md"
+                leftSection={<IconFlame size={14} />}
+              >
+                {streak} Day{streak !== 1 ? 's' : ''}
+              </Badge>
+            </Group>
 
-        {/* Show badge on milestone */}
-        {showBadge && (
-          <Badge color="orange" size="lg">
-            Streak Achieved: {streak} Days!
-          </Badge>
+            <Progress
+              value={progress}
+              radius="xl"
+              size="lg"
+              color="var(--mantine-primary-color-filled)"
+            />
+
+            <Button
+              fullWidth
+              size="md"
+              leftIcon={<IconFlame size={18} />}
+              onClick={handleMarkToday}
+              disabled={isTodayLogged}
+              variant={isTodayLogged ? 'light' : 'filled'}
+              color={isTodayLogged ? 'gray' : 'green'}
+              radius="md"
+            >
+              {isTodayLogged ? 'Already Completed Today' : 'Log Today’s Ritual'}
+            </Button>
+
+            <Tooltip label="Reset your streak and start fresh" withArrow>
+              <Button
+                variant="subtle"
+                color="red"
+                leftIcon={<IconRefresh size={18} />}
+                onClick={handleReset}
+                size="xs"
+              >
+                Reset Streak
+              </Button>
+            </Tooltip>
+          </Stack>
+        </Paper>
+
+        <Paper withBorder radius="md" p="md" mt="lg" w="100%" shadow="xs">
+          <Text fw={500} mb="sm" ta="center" size="sm">
+            ✨ Ritual Calendar
+          </Text>
+          <Calendar
+            size="md"
+            value={dates}
+            multiple
+            readOnly
+            fullWidth
+            styles={{
+              day: (date) => {
+                const matched = dates.some((d) => dayjs(d).isSame(date, 'day'));
+                return matched
+                  ? {
+                      backgroundColor: theme.colors.teal[6],
+                      color: theme.white,
+                      fontWeight: 700,
+                      borderRadius: rem(8),
+                    }
+                  : {};
+              },
+            }}
+          />
+        </Paper>
+
+        {showCongrats && (
+          <Notification
+            onClose={close}
+            color="orange"
+            icon={<IconSparkles />}
+            title="🎉 Milestone Achieved!"
+            withBorder
+            radius="md"
+          >
+            You've reached a {streak}-day streak! 🔮 Keep the magic flowing.
+          </Notification>
         )}
-
-        {/* Goal input */}
-        <TextInput
-          label="Set Your Goal"
-          value={goal === '' ? '' : goal.toString()}
-          onChange={(event) => handleGoalChange(event.currentTarget.value)}
-          placeholder="Enter your goal"
-          type="number"
-          style={{ width: '80%' }}
-        />
-
-        <Text align="center" size="md">Your goal: {goal} days</Text>
-
-        {/* Button to reset streak */}
-        <Group position="center" spacing="lg">
-          <Button color="red" onClick={handleResetStreak}>Reset Streak</Button>
-        </Group>
-
-        {/* Tooltip for daily challenge */}
-        <Tooltip label="Complete today's challenge to keep the streak going!" position="top" withArrow>
-          <Button size="lg" color="green" style={{ width: '80%' }} onClick={() => handleDateChange(new Date())}>
-            Complete Today's Challenge
-          </Button>
-        </Tooltip>
-
-        {/* Footer with motivational text */}
-        <Text align="center" size="sm" color="dimmed">
-          Keep your streak alive to unlock more rewards and badges!
-        </Text>
       </Stack>
     </Container>
   );
-};
-
-export default Streak;
+}

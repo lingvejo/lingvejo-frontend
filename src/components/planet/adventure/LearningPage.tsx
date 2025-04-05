@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { getModules } from '@/utils/data/getters/getModules';
+import { getModules } from '@/utils/data/queries/getModules';
 import { Container, Button, Title, Progress, Group, Stack, Loader, Text } from '@mantine/core';
 import { useTranslations } from 'next-intl';
 import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react';

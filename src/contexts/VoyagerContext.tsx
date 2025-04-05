@@ -1,6 +1,6 @@
 "use client";
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { getVoyager } from '@/utils/data/getters/getVoyager'; // Your actual user-fetching function
+import { getVoyager } from '@/utils/data/queries/getVoyager'; // Your actual user-fetching function
 
 type Avatar = Record<string, any>;
 

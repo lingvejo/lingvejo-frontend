@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Center, Breadcrumbs, Anchor, Box, Flex, Text } from '@mantine/core';
 import { IconChevronRight } from '@tabler/icons-react';
-import { getSolarSystemData } from '@/utils/data/getters/getSolarSystemData';
+import { getSolarSystemData } from '@/utils/data/queries/getSolarSystemData';
 import StarSystemView from './StarSystemView';
 import GalaxyView from './GalaxyView';
 

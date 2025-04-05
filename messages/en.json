@@ -28,6 +28,7 @@
     "weavingWisdom": "Weaving ancient wisdom..."
   },
   "league": {
+    "title": "Leagues",
     "noVoyagers": "This path is quiet… The stars await their champions. ⭐"
   },
   "journal": {
@@ -69,5 +70,49 @@
       "title": "The Hall awaits your legend...",
       "description": "Venture forth, brave soul, and let your story be written in starlight."
     }
-  }  
+  },
+  "roles": {
+    "wizard": "Wizard",
+    "adventurer": "Adventurer"
+  },
+  "adventureLog": {
+    "empty": {
+      "adventurer": {
+        "title": "No journeys yet...",
+        "description": "You haven't set foot on any quests. Begin your adventure to explore magical worlds."
+      },
+      "wizard": {
+        "title": "No spellwork yet...",
+        "description": "You haven't contributed any knowledge yet. Share your magic to help other adventurers."
+      }
+    },
+    "adventurer": {
+      "title": "Journeys"
+    },
+    "wizard": {
+      "title": "Spellwork"
+    }
+  },
+  "wizardRank": {
+    "1": {
+      "name": "Initiate",
+      "description": "Can propose new content within active courses."
+    },
+    "2": {
+      "name": "Apprentice",
+      "description": "Can edit and improve their own contributions after submission."
+    },
+    "3": {
+      "name": "Adept",
+      "description": "Can review and approve contributions from Initiates and Apprentices."
+    },
+    "4": {
+      "name": "Master",
+      "description": "Can revert other wizards’ changes and curate planetary content."
+    },
+    "5": {
+      "name": "Councilor",
+      "description": "Can manage ranks of other wizards and oversee the integrity of the course."
+    }
+  }
 }

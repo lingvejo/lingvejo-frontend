@@ -1,13 +1,15 @@
-import { useState, useEffect } from "react";
-import { Card, Text, Stack, Group, Breadcrumbs, Pagination, Center } from "@mantine/core";
-import { getAllLeagues } from "@/utils/data/getters/getAllLeagues";
-import { getVoyagersInLeague } from "@/utils/data/getters/getVoyagersInLeague";
-import LoadingScreen from "@/components/core/LoadingScreen";
-import { useTranslations } from "next-intl";
-import AvatarPreview from "@/components/avatar/AvatarPreview";
-import { Voyager } from "@/contexts/VoyagerContext";
+'use client';
 
-// Define types
+import { useState, useEffect } from 'react';
+import { Stack, Breadcrumbs, Text, Center, Pagination } from '@mantine/core';
+import { getAllLeagues } from '@/utils/data/queries/getAllLeagues';
+import { getVoyagersInLeague } from '@/utils/data/queries/getVoyagersInLeague';
+import LoadingScreen from '@/components/core/LoadingScreen';
+import { useTranslations } from 'next-intl';
+import LeagueList from './LeagueList';
+import VoyagerList from './VoyagerList';
+import { Voyager } from '@/contexts/VoyagerContext';
+
 interface League {
   id: number;
   name: string;
@@ -16,31 +18,14 @@ interface League {
 }
 
 export default function LeaguePage() {
-  const t = useTranslations("league");
-
+  const t = useTranslations('league');
   const [leagues, setLeagues] = useState<League[]>([]);
   const [selectedLeague, setSelectedLeague] = useState<League | null>(null);
   const [voyagers, setVoyagers] = useState<Voyager[]>([]);
-  const [page, setPage] = useState<number>(1);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [loadingVoyagers, setLoadingVoyagers] = useState<boolean>(false);
-  const [itemsPerPage, setItemsPerPage] = useState<number>(3);
-
-  // Calculate number of items per page dynamically
-  useEffect(() => {
-    function updateItemsPerPage() {
-      const cardHeight = 50; // Estimated height of each card
-      const viewportHeight = window.innerHeight;
-      const availableSpace = viewportHeight - 420; // Adjust for headers, margins
-      const newItemsPerPage = Math.max(3, Math.floor(availableSpace / cardHeight));
-
-      setItemsPerPage(newItemsPerPage);
-    }
-
-    updateItemsPerPage();
-    window.addEventListener("resize", updateItemsPerPage);
-    return () => window.removeEventListener("resize", updateItemsPerPage);
-  }, []);
+  const [loading, setLoading] = useState(true);
+  const [loadingVoyagers, setLoadingVoyagers] = useState(false);
+  const [page, setPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(3);
 
   useEffect(() => {
     async function fetchLeagues() {
@@ -68,103 +53,54 @@ export default function LeaguePage() {
     fetchVoyagers();
   }, [selectedLeague]);
 
-  if (loading) {
-    return <LoadingScreen />;
-  }
+  useEffect(() => {
+    function updateItemsPerPage() {
+      const cardHeight = 60;
+      const availableHeight = window.innerHeight - 400;
+      const count = Math.max(3, Math.floor(availableHeight / cardHeight));
+      setItemsPerPage(count);
+    }
 
-  const paginatedVoyagers = voyagers.slice(
-    (page - 1) * itemsPerPage,
-    page * itemsPerPage
-  );
+    updateItemsPerPage();
+    window.addEventListener('resize', updateItemsPerPage);
+    return () => window.removeEventListener('resize', updateItemsPerPage);
+  }, []);
+
+  if (loading) return <LoadingScreen />;
 
   return (
-    <Stack spacing="md">
-      {/* Breadcrumbs */}
-      <Breadcrumbs>
-        <Text
-          component="span"
-          style={{ cursor: "pointer" }}
-          onClick={() => setSelectedLeague(null)}
-        >
-          Leagues
-        </Text>
-        {selectedLeague && <Text>{selectedLeague.name}</Text>}
-      </Breadcrumbs>
+    <Stack spacing="lg">
+      {selectedLeague &&
+        <Breadcrumbs>
+          <Text
+            component="span"
+            style={{ cursor: 'pointer' }}
+            onClick={() => setSelectedLeague(null)}
+          >
+            {t('title')}
+          </Text>
+          <Text>{selectedLeague.name}</Text>
+        </Breadcrumbs>
+      }
 
-      {/* League Selection */}
       {!selectedLeague ? (
-        <>
-          <Stack spacing="sm">
-            {leagues
-              .slice((page - 1) * itemsPerPage, page * itemsPerPage)
-              .map((league) => (
-                <Card
-                  key={league.id}
-                  withBorder
-                  shadow="sm"
-                  onClick={() => setSelectedLeague(league)}
-                  style={{ cursor: "pointer" }}
-                >
-                  <Text size="lg" weight={600}>
-                    {league.name}
-                  </Text>
-                  <Text size="sm" color="gray">
-                    {league.minXP} - {league.maxXP ?? "∞"} XP
-                  </Text>
-                </Card>
-              ))}
-          </Stack>
-
-          {/* Pagination for leagues */}
-          {leagues.length > itemsPerPage && (
-            <Center pb="5rem" mt="md">
-              <Pagination
-                total={Math.ceil(leagues.length / itemsPerPage)}
-                page={page}
-                onChange={setPage}
-              />
-            </Center>
-          )}
-        </>
+        <LeagueList
+          leagues={leagues}
+          itemsPerPage={itemsPerPage}
+          page={page}
+          setPage={setPage}
+          onSelect={setSelectedLeague}
+        />
       ) : loadingVoyagers ? (
         <LoadingScreen />
       ) : (
-        <>
-          {/* Voyagers List */}
-          <Stack spacing="xs">
-            {paginatedVoyagers.length === 0 ? (
-              <Text align="center" color="dimmed" italic>
-                {t("noVoyagers")}
-              </Text>
-            ) : (
-              paginatedVoyagers.map((voyager) => (
-                <Card
-                  key={voyager.id}
-                  withBorder
-                  shadow="xs"
-                  p="xs"
-                  style={{ cursor: "pointer", height: "50px" }}
-                >
-                  <Group spacing="sm">
-                    <AvatarPreview avatar={voyager.avatar} size={27} />
-                    <Text>{voyager.username}</Text>
-                  </Group>
-                </Card>
-              ))
-            )}
-          </Stack>
-
-          {/* Bottom Pagination */}
-          {voyagers.length > itemsPerPage && (
-            <Center pb="5rem" mt="md">
-              <Pagination
-                total={Math.ceil(voyagers.length / itemsPerPage)}
-                page={page}
-                onChange={setPage}
-              />
-            </Center>
-          )}
-        </>
+        <VoyagerList
+          voyagers={voyagers}
+          page={page}
+          itemsPerPage={itemsPerPage}
+          setPage={setPage}
+          t={t}
+        />
       )}
     </Stack>
   );

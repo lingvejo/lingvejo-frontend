@@ -106,7 +106,7 @@ export default function AvatarEditor({ onClose }: AvatarEditorProps) {
   if (loading || !avatarProps) return <LoadingScreen />;
 
   return (
-    <Paper withBorder p="xl" radius="md">
+    <Paper shadow="md" radius="md" withBorder p="xl">
       <Stack spacing="xl">
         <Flex
           direction={{ base: 'column', sm: 'row' }}

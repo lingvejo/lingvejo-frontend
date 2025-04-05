@@ -1,10 +1,11 @@
 'use client';
 import { AppShell, Container, Stack } from '@mantine/core';
 import { useState, useEffect } from 'react';
-import { BottomNavigation } from './NavigationBar/BottomNavigation';
+import { BottomNavigation } from './navbar/BottomNavigation';
 import { renderContent } from '@/components/content/ContentRender';
 import { getSetting } from '@/utils/data'; // Assuming you have getSetting/setSetting functions
 import IntroScene from '@/components/intro/IntroScene'; // Import the IntroScene component
+import Test from '../test/Test';
 
 export default function FullscreenAppShell() {
     const [content, setContent] = useState<string>('planet');
@@ -27,7 +28,7 @@ export default function FullscreenAppShell() {
             }}
         >
             {/* Conditionally render either the IntroScene or the Main AppShell */}
-            {isIntroFinished ? (
+            {!isIntroFinished ? (
                 <>
                     <AppShell.Main
                         style={{
@@ -46,7 +47,10 @@ export default function FullscreenAppShell() {
                     <BottomNavigation type="bottom" content={content} setContent={setContent} />
                 </>
             ) : (
-                <IntroScene onComplete={() => setIsIntroFinished(true)} />
+                // <IntroScene onComplete={() => setIsIntroFinished(true)} />
+                // DEBUG: Add test component to load at start
+                // isIntroFinished is flopped
+                <Test />
             )}
         </AppShell>
     );
