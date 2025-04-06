@@ -1,57 +1,61 @@
 'use client';
 import { AppShell, Container, Stack } from '@mantine/core';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { BottomNavigation } from './navbar/BottomNavigation';
 import { renderContent } from '@/components/content/ContentRender';
-import { getSetting } from '@/utils/data'; // Assuming you have getSetting/setSetting functions
-import IntroScene from '@/components/intro/IntroScene'; // Import the IntroScene component
-import Test from '../test/Test';
+import { useVoyager } from '@/contexts/VoyagerContext'; // Adjust path if needed
+import LoadingScreen from '@/components/core/LoadingScreen'; // Optional
+import { markTutorialComplete } from '@/utils/data/mutations/markTutorialComplete';
+import TutorialScene from '@/components/turorial/TutorialScene';
 
 export default function FullscreenAppShell() {
-    const [content, setContent] = useState<string>('planet');
-    const [isIntroFinished, setIsIntroFinished] = useState<boolean>(false);
+  const { voyager, loading } = useVoyager();
+  const [content, setContent] = useState<string>('planet');
 
-    // Check if the intro has been completed
-    useEffect(() => {
-        const introStatus = getSetting("isIntroFinished"); // Fetch the setting for intro
-        setIsIntroFinished(introStatus === "true"); // Convert the string to boolean
-    }, []);
+  if (loading) {
+    return <LoadingScreen />;
+  }
 
-    return (
-        <AppShell
-            padding={0}
+  const completedTutorial = voyager?.completedTutorial === true;
+
+  const handleTutorialComplete = async () => {
+    if (voyager?.id) {
+      const success = await markTutorialComplete(voyager.id);
+      if (success) {
+        location.reload(); // Simplest way to re-fetch context
+      }
+    }
+  };
+
+  return (
+    <AppShell
+      padding={0}
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100vh',
+        overflow: 'hidden',
+      }}
+    >
+      {completedTutorial ? (
+        <>
+          <AppShell.Main
             style={{
-                display: 'flex',
-                flexDirection: 'column',
-                height: '100vh',
-                overflow: 'hidden', // Prevents the overall scrollbar from appearing
+              paddingTop: 20,
+              paddingBottom: 40,
+              flex: 1,
+              overflowY: 'auto',
             }}
-        >
-            {/* Conditionally render either the IntroScene or the Main AppShell */}
-            {!isIntroFinished ? (
-                <>
-                    <AppShell.Main
-                        style={{
-                            paddingTop: 20, // Adjust space at the top of the page
-                            paddingBottom: 40, // Adjust space at the bottom to make room for BottomNavigation
-                            flex: 1,
-                            overflowY: 'auto', // Allows scrolling if content exceeds the screen
-                        }}
-                    >
-                        <Container>
-                            <Stack spacing="md">
-                                {renderContent(content)}
-                            </Stack>
-                        </Container>
-                    </AppShell.Main>
-                    <BottomNavigation type="bottom" content={content} setContent={setContent} />
-                </>
-            ) : (
-                // <IntroScene onComplete={() => setIsIntroFinished(true)} />
-                // DEBUG: Add test component to load at start
-                // isIntroFinished is flopped
-                <Test />
-            )}
-        </AppShell>
-    );
+          >
+            <Container>
+              <Stack spacing="md">{renderContent(content)}</Stack>
+            </Container>
+          </AppShell.Main>
+          <BottomNavigation type="bottom" content={content} setContent={setContent} />
+        </>
+      ) : (
+        <TutorialScene onComplete={handleTutorialComplete} />
+      )}
+    </AppShell>
+  );
 }

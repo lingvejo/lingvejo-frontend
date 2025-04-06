@@ -2,40 +2,31 @@
 
 import { useState } from 'react';
 import { Box, Stack } from '@mantine/core';
-import CharacterSprite from './CharacterSprite'; // Assume you already have this component
-import DialogueBox from './DialogueBox'; // Assume you already have this component
+import CharacterSprite from './CharacterSprite';
+import DialogueBox from './DialogueBox';
 import { BACKGROUND_URL } from '@/constants/public';
+import { VisualNovelProps } from './types';
 
-export type DialogueLine = {
-  speaker: 'left' | 'right';
-  name: string;
-  character: string;
-  text: string;
-  background?: string;
-  choices?: { label: string; next: number }[];
-};
-
-type Props = {
-  scene: DialogueLine[];
-  onChoice: (nextIndex: number) => void;
-};
-
-export default function VisualNovel({ scene, onChoice }: Props) {
-  const [index, setIndex] = useState(0); // Track current dialogue line
-  const [isTypingDone, setIsTypingDone] = useState(false); // Control text typing animation
+export default function VisualNovel({ scene, onComplete }: VisualNovelProps) {
+  const [index, setIndex] = useState(0);
+  const [isTypingDone, setIsTypingDone] = useState(false);
 
   const currentLine = scene[index];
 
   const handleNext = () => {
-    if (currentLine.choices) return; // Don't proceed if there are choices
+    if (currentLine.choices) return;
     setIndex((prev) => Math.min(prev + 1, scene.length - 1));
-    setIsTypingDone(false); // Reset typing state
+    setIsTypingDone(false);
   };
 
-  const handleChoice = (nextIndex: number) => {
-    setIndex(nextIndex); // Set the next index based on the choice
-    setIsTypingDone(false); // Reset typing state
-    onChoice(nextIndex); // Trigger the callback for choice
+  const handleChoice = (nextIndex: number | null) => {
+    if (nextIndex === null) {
+      onComplete();
+      return;
+    }
+    
+    setIndex(nextIndex);
+    setIsTypingDone(false);
   };
 
   const backgroundStyle = currentLine.background
@@ -45,13 +36,13 @@ export default function VisualNovel({ scene, onChoice }: Props) {
   const characterStyle = {
     position: 'absolute',
     bottom: '10px',
-    left: currentLine.speaker === 'left' ? '10px' : 'auto',
-    right: currentLine.speaker === 'right' ? '10px' : 'auto',
-    zIndex: 1, // Ensure sprite is above the background
+    left: currentLine.location === 'left' ? '10px' : 'auto',
+    right: currentLine.location === 'right' ? '10px' : 'auto',
+    zIndex: 1,
   };
 
   const dialogueBoxStyle = {
-    zIndex: 2, // Ensure dialog is above the character
+    zIndex: 2,
   };
 
   return (
@@ -69,15 +60,14 @@ export default function VisualNovel({ scene, onChoice }: Props) {
       <Stack spacing="xs" justify="flex-end" style={{ height: '100%' }}>
         <Box style={characterStyle}>
           <CharacterSprite
-            side={currentLine.speaker}
-            show={true}
+            location={currentLine.location}
             character={currentLine.character}
           />
         </Box>
 
         <Box style={dialogueBoxStyle}>
           <DialogueBox
-            speaker={currentLine.name}
+            character={currentLine.name}
             text={currentLine.text}
             isTypingDone={isTypingDone}
             setIsTypingDone={setIsTypingDone}

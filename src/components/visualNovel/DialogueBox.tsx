@@ -1,30 +1,19 @@
 import { useEffect, useState } from 'react';
-import { Paper, Text, Button, Center, Divider, Stack, Loader } from '@mantine/core';
-
-type Choice = {
-  label: string;
-  next: number;
-};
-
-type Props = {
-  speaker: string;
-  text: string;
-  isTypingDone: boolean;
-  setIsTypingDone: (val: boolean) => void;
-  onNext: () => void;
-  choices: Choice[] | null;
-  handleChoice: (nextIndex: number) => void;
-};
+import { Paper, Text, Button, Divider, Stack, Loader } from '@mantine/core';
+import { DialogueBoxProps } from './types';
+import { useTranslations } from 'next-intl';
 
 const DialogueBox = ({
-  speaker,
+  character,
   text,
   choices,
   isTypingDone,
   setIsTypingDone,
   onNext,
   handleChoice,
-}: Props) => {
+}: DialogueBoxProps) => {
+  const t = useTranslations('visualNovel');
+
   const [displayedText, setDisplayedText] = useState('');
 
   // Typing animation effect for dialogue text
@@ -60,11 +49,14 @@ const DialogueBox = ({
     >
       <Stack spacing="sm">
         {/* Speaker name */}
-        <Text c="white" size="xl" weight={500}>
-          {speaker}
-        </Text>
-
-        <Divider />
+        {character && (
+          <>
+            <Text c="white" size="xl" weight={500}>
+              {character}
+            </Text>
+            <Divider />
+          </>
+        )}
 
         {/* Display the typed text */}
         <Text
@@ -107,7 +99,7 @@ const DialogueBox = ({
                 border: '1px solid white',
               }}
             >
-              Next
+              {t('next')}
             </Button>
           )
         ) : (

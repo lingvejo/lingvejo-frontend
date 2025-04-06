@@ -5,6 +5,7 @@
     aspect-ratio: 1 / 2; /* Keeps sprite square-shaped */
     animation: wizard-entry 1s ease-out, smooth-shadow 5s infinite alternate;
     position: relative; /* Allows for the use of pseudo-elements */
+    mix-blend-mode: multiply;
   }
   
   /* Flipped state for mirror effect */
