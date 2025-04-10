@@ -22,8 +22,12 @@
   },
   "league": {
     "title": "Leagues",
-    "noVoyagers": "This path is quiet… The stars await their champions. ⭐"
-  },
+    "noVoyagers": "This path is quiet… The stars await their champions. ⭐",
+    "empty": {
+      "title": "No champions yet...",
+      "description": "Begin your journey, and let the constellations carry your name across the galaxy."
+    }
+  },  
   "journal": {
     "title": "The Voyager’s Journal",
     "description": "Record your journey through distant realms. Only today’s tale may change, only you may read it—never share secrets.",

@@ -30,6 +30,8 @@
     "@tiptap/react": "^2.11.7",
     "@tiptap/starter-kit": "^2.11.7",
     "@tsparticles/react": "^3.0.0",
+    "@turf/turf": "^7.2.0",
+    "d3-geo": "^3.1.1",
     "dayjs": "^1.11.13",
     "dotenv": "^16.4.7",
     "framer-motion": "^12.6.3",
@@ -42,11 +44,15 @@
     "next-intl": "^4.0.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-globe.gl": "^2.33.2",
     "react-markdown": "^10.1.0",
     "react-nice-avatar": "^1.5.0",
     "react-speech-recognition": "^4.0.0",
     "react-swipeable": "^7.0.2",
-    "recharts": "^2.15.1"
+    "recharts": "^2.15.1",
+    "seedrandom": "^3.0.5",
+    "simplex-noise": "^4.0.3",
+    "three": "^0.175.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

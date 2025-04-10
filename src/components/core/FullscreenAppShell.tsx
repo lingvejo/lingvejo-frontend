@@ -47,7 +47,7 @@ export default function FullscreenAppShell() {
               overflowY: 'auto',
             }}
           >
-            <Container>
+            <Container fluid px={0}>
               <Stack spacing="md">{renderContent(content)}</Stack>
             </Container>
           </AppShell.Main>

@@ -21,6 +21,7 @@ import AdventureLog from '@/components/map/adventureLog/AdventureLog';
 import GalaxyMap from '@/components/map/galaxyMap/GalaxyMap';
 import Test from '../test/Test';
 import Guild from '@/components/leaderboard/guild/Guild';
+import GlobeViewer from '@/components/planet/globe/GlobeViewer';
 
 // Define the interface for each icon item
 export interface ElementItem {
@@ -43,8 +44,8 @@ export const map: ElementItem[] = [
 ];
 
 export const planet: ElementItem[] = [
-    { icon: <IconCompass />, label: 'adventure', content: <Adventure />},
-    { icon: <IconFlame />, label: 'streak', content: <Streak />},
+    { icon: <IconCompass />, label: 'GlobeViewer', content: <GlobeViewer />},
+    { icon: <IconFlame />, label: 'Streak', content: <Streak />},
     { icon: <IconChecklist />, label: 'DailyMissions', content: <DailyMissions />},
     { icon: <IconShoppingCart />, label: 'ArcaneExchange', content: <ArcaneExchange />},
 ];

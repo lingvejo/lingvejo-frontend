@@ -20,10 +20,9 @@ export interface Voyager {
   createdAt: string;
   updatedAt: string;
   lastLogin: string | null;
-  language: string;
+  location: number; // Renamed from "language" to "location"
   totalXP: number;
   completedTutorial: boolean;
-  isActive: boolean;
   avatar: Avatar | null;
   guildVoyagers: Guild[];
 }
@@ -39,7 +38,7 @@ export const VoyagerProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // debug: id === 2
+    // Fetch the Voyager data (debug: using id === 2 for now)
     getVoyager(2).then((data) => {
       setVoyager(data);
       setLoading(false);

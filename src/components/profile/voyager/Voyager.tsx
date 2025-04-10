@@ -100,12 +100,6 @@ const VoyagerProfile: React.FC = () => {
               onChange={() => {}}
               disabled={!isEditing}
             />
-            <TextInput
-              label="Language"
-              value={voyager.language}
-              onChange={() => {}}
-              disabled={!isEditing}
-            />
             <Textarea
               label="Bio"
               value={voyager.bio || ''}

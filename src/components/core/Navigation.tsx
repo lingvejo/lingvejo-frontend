@@ -1,11 +1,8 @@
 'use client';
 import React, { useState } from 'react';
 import { Group, Stack } from '@mantine/core';
-import { useTranslations } from 'next-intl';
 import theme from '@/components/theme/Theme';
 import * as NavigationElement from '@/components/content/NavigationElement'; // Import everything as an object
-import { Drawer } from './Drawer';
-import { renderDrawer } from '../content/ContentRender';
 
 // Extract available navigation types dynamically
 type NavigationType = keyof typeof NavigationElement;
@@ -44,34 +41,23 @@ interface NavigationProps {
 
 export const Navigation: React.FC<NavigationProps> = ({ type, content, setContent }) => {
     const icons = NavigationElement[type] || []; // Dynamically fetch icons based on `type`
-    const [drawerOpened, setDrawerOpened] = useState(false);
-    const [drawerTitle, setDrawerTitle] = useState('');
-    const t = useTranslations();
 
     const handleIconClick = (label: string) => {
         setContent(label);
-        setDrawerTitle(label);
     };
 
     return (
-        <>
-            <Group grow gap={0}>
-                {icons.map(({ icon, label }) => (
-                    <IconStack
-                        key={label}
-                        type={type}
-                        icon={icon}
-                        label={label}
-                        isSelected={content === label}
-                        onClick={() => handleIconClick(label)}
-                    />
-                ))}
-            </Group>
-            <Drawer
-                drawerOpened={drawerOpened}
-                onClose={() => setDrawerOpened(false)}
-                content={drawerTitle ? renderDrawer(drawerTitle) : ''}
-            />
-        </>
+        <Group grow gap={0}>
+            {icons.map(({ icon, label }) => (
+                <IconStack
+                    key={label}
+                    type={type}
+                    icon={icon}
+                    label={label}
+                    isSelected={content === label}
+                    onClick={() => handleIconClick(label)}
+                />
+            ))}
+        </Group>
     );
 };

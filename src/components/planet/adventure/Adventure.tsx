@@ -53,7 +53,8 @@ const Adventure = () => {
   }, [units]); // If you need to depend on `units` or other state values
   
 
-  const [wizardHere, setWizardHere] = useState(true);
+  // DEBUG: set wizard to gone
+  const [wizardHere, setWizardHere] = useState(false);
   const [isReviewMode, setIsReviewMode] = useState(false);
   const [learningPageVisible, setLearningPageVisible] = useState(false);
   const [learningProgress, setLearningProgress] = useState<number>(0);

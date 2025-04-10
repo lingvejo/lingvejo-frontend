@@ -13,17 +13,22 @@ const SwipableAppShell: React.FC<SwipableAppShellProps> = ({ type, tabs }) => {
     const tabLabels = tabs.map(tab => tab.label);
     const [content, setContent] = useState(tabLabels[0]);
 
-    const swipeHandlers = useSwipeable({
-        onSwipedLeft: () => setContent(getNextTab(content, tabLabels)),
-        onSwipedRight: () => setContent(getPrevTab(content, tabLabels)),
-        preventScrollOnSwipe: true,
-        trackMouse: true
-    });
+    // DEBUG: disable swipe
+    const swipeHandlers = useSwipeable({});
+    // const swipeHandlers = useSwipeable({
+    //     onSwipedLeft: () => setContent(getNextTab(content, tabLabels)),
+    //     onSwipedRight: () => setContent(getPrevTab(content, tabLabels)),
+    //     preventScrollOnSwipe: true,
+    //     trackMouse: true
+    // });
 
     return (
-        <AppShell header={{ height: 50 }} padding="md">
+        <AppShell
+            header={{ height: 50 }}
+            padding={{ top: 'md', bottom: 'md', left: 0, right: 0 }}
+        >
             <TopNavigation type={type} content={content} setContent={setContent} />
-            <AppShell.Main {...swipeHandlers} style={{ paddingTop: '60px', overflowX: 'hidden' }}>
+            <AppShell.Main {...swipeHandlers} style={{ overflowX: 'hidden' }}>
                 {tabs.find(tab => tab.label === content)?.content}
             </AppShell.Main>
         </AppShell>

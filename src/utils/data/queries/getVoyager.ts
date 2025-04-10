@@ -15,10 +15,9 @@ const GET_VOYAGER = gql`
       createdAt
       updatedAt
       lastLogin
-      language
+      location
       totalXP
       completedTutorial
-      isActive
       avatar
       guildVoyagers(where: { voyagerId: { _eq: $id } }) {
         role

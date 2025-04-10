@@ -1,7 +1,6 @@
 
 
 import { esperanto } from './esperanto';
-import { leaderboard } from './leaderboard';
 
 export const setSetting = (label: string, value: any) => {
   if (typeof window !== 'undefined' && window.localStorage) {
@@ -16,7 +15,6 @@ export const getSetting = (label: string) => {
   }
 };
 
-export const getLeaderboardData = () => leaderboard;
 
 
 export const handleError = (error: any) => {
