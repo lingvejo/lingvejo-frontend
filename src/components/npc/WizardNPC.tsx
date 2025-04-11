@@ -1,8 +1,8 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import { Modal, Paper, Text, Button, Group } from '@mantine/core';
-import AvatarPreview from '@/components/avatar/AvatarPreview';
-import { wizardBaseAvatar } from '@/components/avatar/wizardBaseAvatar';
+import AvatarPreview from '@/components/core/avatar/AvatarPreview';
+import { wizardBaseAvatar } from '@/components/core/avatar/wizardBaseAvatar';
 
 interface WizardNPCProps {
   wizardHere: boolean;

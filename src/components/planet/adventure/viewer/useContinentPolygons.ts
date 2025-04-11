@@ -31,6 +31,7 @@ function generatePolygon(center: [number, number], radius = 20): number[][] {
 }
 
 interface Continent {
+  continentId: number;
   name: string;
   description?: string;
 }
@@ -64,8 +65,9 @@ export function useContinentPolygons({ continents }: UseContinentPolygonsProps):
       continentFeatures.push({
         type: 'Feature',
         properties: {
-          name: c.name,
           level: 'continent',
+          continentId: c.continentId,
+          name: c.name,
           description: c.description,
         },
         geometry: polygon.geometry,

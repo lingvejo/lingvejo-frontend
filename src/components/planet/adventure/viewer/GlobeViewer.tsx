@@ -7,7 +7,7 @@ import * as THREE from 'three';
 import { useVoyager } from '@/contexts/VoyagerContext';
 import { getPlanetContinents } from '@/utils/data/queries/getPlanetContinents';
 import { useContinentPolygons } from './useContinentPolygons';
-import { planetMoods } from './data';
+import { planetMoods } from './planetMoods';
 import LoadingScreen from '@/components/core/loading/LoadingScreen';
 
 // Dynamic import for Globe
@@ -21,10 +21,15 @@ function getElevation(lat: number, lng: number) {
 }
 
 interface GlobeViewerProps {
-  moodKey?: keyof typeof planetMoods; // Allow dynamic mood selection
+  moodKey?: keyof typeof planetMoods;
+  onContinentClick: (continent: {
+    continentId: number;
+    name: string;
+    description: string;
+  }) => void;
 }
 
-export default function GlobeViewer({ moodKey = 'cryonix' }: GlobeViewerProps) {
+export default function GlobeViewer({ moodKey = 'cerulea', onContinentClick }: GlobeViewerProps) {
   const globeRef = useRef<any>(null);
   const theme = useMantineTheme();
   const moodSettings = planetMoods[moodKey];
@@ -99,7 +104,11 @@ export default function GlobeViewer({ moodKey = 'cryonix' }: GlobeViewerProps) {
             return c ? getElevation(c[1], c[0]) : 0.01;
           }}
           polygonLabel={(d: any) => `<b>${d.properties.name}</b><br/>${d.properties.description || ''}`}
-          onPolygonClick={(d: any) => alert('Clicked continent: ' + d.properties.name)}
+          onPolygonClick={(d: any) => onContinentClick({
+              continentId: d.properties.continentId,
+              name: d.properties.name,
+              description: d.properties.description,
+          })}
           globeMaterial={new THREE.MeshStandardMaterial({
             color: moodSettings.globe.color,
             emissive: moodSettings.globe.emissive,
@@ -116,7 +125,7 @@ export default function GlobeViewer({ moodKey = 'cryonix' }: GlobeViewerProps) {
           }} 
 
           width={windowSize.width}
-          height={windowSize.height - 150} // Adjust height to remove navbar space
+          height={windowSize.height - 200} // Adjust height to remove navbar space
         />
       </Center>
     </Box>

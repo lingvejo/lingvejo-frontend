@@ -6,7 +6,6 @@ import { IconPlanet, IconTrophy, IconStar, IconMap,
 import { ReactNode } from 'react';
 import Planet from '@/components/planet/Planet';
 import Leaderboard from '@/components/leaderboard/Leaderboard';
-import Adventure from '@/components/planet/adventure/Adventure';
 import Streak from '@/components/planet/streak/Streak';
 import Profile from '@/components/profile/Profile';
 import ArcaneExchange from '@/components/planet/arcaneExchange/ArcaneExchange';
@@ -21,7 +20,7 @@ import AdventureLog from '@/components/map/adventureLog/AdventureLog';
 import GalaxyMap from '@/components/map/galaxyMap/GalaxyMap';
 import Test from '../test/Test';
 import Guild from '@/components/leaderboard/guild/Guild';
-import GlobeViewer from '@/components/planet/globe/GlobeViewer';
+import WorldExplorer from '@/components/planet/adventure/WorldExplorer';
 
 // Define the interface for each icon item
 export interface ElementItem {
@@ -44,7 +43,7 @@ export const map: ElementItem[] = [
 ];
 
 export const planet: ElementItem[] = [
-    { icon: <IconCompass />, label: 'GlobeViewer', content: <GlobeViewer />},
+    { icon: <IconCompass />, label: 'WorldExplorer', content: <WorldExplorer />},
     { icon: <IconFlame />, label: 'Streak', content: <Streak />},
     { icon: <IconChecklist />, label: 'DailyMissions', content: <DailyMissions />},
     { icon: <IconShoppingCart />, label: 'ArcaneExchange', content: <ArcaneExchange />},

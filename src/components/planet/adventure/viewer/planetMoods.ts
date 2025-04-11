@@ -1,5 +1,14 @@
+export interface PlanetMood {
+  globe: {
+    color: string;
+    emissive: string;
+  };
+  side: string;
+  stroke: string;
+  continentColor: string;
+}
 
-  export const planetMoods = {
+export const planetMoods: Record<string, PlanetMood> = {
     cryonix: {
       // ❄️ Frozen Tundra World – Ice + UV light shimmer
       globe: {

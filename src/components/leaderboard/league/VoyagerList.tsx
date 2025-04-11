@@ -1,5 +1,5 @@
 import { Card, Stack, Text, Group, Center, Pagination } from '@mantine/core';
-import AvatarPreview from '@/components/avatar/AvatarPreview';
+import AvatarPreview from '@/components/core/avatar/AvatarPreview';
 import { Voyager } from '@/contexts/VoyagerContext';
 
 type Props = {

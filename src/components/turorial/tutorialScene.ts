@@ -10,15 +10,14 @@ export const tutorialScene = (t: TFunction) => [
     text: t('tutorial.1'),
   },
   {
-    location: 'left',
     character: 'villager1',
     name: t('tutorial.stranger'),
     background: 'marketCrowd',
     text: t('tutorial.2'),
   },
   {
-    location: 'right',
     character: 'villager2',
+    location: 'right',
     name: t('tutorial.stranger'),
     background: 'marketCrowd',
     text: t('tutorial.3'),
@@ -28,7 +27,6 @@ export const tutorialScene = (t: TFunction) => [
     text: t('tutorial.4'),
   },
   {
-    location: 'left',
     character: 'villager3',
     name: t('tutorial.stranger'),
     background: 'marketCrowd',
@@ -51,7 +49,6 @@ export const tutorialScene = (t: TFunction) => [
     text: t('tutorial.9'),
   },
   {
-    location: 'left',
     character: 'aurora',
     name: t('tutorial.wizard'),
     background: 'forestClearing',
@@ -62,14 +59,12 @@ export const tutorialScene = (t: TFunction) => [
     ],
   },
   {
-    location: 'left',
     character: 'aurora',
     name: t('tutorial.wizard'),
     background: 'forestClearing',
     text: t('tutorial.11'),
   },
   {
-    location: 'left',
     character: 'aurora',
     name: t('tutorial.wizard'),
     background: 'forestClearing',

@@ -15,9 +15,16 @@ export default function VisualNovel({ scene, onComplete }: VisualNovelProps) {
 
   const handleNext = () => {
     if (currentLine.choices) return;
-    setIndex((prev) => Math.min(prev + 1, scene.length - 1));
+  
+    const isLastLine = index === scene.length - 1;
+    if (isLastLine) {
+      onComplete();
+      return;
+    }
+  
+    setIndex((prev) => prev + 1);
     setIsTypingDone(false);
-  };
+  };  
 
   const handleChoice = (nextIndex: number | null) => {
     if (nextIndex === null) {

@@ -23,8 +23,8 @@ import { IconEdit, IconCheck, IconX, IconUser, IconMail } from '@tabler/icons-re
 import { getVoyagerLeague } from '@/utils/data/queries/getVoyagerLeague';
 import LoadingScreen from '@/components/core/loading/LoadingScreen';
 import { useVoyager } from '@/contexts/VoyagerContext';
-import AvatarEditor from '@/components/avatar/AvatarEditor';
-import AvatarPreview from '@/components/avatar/AvatarPreview';
+import AvatarEditor from '@/components/core/avatar/AvatarEditor';
+import AvatarPreview from '@/components/core/avatar/AvatarPreview';
 
 const VoyagerProfile: React.FC = () => {
   const { voyager, loading } = useVoyager();
