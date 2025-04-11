@@ -9,7 +9,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { useVoyager } from '@/contexts/VoyagerContext';
-import LoadingScreen from '@/components/core/LoadingScreen';
+import LoadingScreen from '@/components/core/loading/LoadingScreen';
 import { getAdventuringPlanets } from '@/utils/data/queries/getAdventuringPlanets';
 import { getWizardingPlanets } from '@/utils/data/queries/getWizardingPlanets';
 import AdventureLogList from './AdventureLogList';

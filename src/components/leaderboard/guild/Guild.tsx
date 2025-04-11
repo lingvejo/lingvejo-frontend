@@ -12,7 +12,7 @@ import {
   Pagination,
 } from '@mantine/core';
 import { IconUsers, IconAffiliate } from '@tabler/icons-react';
-import LoadingScreen from '@/components/core/LoadingScreen';
+import LoadingScreen from '@/components/core/loading/LoadingScreen';
 
 interface Guild {
   id: number;

@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useVoyager } from '@/contexts/VoyagerContext';
 import { useTranslations } from 'next-intl';
-import LoadingScreen from '@/components/core/LoadingScreen';
+import LoadingScreen from '@/components/core/loading/LoadingScreen';
 import { getHallOfLegendsVoyager } from '@/utils/data/queries/getHallOfLegendsVoyager';
 import PaginatedGridView from '@/components/core/PaginatedGridView';
 import HallOfLegendCard from './HallOfLegendCard';

@@ -12,13 +12,12 @@
     }
   },
   "loading": {
-    "summoningSpells": "Summoning enchanted spells...",
-    "brewingEnergies": "Brewing ancient energies...",
-    "unlockingMysteries": "Unlocking hidden mysteries...",
-    "castingIncantations": "Casting powerful incantations...",
-    "drawingFromForces": "Drawing from ancient forces...",
-    "channelingMagic": "Channeling cosmic magic...",
-    "weavingWisdom": "Weaving ancient wisdom..."
+    "titleWarpVelocity": "Warp Velocity",
+    "titleStellarAmplification": "Stellar Amplification",
+    "label": {
+      "active": "Active",
+      "inactive": "Inactive"
+    }
   },
   "league": {
     "title": "Leagues",

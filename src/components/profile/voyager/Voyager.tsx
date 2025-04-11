@@ -21,7 +21,7 @@ import {
 } from '@mantine/core';
 import { IconEdit, IconCheck, IconX, IconUser, IconMail } from '@tabler/icons-react';
 import { getVoyagerLeague } from '@/utils/data/queries/getVoyagerLeague';
-import LoadingScreen from '@/components/core/LoadingScreen';
+import LoadingScreen from '@/components/core/loading/LoadingScreen';
 import { useVoyager } from '@/contexts/VoyagerContext';
 import AvatarEditor from '@/components/avatar/AvatarEditor';
 import AvatarPreview from '@/components/avatar/AvatarPreview';

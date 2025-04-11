@@ -15,7 +15,7 @@ import {
 import { IconDeviceFloppy, IconDice5, IconX } from '@tabler/icons-react';
 import { useVoyager } from '@/contexts/VoyagerContext';
 import { useState, useEffect } from 'react';
-import LoadingScreen from '@/components/core/LoadingScreen';
+import LoadingScreen from '@/components/core/loading/LoadingScreen';
 import { defaultOptions, initialAvatar } from './avatarOptions';
 import AvatarPreview from './AvatarPreview';
 import { useTranslations } from 'next-intl';

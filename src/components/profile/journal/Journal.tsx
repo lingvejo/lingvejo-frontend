@@ -13,7 +13,7 @@ import { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
 import { useTranslations } from 'next-intl';
 import { useVoyager } from '@/contexts/VoyagerContext';
-import LoadingScreen from '@/components/core/LoadingScreen';
+import LoadingScreen from '@/components/core/loading/LoadingScreen';
 import { getJournalEntriesForMonth } from '@/utils/data/queries/getJournalEntriesForMonth';
 import { getMonthRange } from '@/utils/date/getMonthRange';
 import { setJournalEntry } from '@/utils/data/setters/setJournalEntry';

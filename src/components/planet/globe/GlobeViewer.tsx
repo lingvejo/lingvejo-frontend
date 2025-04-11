@@ -8,7 +8,7 @@ import { useVoyager } from '@/contexts/VoyagerContext';
 import { getPlanetContinents } from '@/utils/data/queries/getPlanetContinents';
 import { useContinentPolygons } from './useContinentPolygons';
 import { planetMoods } from './data';
-import LoadingScreen from '@/components/core/LoadingScreen';
+import LoadingScreen from '@/components/core/loading/LoadingScreen';
 
 // Dynamic import for Globe
 const Globe = dynamic(() => import('react-globe.gl'), { ssr: false });

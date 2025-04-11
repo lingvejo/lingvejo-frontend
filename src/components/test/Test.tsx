@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useVoyager } from '@/contexts/VoyagerContext'; // Assuming you're using this context
 import { getPlanetContinents } from '@/utils/data/queries/getPlanetContinents';
-import LoadingScreen from '@/components/core/LoadingScreen';
+import LoadingScreen from '@/components/core/loading/LoadingScreen';
 
 export default function PlanetContinents() {
   const { voyager, loading } = useVoyager(); // Assuming 'loading' state is part of VoyagerContext
@@ -18,7 +18,7 @@ export default function PlanetContinents() {
     fetchContinents();
   }, [voyager?.location, loading]);
 
-  if (loading || !voyager) return <LoadingScreen />; // Show loading screen if data is still loading
+  return <LoadingScreen />; // Show loading screen if data is still loading
 
   if (!continents.length) return <div>No continents found for this planet.</div>; // In case no continents are found
 

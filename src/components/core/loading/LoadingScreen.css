@@ -1,0 +1,205 @@
+/* Global styles for the loading screen */
+.loading-container {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Dark and Light background */
+.loading-container[data-theme='dark'] {
+    background-color: #000;
+    color: #fff;
+}
+
+.loading-container[data-theme='light'] {
+    background-color: #fff;
+    color: #000;
+}
+
+/* Spaceship Window */
+.loading-container .spaceship-window {
+    width: 30vw;
+    height: 30vw;
+    max-width: 350px;
+    max-height: 350px;
+    border-radius: 50%;
+    position: absolute;
+    top: 25%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    transition: transform 0.3s ease-in-out, opacity 0.5s ease;
+}
+
+/* Spaceship Window - Dark Mode */
+.loading-container[data-theme='dark'] .spaceship-window {
+    background: radial-gradient(circle at center, rgba(255, 255, 255, 0.15), rgba(20, 20, 20, 0.9));
+    border: 5px solid var(--mantine-primary-color-filled);
+    box-shadow:
+        0 0 20px var(--mantine-primary-color-filled),
+        0 0 60px var(--mantine-primary-color-light),
+        inset 0 0 30px rgba(255, 255, 255, 0.1);
+}
+
+/* Spaceship Window - Light Mode */
+.loading-container[data-theme='light'] .spaceship-window {
+    background: radial-gradient(circle, rgba(0, 0, 0, 0.1), rgba(255, 255, 255, 0.85));
+    border-color: var(--mantine-primary-color-filled);
+}
+
+/* Control panels grid */
+.loading-container .control-panels {
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 80%;
+    height: auto;
+    margin-top: 25px;
+    flex-wrap: wrap;
+    gap: 35px;
+    transition: all 0.4s ease;
+}
+
+/* Control Panel Card base */
+.loading-container .control-panel {
+    border-radius: 12px;
+    padding: 15px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 22%;
+    min-width: 130px;
+    flex-grow: 1;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Dark mode panel */
+.loading-container[data-theme='dark'] .control-panel {
+    background: rgba(0, 0, 0, 0.85);
+    color: #fff;
+    box-shadow: 0 0 25px var(--mantine-primary-color-filled);
+}
+
+/* Light mode panel */
+.loading-container[data-theme='light'] .control-panel {
+    background: rgba(255, 255, 255, 0.85);
+    color: #000;
+    box-shadow: 0 0 15px var(--mantine-primary-color-light-hover);
+}
+
+/* Hover effect for control panel */
+.loading-container .control-panel:hover {
+    transform: scale(1.05);
+}
+
+/* Dark hover */
+.loading-container[data-theme='dark'] .control-panel:hover {
+    box-shadow: 0 0 35px var(--mantine-primary-color-filled);
+}
+
+/* Light hover */
+.loading-container[data-theme='light'] .control-panel:hover {
+    box-shadow: 0 0 25px var(--mantine-primary-color-light-hover);
+}
+
+/* Warp effect canvas */
+.loading-container .warp-effect-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: opacity 0.5s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Dark Mode Stars */
+.loading-container[data-theme='dark'] .warp-effect-canvas {
+    background-color: black;
+    box-shadow: 0 0 10px white, 0 0 50px white;
+}
+
+/* Light Mode Stars */
+.loading-container[data-theme='light'] .warp-effect-canvas {
+    background-color: white;
+    box-shadow: 0 0 10px #333, 0 0 50px #999;
+}
+
+/* Text styling */
+.loading-container .text-center {
+    text-align: center;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: inherit;
+}
+
+/* Button styling */
+.loading-container button {
+    margin-top: 15px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* Light Mode Button */
+.loading-container[data-theme='light'] button {
+    background-color: var(--mantine-primary-color);
+    color: #000;
+}
+
+/* Dark Mode Button */
+.loading-container[data-theme='dark'] button {
+    background-color: var(--mantine-primary-color-light);
+    color: #fff;
+}
+
+/* Media query for small screens */
+@media (max-width: 600px) {
+    .loading-container .spaceship-window {
+        width: 50vw;
+        height: 50vw;
+    }
+
+    .loading-container .control-panels {
+        flex-direction: column;
+        width: 90%;
+        justify-content: space-between;
+        margin-top: 15px;
+        align-items: center;
+    }
+
+    .loading-container .control-panel {
+        width: 80%;
+        min-width: 100px;
+        margin-bottom: 15px;
+        padding: 20px;
+    }
+}
+
+/* Media query for large screens */
+@media (min-width: 1200px) {
+    .loading-container .spaceship-window {
+        width: 25vw;
+        height: 25vw;
+    }
+
+    .loading-container .control-panels {
+        width: 55%;
+    }
+
+    .loading-container .control-panel {
+        width: 20%;
+    }
+}

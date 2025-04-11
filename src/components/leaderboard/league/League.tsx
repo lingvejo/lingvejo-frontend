@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { Stack, Breadcrumbs, Text, Center, Pagination } from '@mantine/core';
 import { getAllLeagues } from '@/utils/data/queries/getAllLeagues';
 import { getVoyagersInLeague } from '@/utils/data/queries/getVoyagersInLeague';
-import LoadingScreen from '@/components/core/LoadingScreen';
+import LoadingScreen from '@/components/core/loading/LoadingScreen';
 import { useTranslations } from 'next-intl';
 import LeagueList from './LeagueList';
 import VoyagerList from './VoyagerList';
