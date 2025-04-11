@@ -11,10 +11,10 @@ export default function VisualNovel({ story, onComplete }: VisualNovelProps) {
   const [index, setIndex] = useState(0);
   const [isTypingDone, setIsTypingDone] = useState(false);
 
-  const currentLine = story[index];
+  const current = story[index];
 
   const handleNext = () => {
-    if (currentLine.choices) return;
+    if (current.choices) return;
   
     const isLastLine = index === story.length - 1;
     if (isLastLine) {
@@ -36,15 +36,15 @@ export default function VisualNovel({ story, onComplete }: VisualNovelProps) {
     setIsTypingDone(false);
   };
 
-  const backgroundStyle = currentLine.background
-    ? { backgroundImage: `url(${BACKGROUND_URL + currentLine.background + '.png'})` }
+  const backgroundStyle = current.background
+    ? { backgroundImage: `url(${BACKGROUND_URL + current.background + '.png'})` }
     : {};
 
   const characterStyle = {
     position: 'absolute',
     bottom: '10px',
-    left: currentLine.location === 'left' ? '10px' : 'auto',
-    right: currentLine.location === 'right' ? '10px' : 'auto',
+    left: current.location === 'left' ? '10px' : 'auto',
+    right: current.location === 'right' ? '10px' : 'auto',
     zIndex: 1,
   };
 
@@ -67,19 +67,20 @@ export default function VisualNovel({ story, onComplete }: VisualNovelProps) {
       <Stack spacing="xs" justify="flex-end" style={{ height: '100%' }}>
         <Box style={characterStyle}>
           <CharacterSprite
-            location={currentLine.location}
-            character={currentLine.character}
+            location={current.location}
+            character={current.character}
           />
         </Box>
 
         <Box style={dialogueBoxStyle}>
           <DialogueBox
-            character={currentLine.name}
-            text={currentLine.text}
+            character={current.name}
+            text={current.text}
             isTypingDone={isTypingDone}
             setIsTypingDone={setIsTypingDone}
             onNext={handleNext}
-            choices={currentLine.choices}
+            choices={current.choices}
+            interaction={current.interaction}
             handleChoice={handleChoice}
           />
         </Box>

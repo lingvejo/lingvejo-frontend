@@ -3,11 +3,13 @@ import { Paper, Text, Button, Divider, Stack, Loader } from '@mantine/core';
 import { DialogueBoxProps } from './types';
 import { useTranslations } from 'next-intl';
 import ReactMarkdown from 'react-markdown';
+import DialogueInteraction from './DialogueInteraction';
 
 const DialogueBox = ({
   character,
   text,
   choices,
+  interaction,
   isTypingDone,
   setIsTypingDone,
   onNext,
@@ -75,17 +77,17 @@ const DialogueBox = ({
 
         {/* Display choices or Next button */}
         {isTypingDone ? (
-          choices ? (
+          interaction ? (
+            <DialogueInteraction interaction={interaction} onComplete={onNext} />
+          ) : choices ? (
             <Stack spacing="xs">
               {choices.map((choice, i) => (
                 <Button
                   key={i}
                   onClick={() => handleChoice(choice.next)}
                   color="white"
-                  variant="outline" // Slightly more polished look for choice buttons
-                  style={{
-                    border: '1px solid white',
-                  }}
+                  variant="outline"
+                  style={{ border: '1px solid white' }}
                 >
                   {choice.label}
                 </Button>
@@ -96,16 +98,14 @@ const DialogueBox = ({
               onClick={onNext}
               color="white"
               variant="outline"
-              style={{
-                border: '1px solid white',
-              }}
+              style={{ border: '1px solid white' }}
             >
               {t('next')}
             </Button>
           )
-        ) : (
-          <Loader color="white" size="xs" />
-        )}
+      ) : (
+        <Loader color="white" size="xs" />
+      )}
       </Stack>
     </Paper>
   );

@@ -6,7 +6,6 @@ const GET_PLANET_QUESTS = gql`
   query GetPlanetQuests($settlementId: Int!) {
     planetQuest(where: { settlementId: { _eq: $settlementId } }) {
       questId
-      type
       title
       content
     }

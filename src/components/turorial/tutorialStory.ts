@@ -1,6 +1,6 @@
 import { TFunction } from 'next-intl';
 
-export const tutorialScene = (t: TFunction) => [
+export const tutorialStory = (t: TFunction) => [
   {
     background: 'marketCrowd',
     text: t('tutorial.0'),
@@ -76,4 +76,4 @@ export const tutorialScene = (t: TFunction) => [
   },
 ];
 
-export default tutorialScene;
+export default tutorialStory;

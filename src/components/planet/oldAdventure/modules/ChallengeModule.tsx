@@ -4,8 +4,8 @@ import { Button, Card, Stack, Text, TextInput, Group } from "@mantine/core";
 interface ChallengeModuleProps {
   data?: {
     challenges?: {
-      esperanto: string;
-      english: string;
+      translation: string;
+      text: string;
     }[];
   };
 }
@@ -23,7 +23,7 @@ const ChallengeModule: React.FC<ChallengeModuleProps> = ({ data }) => {
 
   const handleCheckAnswer = () => {
     const cleanedInput = userInput.trim().toLowerCase();
-    const correctAnswer = currentChallenge.english.trim().toLowerCase();
+    const correctAnswer = currentChallenge.text.trim().toLowerCase();
     setIsCorrect(cleanedInput === correctAnswer);
   };
 
@@ -39,7 +39,7 @@ const ChallengeModule: React.FC<ChallengeModuleProps> = ({ data }) => {
     <Card shadow="sm" padding="lg" radius="md" withBorder>
       <Stack align="center">
         <Text size="lg" weight={600}>
-          {currentChallenge.esperanto}
+          {currentChallenge.translation}
         </Text>
         <Text size="sm" color="dimmed">
           (Translate this sentence)

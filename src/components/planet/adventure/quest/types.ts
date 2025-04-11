@@ -1,14 +1,9 @@
 import { DialogueLine } from '@/components/core/visualNovel/types';
 
-type BaseQuest = {
+export type Quest = {
     questId: number;
     title: string;
+    content: {
+        story: DialogueLine[];
+    };
 };
-  
-export type Quest =
-    | (BaseQuest & {
-        type: 'VisualNovel';
-        content: {
-            story: DialogueLine[];
-        };
-    })

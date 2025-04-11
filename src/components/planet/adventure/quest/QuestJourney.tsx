@@ -34,12 +34,11 @@ export default function QuestJourney({ quest, onComplete }: QuestJourneyProps) {
     <div
       style={{
         position: 'fixed',
-        zIndex: 1000,
+        zIndex: 5000,
         top: 0,
         left: 0,
         width: '100vw',
         height: '100vh',
-        overflowY: 'auto',
       }}
     >
       {loading ? <LoadingScreen /> : content}
