@@ -7,16 +7,16 @@ import DialogueBox from './DialogueBox';
 import { BACKGROUND_URL } from '@/constants/public';
 import { VisualNovelProps } from './types';
 
-export default function VisualNovel({ scene, onComplete }: VisualNovelProps) {
+export default function VisualNovel({ story, onComplete }: VisualNovelProps) {
   const [index, setIndex] = useState(0);
   const [isTypingDone, setIsTypingDone] = useState(false);
 
-  const currentLine = scene[index];
+  const currentLine = story[index];
 
   const handleNext = () => {
     if (currentLine.choices) return;
   
-    const isLastLine = index === scene.length - 1;
+    const isLastLine = index === story.length - 1;
     if (isLastLine) {
       onComplete();
       return;

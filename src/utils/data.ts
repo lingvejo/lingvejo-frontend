@@ -1,7 +1,4 @@
 
-
-import { esperanto } from './esperanto';
-
 export const setSetting = (label: string, value: any) => {
   if (typeof window !== 'undefined' && window.localStorage) {
       // Store the value as a string

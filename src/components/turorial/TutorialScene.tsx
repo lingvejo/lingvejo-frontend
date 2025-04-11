@@ -7,5 +7,5 @@ import { SceneProps } from '@/components/core/visualNovel/types';
 
 export default function TutorialScene({ onComplete }: SceneProps) {
   const t = useTranslations();
-  return <VisualNovel scene={tutorialScene(t)} onComplete={onComplete} />;
+  return <VisualNovel story={tutorialScene(t)} onComplete={onComplete} />;
 }

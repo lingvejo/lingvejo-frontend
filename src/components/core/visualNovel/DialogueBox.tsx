@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Paper, Text, Button, Divider, Stack, Loader } from '@mantine/core';
 import { DialogueBoxProps } from './types';
 import { useTranslations } from 'next-intl';
+import ReactMarkdown from 'react-markdown';
 
 const DialogueBox = ({
   character,
@@ -69,7 +70,7 @@ const DialogueBox = ({
             color: '#eee', // Lighter text for readability
           }}
         >
-          {displayedText}
+          <ReactMarkdown>{displayedText}</ReactMarkdown>
         </Text>
 
         {/* Display choices or Next button */}

@@ -17,7 +17,7 @@ export type SceneProps = {
 };
 
 export type VisualNovelProps = {
-    scene: DialogueLine[];
+    story: DialogueLine[];
     onComplete: () => void;
 };
 

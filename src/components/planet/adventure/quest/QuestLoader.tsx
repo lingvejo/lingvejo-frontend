@@ -11,7 +11,7 @@ export async function QuestLoader(
 ): Promise<ReactNode> {
   if (quest.type === 'VisualNovel') {
     const story = quest.content?.story;
-    return <VisualNovel scene={story} onComplete={onComplete} />;
+    return <VisualNovel story={story} onComplete={onComplete} />;
   }
 
   throw new Error(`Unknown quest type: ${quest.type}`);
