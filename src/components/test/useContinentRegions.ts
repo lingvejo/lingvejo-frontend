@@ -1,76 +1,97 @@
 import { useMemo } from 'react';
-import { polygon as turfPolygon, featureCollection, point as turfPoint } from '@turf/helpers';
+import {
+  polygon as turfPolygon,
+  featureCollection,
+  point as turfPoint,
+} from '@turf/helpers';
+import centroid from '@turf/centroid';
+import booleanPointInPolygon from '@turf/boolean-point-in-polygon';
+import { createNoise2D } from 'simplex-noise';
+import { Delaunay } from 'd3-delaunay';
 import type { FeatureCollection } from 'geojson';
+
+const noise2D = createNoise2D();
 
 export function useContinentRegions(): FeatureCollection {
   return useMemo(() => {
     const center: [number, number] = [0, 0];
-    const radius = 30;
-    const regionCount = 5; // change to however many slices you want
-    const stepsPerRegion = 10; // more = smoother curve
+    const baseRadius = 30;
+    const outlineSteps = 100;
+    const noiseScale = 0.15;
+    const noiseStrength = 8;
+    const regionCount = 40;
 
     const features = [];
 
-    // Optional: draw outer circle as visual guide
-    const fullCirclePoints: [number, number][] = [];
-    for (let i = 0; i <= 360; i++) {
-      const angle = (i * Math.PI) / 180;
-      fullCirclePoints.push([
-        center[0] + Math.cos(angle) * radius,
-        center[1] + Math.sin(angle) * radius,
+    // 1. Generate organic continent shape
+    const landPoints: [number, number][] = [];
+    for (let i = 0; i < outlineSteps; i++) {
+      const angle = (i / outlineSteps) * Math.PI * 2;
+      const x = Math.cos(angle);
+      const y = Math.sin(angle);
+      const noise = noise2D(x * noiseScale, y * noiseScale);
+      const radius = baseRadius + noise * noiseStrength;
+      landPoints.push([
+        center[0] + x * radius,
+        center[1] + y * radius,
       ]);
     }
+    landPoints.push(landPoints[0]); // Close loop
 
-    const circleOutline = turfPolygon([[...fullCirclePoints, fullCirclePoints[0]]], {
-      name: 'Continent',
-      type: 'continent',
-    });
-    features.push(circleOutline);
+    const continent = turfPolygon([landPoints]);
 
-    // Create proper curved-slice regions
-    for (let i = 0; i < regionCount; i++) {
-      const startAngle = (i * 2 * Math.PI) / regionCount;
-      const endAngle = ((i + 1) * 2 * Math.PI) / regionCount;
+    // 2. Generate region centers inside continent
+    const regionCenters: [number, number][] = [];
+    while (regionCenters.length < regionCount) {
+      const angle = Math.random() * Math.PI * 2;
+      const r = Math.sqrt(Math.random()) * baseRadius * 0.95;
+      const x = center[0] + Math.cos(angle) * r;
+      const y = center[1] + Math.sin(angle) * r;
 
-      const arcPoints: [number, number][] = [];
-
-      for (let j = 0; j <= stepsPerRegion; j++) {
-        const t = j / stepsPerRegion;
-        const angle = startAngle + t * (endAngle - startAngle);
-        arcPoints.push([
-          center[0] + Math.cos(angle) * radius,
-          center[1] + Math.sin(angle) * radius,
-        ]);
+      const pt = turfPoint([x, y]);
+      if (booleanPointInPolygon(pt, continent)) {
+        regionCenters.push([x, y]);
       }
+    }
 
-      const polygonPoints: [number, number][] = [
-        center,
-        ...arcPoints,
-        center, // close the ring
-      ];
+    // 3. Generate Voronoi cells from region centers
+    const delaunay = Delaunay.from(regionCenters);
+    const voronoi = delaunay.voronoi([
+      center[0] - baseRadius * 2,
+      center[1] - baseRadius * 2,
+      center[0] + baseRadius * 2,
+      center[1] + baseRadius * 2,
+    ]);
 
-      const region = turfPolygon([polygonPoints], {
+    for (let i = 0; i < regionCenters.length; i++) {
+      const cell = voronoi.cellPolygon(i);
+      if (!cell) continue;
+
+      const regionPoly = cell.map(([x, y]) => [x, y] as [number, number]);
+      regionPoly.push(regionPoly[0]); // Close loop
+
+      const region = turfPolygon([regionPoly], {
         regionId: i + 1,
         name: `Region ${i + 1}`,
         type: 'region',
       });
 
-      features.push(region);
+      if (
+        region.geometry &&
+        region.geometry.coordinates[0].length > 3 &&
+        booleanPointInPolygon(turfPoint(regionCenters[i]), continent)
+      ) {
+        // 4. Add region polygon
+        features.push(region);
 
-      // Optional: add label point
-      const midAngle = (startAngle + endAngle) / 2;
-      const midRadius = radius * 0.5;
-      const labelPoint: [number, number] = [
-        center[0] + Math.cos(midAngle) * midRadius,
-        center[1] + Math.sin(midAngle) * midRadius,
-      ];
-
-      features.push(
-        turfPoint(labelPoint, {
+        // 5. Add center label using true centroid
+        const centerPt = centroid(region);
+        centerPt.properties = {
           type: 'region-center',
           name: `Region ${i + 1}`,
-        })
-      );
+        };
+        features.push(centerPt);
+      }
     }
 
     return featureCollection(features);

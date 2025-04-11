@@ -34,12 +34,16 @@
     "@tiptap/react": "^2.11.7",
     "@tiptap/starter-kit": "^2.11.7",
     "@tsparticles/react": "^3.0.0",
+    "@turf/boolean-point-in-polygon": "^7.2.0",
+    "@turf/centroid": "^7.2.0",
+    "@turf/helpers": "^7.2.0",
     "@turf/turf": "^7.2.0",
     "d3-delaunay": "^6.0.4",
     "d3-geo-voronoi": "^2.1.0",
     "dayjs": "^1.11.13",
     "dotenv": "^16.4.7",
     "framer-motion": "^12.6.3",
+    "geojson": "^0.5.0",
     "graphql": "^16.10.0",
     "howler": "^2.2.4",
     "idb-keyval": "^6.2.1",
@@ -61,7 +65,6 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
-    "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
@@ -70,7 +73,6 @@
     "postcss": "^8.5.3",
     "postcss-preset-mantine": "^1.17.0",
     "postcss-simple-vars": "^7.0.1",
-    "tailwindcss": "^4",
     "typescript": "^5"
   }
 }

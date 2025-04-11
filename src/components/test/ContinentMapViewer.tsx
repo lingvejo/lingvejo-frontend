@@ -47,19 +47,6 @@ export default function ContinentMapViewer({ continent }: ContinentProps) {
       const type = feature.properties?.type;
       console.log('Drawing feature:', type);
 
-      // 🌍 Draw Continent Outline
-      if (feature.geometry.type === 'Polygon' && type === 'continent') {
-        const coords = feature.geometry.coordinates[0] as [number, number][];
-        const g = new Graphics();
-        g.lineStyle(3, 0xffffff);
-        coords.forEach(([lng, lat], i) => {
-          const [x, y] = project([lng, lat]);
-          i === 0 ? g.moveTo(x, y) : g.lineTo(x, y);
-        });
-        g.closePath();
-        app.stage.addChild(g);
-      }
-
       // 🟦 Draw Region Polygons
       if (feature.geometry.type === 'Polygon' && type === 'region') {
         const coords = feature.geometry.coordinates[0] as [number, number][];
