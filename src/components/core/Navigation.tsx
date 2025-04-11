@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import { Group, Stack } from '@mantine/core';
-import theme from '@/components/theme/Theme';
+import theme from '@/components/core/theme/Theme';
 import * as NavigationElement from '@/components/content/NavigationElement'; // Import everything as an object
 
 // Extract available navigation types dynamically

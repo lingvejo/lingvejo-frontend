@@ -5,7 +5,7 @@ import {ReactNode} from 'react';
 import {routing} from '@/i18n/routing';
 import { MantineProvider,
   ColorSchemeScript, mantineHtmlProps } from '@mantine/core';
-import theme from '@/components/theme/Theme';
+import theme from '@/components/core/theme/Theme';
 import { VoyagerProvider } from '@/contexts/VoyagerContext';
 import { Notifications } from '@mantine/notifications';
 
