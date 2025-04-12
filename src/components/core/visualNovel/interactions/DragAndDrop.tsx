@@ -1,13 +1,11 @@
+'use client';
+
 import { useEffect, useState } from 'react';
-import { Stack, Button, Paper } from '@mantine/core';
+import { Stack, Button, Card, Text, Paper } from '@mantine/core';
 import { DndContext, closestCenter } from '@dnd-kit/core';
 import { SortableContext, useSortable, arrayMove } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-
-interface DragAndDropProps {
-  words: string[];
-  onComplete?: () => void;
-}
+import { DragAndDropProps } from '../types';
 
 const DragAndDrop = ({ words, onComplete }: DragAndDropProps) => {
   const [items, setItems] = useState<string[]>([]);
@@ -42,23 +40,30 @@ const DragAndDrop = ({ words, onComplete }: DragAndDropProps) => {
   const isCorrect = JSON.stringify(items) === JSON.stringify(words);
 
   return (
-    <Stack>
-      <DndContext collisionDetection={closestCenter} onDragEnd={onDragEnd}>
-        <SortableContext items={items}>
-          <Stack spacing="xs">
-            {items.map((word) => (
-              <SortableItem key={word} id={word} />
-            ))}
-          </Stack>
-        </SortableContext>
-      </DndContext>
+    <Card shadow="md" padding="lg" radius="md" withBorder>
+      <Stack spacing="md" align="center">
+        <DndContext collisionDetection={closestCenter} onDragEnd={onDragEnd}>
+          <SortableContext items={items}>
+            <Stack spacing="xs">
+              {items.map((word) => (
+                <SortableItem key={word} id={word} />
+              ))}
+            </Stack>
+          </SortableContext>
+        </DndContext>
 
-      {isCorrect && (
-        <Button onClick={onComplete} variant="outline" color="white">
-          Next
-        </Button>
-      )}
-    </Stack>
+        {isCorrect && (
+          <Button
+            onClick={onComplete}
+            variant="filled"
+            radius="md"
+            size="md"
+          >
+            Continue
+          </Button>
+        )}
+      </Stack>
+    </Card>
   );
 };
 
@@ -72,10 +77,11 @@ const SortableItem = ({ id }: { id: string }) => {
     transition,
     padding: '8px 12px',
     borderRadius: '8px',
-    color: 'black',
     backgroundColor: 'white',
-    textAlign: 'center',
+    color: 'black',
+    textAlign: 'center' as const,
     cursor: 'grab',
+    border: '1px solid #ccc',
   };
 
   return (

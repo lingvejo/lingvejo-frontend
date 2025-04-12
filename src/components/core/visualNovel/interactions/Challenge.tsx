@@ -3,23 +3,16 @@
 import React, { useState } from 'react';
 import { Button, Card, Stack, Text, TextInput } from '@mantine/core';
 import { normalizeText } from '@/utils/text/normalizeText';
+import { ChallengeProps } from '../types';
 
-export interface ChallengeInteractionProps {
-  challenge: {
-    translation: string;
-    text: string;
-  };
-  onComplete?: () => void;
-}
-
-const Challenge = ({ challenge, onComplete }: ChallengeInteractionProps) => {
+const Challenge = ({ challenge, onComplete }: ChallengeProps) => {
   const [userInput, setUserInput] = useState('');
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
 
   const handleCheckAnswer = () => {
     const normalizedInput = normalizeText(userInput);
-    const correctAnswer = normalizeText(challenge.translation);
-    const success = normalizedInput === correctAnswer;
+    const answer = normalizeText(challenge.translation);
+    const success = normalizedInput === answer;
     setIsCorrect(success);
     if (success && onComplete) onComplete();
   };
@@ -27,12 +20,6 @@ const Challenge = ({ challenge, onComplete }: ChallengeInteractionProps) => {
   return (
     <Card shadow="md" padding="lg" radius="md" withBorder>
       <Stack spacing="md">
-        {isCorrect !== null && (
-          <Text size="md" c={isCorrect ? 'green' : 'red'} ta="center">
-            {isCorrect ? '✅ Correct!' : '❌ Incorrect. Try again!'}
-          </Text>
-        )}
-
         <Text size="lg" fw={600} ta="center">
           {challenge.text}
         </Text>
@@ -45,6 +32,12 @@ const Challenge = ({ challenge, onComplete }: ChallengeInteractionProps) => {
             radius="md"
             w="100%"
         />
+
+        {isCorrect !== null && (
+          <Text size="md" c={isCorrect ? 'green' : 'red'} ta="center">
+            {isCorrect ? '✅ Correct!' : '❌ Incorrect. Try again!'}
+          </Text>
+        )}
 
         <Button
           onClick={handleCheckAnswer}

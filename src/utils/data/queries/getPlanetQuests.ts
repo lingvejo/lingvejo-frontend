@@ -4,7 +4,7 @@ import { handleError } from '@/utils/errorHandler';
 
 const GET_PLANET_QUESTS = gql`
   query GetPlanetQuests($settlementId: Int!) {
-    planetQuest(where: { settlementId: { _eq: $settlementId } }) {
+    planetQuest(where: { settlementId: { _eq: $settlementId } }, order_by: { questId: asc }) {
       questId
       title
       content
