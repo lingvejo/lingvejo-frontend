@@ -50,6 +50,6 @@ This project is community-driven! Help us expand Lingvejo's universe by adding q
 Before you embark on your journey, please review our enchanted scrolls:
 
 - [Terms of Spellbinding](./TERMS_OF_SPELLBINDING.md) 🧙‍♀️
-- [Privacy Spell](./PRIVACY_POLICY.md) 🔒
+- [Privacy Spell](./PRIVACY_SPELL.md) 🔒
 
 By entering Lingvejo, you agree to abide by the wisdom written within these scrolls, as decreed by the Wizard Council of the Galactic Magic Association.

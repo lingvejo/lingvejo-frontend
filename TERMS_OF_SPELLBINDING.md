@@ -9,7 +9,7 @@ Welcome, noble adventurer! By entering **Lingvejo**, you agree to abide by these
 ## 1. ✋ Acceptance of the Pact
 
 By using Lingvejo, you agree to:
-- Abide by these Terms and the [Privacy Spell](./PRIVACY_POLICY.md)
+- Abide by these Terms and the [Privacy Spell](./PRIVACY_SPELL.md)
 - Use Lingvejo only through a verified Pi Network account
 - Follow all magical and local laws in your realm
 
