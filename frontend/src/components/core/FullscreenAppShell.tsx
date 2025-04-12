@@ -6,7 +6,7 @@ import { renderContent } from '@/components/content/ContentRender';
 import { useVoyager } from '@/contexts/VoyagerContext'; // Adjust path if needed
 import LoadingScreen from '@/components/core/loading/LoadingScreen'; // Optional
 import { markTutorialComplete } from '@/utils/data/mutations/markTutorialComplete';
-import TutorialScene from '@/components/turorial/TutorialScene';
+import TutorialScene from '@/components/tutorial/TutorialScene';
 
 export default function FullscreenAppShell() {
   const { voyager, loading } = useVoyager();

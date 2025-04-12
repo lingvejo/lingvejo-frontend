@@ -1,0 +1,43 @@
+version: "3.6"
+services:
+  postgres:
+    image: postgres:16.8-alpine3.20
+    container_name: lingvejo-backend_postgres
+    restart: always
+    environment:
+      POSTGRES_USER: stelmastro
+      POSTGRES_PASSWORD: nebulaensorcxo
+      POSTGRES_DB: kosmaarkivo
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  graphql-engine:
+    image: hasura/graphql-engine:v2.46.0-ce
+    container_name: lingvejo-backend_graphql-engine
+    restart: always
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    environment:
+      HASURA_GRAPHQL_DATABASE_URL: postgres://stelmastro:nebulaensorcxo@postgres:5432/kosmaarkivo
+      HASURA_GRAPHQL_ENABLE_CONSOLE: "true"
+      HASURA_GRAPHQL_ADMIN_SECRET: "galaksiavualtaro"
+
+  backend:
+    build: ./src
+    container_name: lingvejo-backend_backend
+    restart: always
+    ports:
+      - "4000:4000"
+    environment:
+      HASURA_GRAPHQL_URL: http://graphql-engine:8080/v1/graphql
+      HASURA_GRAPHQL_ADMIN_SECRET: galaksiavualtaro
+    depends_on:
+      - graphql-engine
+      - postgres
+
+volumes:
+  postgres_data:
