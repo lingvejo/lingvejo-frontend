@@ -19,7 +19,7 @@ import LoadingScreen from '@/components/core/loading/LoadingScreen';
 import { defaultOptions, initialAvatar } from './avatarOptions';
 import AvatarPreview from './AvatarPreview';
 import { useTranslations } from 'next-intl';
-import { setAvatar } from '@/utils/data/setters/setAvatar';
+import { setAvatar } from '@/utils/data/mutations/setAvatar';
 import { notifications } from '@mantine/notifications';
 import { AvatarFullConfig } from 'react-nice-avatar';
 

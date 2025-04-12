@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Paper, Text, Button, Divider, Stack, Loader } from '@mantine/core';
+import { Paper, Text, Button, Divider, Stack, Loader, Box } from '@mantine/core';
 import { DialogueBoxProps } from './types';
 import { useTranslations } from 'next-intl';
 import ReactMarkdown from 'react-markdown';
@@ -62,18 +62,17 @@ const DialogueBox = ({
         )}
 
         {/* Display the typed text */}
-        <Text
-          c="white"
-          style={{
+        <Box
+          sx={{
             whiteSpace: 'pre-wrap',
             minHeight: 80,
-            fontSize: '18px',
+            fontSize: '20px',
             lineHeight: '1.6',
             color: '#eee', // Lighter text for readability
           }}
         >
           <ReactMarkdown>{displayedText}</ReactMarkdown>
-        </Text>
+        </Box>
 
         {/* Display choices or Next button */}
         {isTypingDone ? (

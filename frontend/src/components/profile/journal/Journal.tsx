@@ -16,7 +16,7 @@ import { useVoyager } from '@/contexts/VoyagerContext';
 import LoadingScreen from '@/components/core/loading/LoadingScreen';
 import { getJournalEntriesForMonth } from '@/utils/data/queries/getJournalEntriesForMonth';
 import { getMonthRange } from '@/utils/date/getMonthRange';
-import { setJournalEntry } from '@/utils/data/setters/setJournalEntry';
+import { setJournalEntry } from '@/utils/data/mutations/setJournalEntry';
 
 import JournalCalendar from './JournalCalendar';
 import JournalEditor from './JournalEditor';

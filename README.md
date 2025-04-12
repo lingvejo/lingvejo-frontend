@@ -22,6 +22,15 @@
 - Node.js
 - Docker + Docker Compose
 
+### Setup .env Files
+
+Before running the application, create `.env` files in both the `frontend/` and `backend/` directories with the appropriate environment variables.
+
+#### Frontend `.env` file (`frontend/.env`)
+```env
+NEXT_PUBLIC_GRAPHQL_URL=http://localhost:4000/graphql
+```
+
 ### Development
 
 ```bash
