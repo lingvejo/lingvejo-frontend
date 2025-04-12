@@ -3,8 +3,8 @@ import client from "@/utils/apolloClient";
 import { handleError } from "@/utils/errorHandler";
 
 const GET_WIZARDING_PLANETS = gql`
-  query GetWizardingPlanets($voyagerId: Int!) {
-    wizardRank(where: { voyagerId: { _eq: $voyagerId } }) {
+  query GetWizardingPlanets($uid: uuid!) {
+    wizardRank(where: { uid: { _eq: $uid } }) {
       level
       planet {
         id
@@ -15,7 +15,7 @@ const GET_WIZARDING_PLANETS = gql`
   }
 `;
 
-export async function getWizardingPlanets(voyagerId: number): Promise<
+export async function getWizardingPlanets(uid: string): Promise<
   {
     planetId: number;
     planetName: string;
@@ -26,7 +26,7 @@ export async function getWizardingPlanets(voyagerId: number): Promise<
   try {
     const { data } = await client.query({
       query: GET_WIZARDING_PLANETS,
-      variables: { voyagerId },
+      variables: { uid },
       fetchPolicy: "no-cache",
     });
 

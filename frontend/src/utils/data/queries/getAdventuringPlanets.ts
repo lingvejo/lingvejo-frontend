@@ -3,9 +3,9 @@ import client from "@/utils/apolloClient";
 import { handleError } from "@/utils/errorHandler";
 
 const GET_ADVENTURING_PLANETS = gql`
-  query GetAdventuringPlanets($voyagerId: Int!) {
+  query GetAdventuringPlanets($uid: uuid!) {
     adventureProgress(
-      where: { userId: { _eq: $voyagerId } }
+      where: { uid: { _eq: $uid } }
       order_by: { completedAt: desc }
     ) {
       planet {
@@ -14,7 +14,7 @@ const GET_ADVENTURING_PLANETS = gql`
         iso
       }
       planetQuest {
-        name
+        title
       }
       planetSettlement {
         name
@@ -24,7 +24,7 @@ const GET_ADVENTURING_PLANETS = gql`
   }
 `;
 
-export async function getAdventuringPlanets(voyagerId: number): Promise<
+export async function getAdventuringPlanets(uid: string): Promise<
   {
     planetId: number;
     planetName: string;
@@ -37,7 +37,7 @@ export async function getAdventuringPlanets(voyagerId: number): Promise<
   try {
     const { data } = await client.query({
       query: GET_ADVENTURING_PLANETS,
-      variables: { voyagerId },
+      variables: { uid },
       fetchPolicy: "no-cache",
     });
 

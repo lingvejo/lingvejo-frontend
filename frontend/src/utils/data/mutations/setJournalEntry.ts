@@ -5,11 +5,11 @@ import client from "@/utils/apolloClient";
 import { handleError } from "@/utils/errorHandler";
 
 const UPSERT_JOURNAL_ENTRY = gql`
-  mutation UpsertJournalEntry($voyagerId: Int!, $date: date!, $content: String!) {
+  mutation UpsertJournalEntry($uid: uuid!, $date: date!, $content: String!) {
     insert_journalEntry_one(
-      object: { voyagerId: $voyagerId, entryDate: $date, content: $content }
+      object: { uid: $uid, entryDate: $date, content: $content }
       on_conflict: {
-        constraint: journalEntry_voyagerId_entryDate_key,
+        constraint: journalEntry_pkey,
         update_columns: [content]
       }
     ) {
@@ -19,7 +19,7 @@ const UPSERT_JOURNAL_ENTRY = gql`
 `;
 
 export async function setJournalEntry(
-  voyagerId: number,
+  uid: string,
   date: string, // <-- it's a string in format 'YYYY-MM-DD'
   content: string
 ) {
@@ -27,7 +27,7 @@ export async function setJournalEntry(
     await client.mutate({
       mutation: UPSERT_JOURNAL_ENTRY,
       variables: {
-        voyagerId,
+        uid,
         date, // already in 'YYYY-MM-DD' format
         content,
       },

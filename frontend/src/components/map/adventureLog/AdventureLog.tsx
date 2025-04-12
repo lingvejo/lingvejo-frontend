@@ -23,18 +23,18 @@ export default function AdventureLog() {
   const [data, setData] = useState<any[]>([]);
 
   useEffect(() => {
-    if (!voyager?.id) return;
+    if (!voyager?.uid) return;
 
     const fetchData = async () => {
       const result =
         tab === 'adventurer'
-          ? await getAdventuringPlanets(voyager.id)
-          : await getWizardingPlanets(voyager.id);
+          ? await getAdventuringPlanets(voyager.uid)
+          : await getWizardingPlanets(voyager.uid);
       setData(result);
     };
 
     fetchData();
-  }, [tab, voyager?.id]);
+  }, [tab, voyager?.uid]);
 
   if (loading || !voyager) {
     return <LoadingScreen />;

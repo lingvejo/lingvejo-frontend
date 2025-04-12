@@ -1,30 +1,23 @@
 "use client";
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { getVoyager } from '@/utils/data/queries/getVoyager'; // Your actual user-fetching function
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from "react";
+import { getVoyager } from "@/utils/data/queries/getVoyager"; // Replace with your updated query
 
 type Avatar = Record<string, any>;
 
-interface Guild {
-  name: string;
-  emblem: string | null;
-  role: string;
-}
-
 export interface Voyager {
-  id: number;
+  uid: string;
   username: string;
-  email: string;
-  firstName: string;
-  lastName: string;
-  bio: string | null;
-  createdAt: string;
-  updatedAt: string;
-  lastLogin: string | null;
-  location: number; // Renamed from "language" to "location"
+  persona: string;
+  currentPlanet: number;
   totalXP: number;
   completedTutorial: boolean;
   avatar: Avatar | null;
-  guildVoyagers: Guild[];
 }
 
 const VoyagerContext = createContext<{
@@ -38,8 +31,8 @@ export const VoyagerProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Fetch the Voyager data (debug: using id === 2 for now)
-    getVoyager(2).then((data) => {
+    // Eventually: replace with dynamic uid from Pi login
+    getVoyager('108fa2f3-7bda-42c1-8d4c-7c64d6077305').then((data) => {
       setVoyager(data);
       setLoading(false);
     });

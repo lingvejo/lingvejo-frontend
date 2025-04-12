@@ -3,18 +3,18 @@ import client from "@/utils/apolloClient";
 import { handleError } from "@/utils/errorHandler";
 
 const GET_AVATAR = gql`
-  query GetVoyagerAvatar($voyagerId: Int!) {
-    voyager(where: { id: { _eq: $voyagerId } }) {
+  query GetVoyagerAvatar($uid: uuid!) {
+    voyager(where: { uid: { _eq: $uid } }) {
       avatar
     }
   }
 `;
 
-export async function getAvatar(voyagerId: number): Promise<Record<string, any> | null> {
+export async function getAvatar(uid: string): Promise<Record<string, any> | null> {
   try {
     const { data } = await client.query({
       query: GET_AVATAR,
-      variables: { voyagerId },
+      variables: { uid },
       fetchPolicy: "no-cache", // optional: ensures fresh data
     });
 

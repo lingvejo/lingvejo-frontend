@@ -22,10 +22,10 @@ const HallOfLegends = () => {
   const t = useTranslations('hallOfLegends');
 
   useEffect(() => {
-    if (voyager?.id) {
-      getHallOfLegendsVoyager(voyager.id).then(setAchievements);
+    if (voyager?.uid) {
+      getHallOfLegendsVoyager(voyager.uid).then(setAchievements);
     }
-  }, [voyager?.id]);
+  }, [voyager?.uid]);
 
   if (loading || !voyager) {
     return <LoadingScreen />;

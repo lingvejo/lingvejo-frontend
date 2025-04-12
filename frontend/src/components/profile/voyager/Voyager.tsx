@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from 'react';
 import {
-  Avatar,
   Button,
   Container,
   Divider,
@@ -12,14 +11,13 @@ import {
   Stack,
   Text,
   TextInput,
-  Textarea,
   Title,
   Tooltip,
   Flex,
   Box,
   ActionIcon
 } from '@mantine/core';
-import { IconEdit, IconCheck, IconX, IconUser, IconMail } from '@tabler/icons-react';
+import { IconEdit, IconCheck, IconX, IconUser } from '@tabler/icons-react';
 import { getVoyagerLeague } from '@/utils/data/queries/getVoyagerLeague';
 import LoadingScreen from '@/components/core/loading/LoadingScreen';
 import { useVoyager } from '@/contexts/VoyagerContext';
@@ -36,7 +34,7 @@ const VoyagerProfile: React.FC = () => {
     if (!voyager) return;
   
     const fetchLeague = async () => {
-      const leagueName = await getVoyagerLeague(voyager.totalXP);
+      const leagueName = await getVoyagerLeague(voyager.uid);
       setLeague(leagueName);
     };
   
@@ -70,48 +68,20 @@ const VoyagerProfile: React.FC = () => {
           </Flex>
 
           <Title order={3} align="center" mb="xs">
-            {voyager.username}
+            {voyager.persona}
           </Title>
           <Text align="center" size="sm" color="dimmed" mb="md">
-            {voyager.email}
+            {voyager.totalXP}XP
           </Text>
 
           <Divider my="md" />
 
           <Stack spacing="sm">
             <TextInput
-              label="First Name"
+              label="Pi Username"
               icon={<IconUser size={16} />}
-              value={voyager.firstName}
-              onChange={() => {}}
-              disabled={!isEditing}
-            />
-            <TextInput
-              label="Last Name"
-              icon={<IconUser size={16} />}
-              value={voyager.lastName}
-              onChange={() => {}}
-              disabled={!isEditing}
-            />
-            <TextInput
-              label="Email"
-              icon={<IconMail size={16} />}
-              value={voyager.email}
-              onChange={() => {}}
-              disabled={!isEditing}
-            />
-            <Textarea
-              label="Bio"
-              value={voyager.bio || ''}
-              onChange={() => {}}
-              placeholder="A wandering soul in search of words and wonders..."
-              disabled={!isEditing}
-              autosize
-              minRows={3}
-              maxRows={5}
-              styles={{
-                input: { backgroundColor: 'transparent', fontFamily: 'serif', fontSize: 14 },
-              }}
+              value={voyager.username}
+              disabled
             />
           </Stack>
 

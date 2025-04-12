@@ -4,37 +4,24 @@ import { handleError } from "@/utils/errorHandler";
 import { Voyager } from "@/contexts/VoyagerContext";
 
 const GET_VOYAGER = gql`
-  query GetVoyager($id: Int!) {
-    voyager(where: { id: { _eq: $id } }) {
-      id
+  query GetVoyager($uid: uuid!) {
+    voyager(where: { uid: { _eq: $uid } }) {
+      uid
       username
-      email
-      firstName
-      lastName
-      bio
-      createdAt
-      updatedAt
-      lastLogin
-      location
+      persona
+      currentPlanet
       totalXP
       completedTutorial
       avatar
-      guildVoyagers(where: { voyagerId: { _eq: $id } }) {
-        role
-        guild {
-          name
-          emblem
-        }
-      }
     }
   }
 `;
 
-export async function getVoyager(id: number): Promise<Voyager | null> {
+export async function getVoyager(uid: string): Promise<Voyager | null> {
   try {
     const { data } = await client.query({
       query: GET_VOYAGER,
-      variables: { id },
+      variables: { uid },
     });
 
     return data?.voyager?.[0] ?? null;

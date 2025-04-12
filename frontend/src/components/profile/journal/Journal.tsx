@@ -27,7 +27,7 @@ const textMaxLength = 140;
 export default function VoyagerJournal() {
   const t = useTranslations('journal');
   const { voyager, loading } = useVoyager();
-  const voyagerId = voyager?.id;
+  const uid = voyager?.uid;
 
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [monthDate, setMonthDate] = useState(dayjs().startOf('month').toDate());
@@ -44,13 +44,13 @@ export default function VoyagerJournal() {
   };
 
   useEffect(() => {
-    if (!voyagerId || !monthDate) return;
+    if (!uid || !monthDate) return;
 
     const monthKey = dayjs(monthDate).format('YYYY-MM');
     if (lastLoadedMonth === monthKey) return;
 
     const { start, end } = getMonthRange(monthDate);
-    getJournalEntriesForMonth(voyagerId, start, end).then((entries) => {
+    getJournalEntriesForMonth(uid, start, end).then((entries) => {
       const map: Record<string, string> = {};
       entries.forEach((e) => {
         map[e.entryDate] = e.content;
@@ -58,7 +58,7 @@ export default function VoyagerJournal() {
       setEntriesMap((prev) => ({ ...prev, ...map }));
       setLastLoadedMonth(monthKey);
     });
-  }, [voyagerId, monthDate, lastLoadedMonth]);
+  }, [uid, monthDate, lastLoadedMonth]);
 
   useEffect(() => {
     if (selectedDateStr in entriesMap) {
@@ -70,8 +70,8 @@ export default function VoyagerJournal() {
   }, [selectedDateStr, entriesMap]);
 
   const handleSave = async () => {
-    if (!voyagerId) return;
-    const success = await setJournalEntry(voyagerId, selectedDateStr, draft);
+    if (!uid) return;
+    const success = await setJournalEntry(uid, selectedDateStr, draft);
     if (success) {
       setEntriesMap((prev) => ({ ...prev, [selectedDateStr]: draft }));
       setIsEditing(false);

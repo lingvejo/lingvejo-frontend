@@ -28,7 +28,9 @@ Before running the application, create `.env` files in both the `frontend/` and 
 
 #### Frontend `.env` file (`frontend/.env`)
 ```env
-NEXT_PUBLIC_GRAPHQL_URL=http://localhost:4000/graphql
+NEXT_PUBLIC_GRAPHQL_URL="http://localhost:4000/graphql"
+NEXT_PUBLIC_BACKEND_URL="http://localhost:4000/"
+NEXT_PUBLIC_PI_SANDBOX_SDK="true"
 ```
 
 ### Development
@@ -51,5 +53,3 @@ Before you embark on your journey, please review our enchanted scrolls:
 
 - [Terms of Spellbinding](./TERMS_OF_SPELLBINDING.md) 🧙‍♀️
 - [Privacy Spell](./PRIVACY_SPELL.md) 🔒
-
-By entering Lingvejo, you agree to abide by the wisdom written within these scrolls, as decreed by the Wizard Council of the Galactic Magic Association.

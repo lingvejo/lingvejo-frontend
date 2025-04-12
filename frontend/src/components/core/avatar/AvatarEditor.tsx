@@ -76,7 +76,7 @@ export default function AvatarEditor({ onClose }: AvatarEditorProps) {
     if (!voyager || !avatarProps) return;
 
     try {
-      const success = await setAvatar(voyager.id, avatarProps);
+      const success = await setAvatar(voyager.uid, avatarProps);
       if (success) {
         setVoyager?.({ ...voyager, avatar: avatarProps });
         

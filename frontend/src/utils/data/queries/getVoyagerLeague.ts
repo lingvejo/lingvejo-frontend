@@ -4,8 +4,8 @@ import { handleError } from "@/utils/errorHandler";
 
 // Define the GraphQL query to fetch the voyager's XP
 const GET_VOYAGER_XP = gql`
-  query GetVoyagerXP($id: Int!) {
-    voyager(where: { id: { _eq: $id } }) {
+  query GetVoyagerXP($uid: uuid!) {
+    voyager(where: { uid: { _eq: $uid } }) {
       totalXP
     }
   }
@@ -20,12 +20,12 @@ const GET_LEAGUE_BY_XP = gql`
   }
 `;
 
-export async function getVoyagerLeague(id: number): Promise<string> {
+export async function getVoyagerLeague(uid: string): Promise<string> {
   try {
     // Fetch the totalXP of the voyager
     const { data: voyagerData } = await client.query({
       query: GET_VOYAGER_XP,
-      variables: { id },
+      variables: { uid },
     });
 
     const xp = voyagerData?.voyager?.[0]?.totalXP ?? 0;

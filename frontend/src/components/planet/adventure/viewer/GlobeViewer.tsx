@@ -43,15 +43,15 @@ export default function GlobeViewer({ moodKey = 'cerulea', onContinentClick }: G
 
   // Fetch continents data based on the current planet
   useEffect(() => {
-    if (loading || !voyager?.location) return;
+    if (loading || !voyager?.currentPlanet) return;
 
     const fetchContinents = async () => {
-      const data = await getPlanetContinents(voyager.location);
+      const data = await getPlanetContinents(voyager.currentPlanet);
       setContinents(data);
     };
 
     fetchContinents();
-  }, [voyager?.location, loading]);
+  }, [voyager?.currentPlanet, loading]);
 
   if (loading || !voyager) return <LoadingScreen />;
 

@@ -5,8 +5,8 @@ import { handleError } from "@/utils/errorHandler";
 const GET_VOYAGERS_IN_LEAGUE = gql`
   query GetVoyagersInLeague($minXP: Int!, $maxXP: Int!) {
     voyager(where: { totalXP: { _gte: $minXP, _lte: $maxXP } }) {
-      id
-      username # ✅ Use 'username' instead of 'name'
+      uid
+      persona
       avatar
     }
   }
@@ -19,7 +19,7 @@ export async function getVoyagersInLeague(minXP: number, maxXP: number): Promise
       variables: { minXP, maxXP },
     });
 
-    return data?.voyager ?? []; // ✅ Returns full objects instead of just `username`
+    return data?.voyager ?? [];
   } catch (error) {
     handleError(error);
     return [];

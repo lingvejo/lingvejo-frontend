@@ -17,13 +17,13 @@ export default function VoyagerList({ voyagers, page, itemsPerPage, setPage, t }
     <>
       <Stack spacing="xs">
         {paginated.length === 0 ? (
-          <Text align="center" color="dimmed" italic>
+          <Text align="center" color="dimmed" italic="true">
             {t('noVoyagers')}
           </Text>
         ) : (
           paginated.map((voyager) => (
             <Card
-              key={voyager.id}
+              key={voyager.uid}
               withBorder
               shadow="xs"
               p="xs"
@@ -32,7 +32,7 @@ export default function VoyagerList({ voyagers, page, itemsPerPage, setPage, t }
             >
               <Group spacing="sm">
                 <AvatarPreview avatar={voyager.avatar} size={27} />
-                <Text>{voyager.username}</Text>
+                <Text>{voyager.persona}</Text>
               </Group>
             </Card>
           ))

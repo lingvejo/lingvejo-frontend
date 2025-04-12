@@ -3,8 +3,8 @@ import client from "@/utils/apolloClient";
 import { handleError } from "@/utils/errorHandler";
 
 const GET_HALL_OF_LEGENDS_BY_VOYAGER = gql`
-  query getHallOfLegendsVoyager($voyagerId: Int!) {
-    hallOfLegendsVoyager(where: { voyagerId: { _eq: $voyagerId } }) {
+  query getHallOfLegendsVoyager($uid: uuid!) {
+    hallOfLegendsVoyager(where: { uid: { _eq: $uid } }) {
       legendId
       hallOfLegend {
         name
@@ -16,7 +16,7 @@ const GET_HALL_OF_LEGENDS_BY_VOYAGER = gql`
   }
 `;
 
-export async function getHallOfLegendsVoyager(voyagerId: number): Promise<
+export async function getHallOfLegendsVoyager(uid: string): Promise<
   {
     legendId: number;
     name: string;
@@ -28,7 +28,7 @@ export async function getHallOfLegendsVoyager(voyagerId: number): Promise<
   try {
     const { data } = await client.query({
       query: GET_HALL_OF_LEGENDS_BY_VOYAGER,
-      variables: { voyagerId },
+      variables: { uid },
     });
 
     return data?.hallOfLegendsVoyager?.map((entry: any) => ({

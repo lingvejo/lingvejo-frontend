@@ -3,10 +3,10 @@ import client from '@/utils/apolloClient';
 import { handleError } from '@/utils/errorHandler';
 
 const GET_JOURNAL_ENTRIES_FOR_MONTH = gql`
-  query GetJournalEntriesForMonth($voyagerId: Int!, $start: date!, $end: date!) {
+  query GetJournalEntriesForMonth($uid: uuid!, $start: date!, $end: date!) {
     journalEntry(
       where: {
-        voyagerId: { _eq: $voyagerId }
+        uid: { _eq: $uid }
         entryDate: { _gte: $start, _lte: $end }
       }
       order_by: { entryDate: asc }
@@ -19,7 +19,7 @@ const GET_JOURNAL_ENTRIES_FOR_MONTH = gql`
 `;
 
 export async function getJournalEntriesForMonth(
-  voyagerId: number,
+  uid: string,
   start: string, // e.g. "2025-04-01"
   end: string // e.g. "2025-04-30"
 ): Promise<
@@ -32,7 +32,7 @@ export async function getJournalEntriesForMonth(
   try {
     const { data } = await client.query({
       query: GET_JOURNAL_ENTRIES_FOR_MONTH,
-      variables: { voyagerId, start, end },
+      variables: { uid, start, end },
       fetchPolicy: 'network-only',
     });
 

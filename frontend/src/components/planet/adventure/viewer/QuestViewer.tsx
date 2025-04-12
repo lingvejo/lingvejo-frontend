@@ -145,7 +145,7 @@ export default function QuestViewer({ settlement }: QuestViewerProps) {
                     <Button
                       mt="xs"
                       size="xs"
-                      fullwidth
+                      fullwidth="true"
                       variant="filled"
                       lefticon={<IconBook size={14} />}
                       onClick={() => setActiveQuest(quest)}
