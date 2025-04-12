@@ -4,7 +4,6 @@
 
 > *"Lingvejo" means "The Place of Languages" in Esperanto.*
 
----
 
 ## ✨ Features
 
@@ -15,7 +14,6 @@
   - `frontend/`: Mobile-first app built with Next.js and Mantine
   - `backend/`: GraphQL backend powered by Hasura and PostgreSQL
 
----
 
 ## 🚀 Getting Started
 
@@ -33,7 +31,6 @@ cd ./frontend && npm run dev
 cd ./backend && sh deploy.sh
 ```
 
----
 
 ## 🪐 Contribute
 
