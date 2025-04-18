@@ -23,24 +23,25 @@ import LoadingScreen from '@/components/core/loading/LoadingScreen';
 import { useVoyager } from '@/contexts/VoyagerContext';
 import AvatarEditor from '@/components/core/avatar/AvatarEditor';
 import AvatarPreview from '@/components/core/avatar/AvatarPreview';
+import { useTranslations } from 'next-intl';
 
 const VoyagerProfile: React.FC = () => {
   const { voyager, loading } = useVoyager();
   const [isEditing, setIsEditing] = useState(false);
-  const [league, setLeague] = useState('');
+  const [league, setLeague] = useState<number>(1);  // Use number type for league ID
   const [showAvatarEditor, setShowAvatarEditor] = useState(false);
+  const t = useTranslations("leagues");  // Use next-intl hook for translations
 
   useEffect(() => {
     if (!voyager) return;
   
     const fetchLeague = async () => {
-      const leagueName = await getVoyagerLeague(voyager.uid);
-      setLeague(leagueName);
+      const leagueLevel = await getVoyagerLeague(voyager.uid);
+      setLeague(leagueLevel);  // Ensure the league is parsed as an integer
     };
   
     fetchLeague();
   }, [voyager]);
-  
 
   if (loading || !voyager) return <LoadingScreen />;
 
@@ -89,7 +90,7 @@ const VoyagerProfile: React.FC = () => {
 
           <Stack spacing="xs" align="center">
             <Text size="sm" color="dimmed">
-              League: <strong>{league}</strong>
+              League: <strong>{t(`${league}`)}</strong>  {/* Use next-intl to fetch the league name */}
             </Text>
             <Progress
               value={(voyager.totalXP / 200) * 100}

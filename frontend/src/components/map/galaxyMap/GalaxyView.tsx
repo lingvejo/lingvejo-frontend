@@ -3,20 +3,13 @@ import { IconGalaxy, IconSun } from '@tabler/icons-react';
 import { Center, Tooltip } from '@mantine/core';
 import StarSystemView from './StarSystemView';
 
-type System = {
-  id: number;
-  name: string;
-  iso: string;
-  planets: any[];
-};
-
 type GalaxyViewProps = {
-  systems: System[];
-  selectedSystem: System | null;
-  setSelectedSystem: (system: System | null) => void;
+  systems: SolarSystem[];
+  selectedSystem: SolarSystem | null;
+  setSelectedSystem: (system: SolarSystem | null) => void;
 };
 
-const calculateOrbitData = (systems: System[]) => {
+const calculateOrbitData = (systems: SolarSystem[]) => {
   const baseOrbit = 1;
   const orbitIncrement = 3;
   const baseDuration = 90;

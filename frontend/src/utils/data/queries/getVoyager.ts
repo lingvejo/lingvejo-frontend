@@ -4,13 +4,13 @@ import { handleError } from "@/utils/errorHandler";
 import { Voyager } from "@/contexts/VoyagerContext";
 
 const GET_VOYAGER = gql`
-  query GetVoyager($uid: uuid!) {
-    voyager(where: { uid: { _eq: $uid } }) {
+  query GetVoyager($uid: UUID!) {
+    voyagerByUid(uid: $uid) {
       uid
       username
       persona
       currentPlanet
-      totalXP
+      totalXp
       completedTutorial
       avatar
     }
@@ -24,7 +24,7 @@ export async function getVoyager(uid: string): Promise<Voyager | null> {
       variables: { uid },
     });
 
-    return data?.voyager?.[0] ?? null;
+    return data?.voyagerByUid ?? null;
   } catch (error) {
     handleError(error);
     return null;

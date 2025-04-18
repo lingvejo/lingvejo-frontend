@@ -10,13 +10,22 @@ import {
 } from '@mantine/core';
 import { IconMapPin, IconBuildingCastle } from '@tabler/icons-react';
 
-type Settlement = { settlementId: number; name: string };
+// Define the type for a settlement
+type Settlement = {
+  settlementId: number;
+  name: string;
+};
+
+// Define the type for a region
 type Region = {
   regionId: number;
   name: string;
   description: string;
-  planetSettlements: Settlement[];
+  planetSettlementsByRegionId: {
+    nodes: Settlement[];
+  };
 };
+
 
 type QuestQuillProps = {
   continent: {
@@ -104,7 +113,7 @@ const QuestQuill = ({ continent, onSettlementClick }: QuestQuillProps) => (
                 />
 
                 <Stack gap="xs">
-                  {region.planetSettlements.map((settlement) => (
+                  {region.planetSettlementsByRegionId.nodes.map((settlement) => (
                     <Card
                       key={settlement.settlementId}
                       padding="xs"

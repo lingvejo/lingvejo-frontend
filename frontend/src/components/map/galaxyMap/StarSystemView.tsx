@@ -7,6 +7,8 @@ import AstronomicalObjectInfo, { Planet } from './AstronomicalObjectInfo';
 interface StarSystemViewProps {
   systemName: string;
   planets: Planet[];
+  onPlanetClick: () => void;
+  planetInfoOpened: boolean;
 }
 
 const calculateOrbitData = (planets: Planet[]) => {

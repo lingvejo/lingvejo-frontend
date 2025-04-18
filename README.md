@@ -28,8 +28,7 @@ Before running the application, create `.env` files in both the `frontend/` and 
 
 #### Frontend `.env` file (`frontend/.env`)
 ```env
-NEXT_PUBLIC_GRAPHQL_URL="http://localhost:4000/graphql"
-NEXT_PUBLIC_BACKEND_URL="http://localhost:4000/"
+NEXT_PUBLIC_GRAPHQL_URL="http://localhost:5000/graphql"
 NEXT_PUBLIC_PI_SANDBOX_SDK="true"
 ```
 

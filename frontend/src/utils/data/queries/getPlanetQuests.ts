@@ -2,12 +2,15 @@ import { gql } from '@apollo/client';
 import client from '@/utils/apolloClient';
 import { handleError } from '@/utils/errorHandler';
 
+// Updated query to match the working pattern
 const GET_PLANET_QUESTS = gql`
   query GetPlanetQuests($settlementId: Int!) {
-    planetQuest(where: { settlementId: { _eq: $settlementId } }, order_by: { questId: asc }) {
-      questId
-      title
-      content
+    allPlanetQuests(condition: { settlementId: $settlementId }) {
+      nodes {
+        questId
+        title
+        content
+      }
     }
   }
 `;
@@ -20,7 +23,8 @@ export async function getPlanetQuests(settlementId: number) {
       fetchPolicy: 'no-cache',
     });
 
-    return data.planetQuest || [];
+    // Return the quests or an empty array if no data is found
+    return data.allPlanetQuests?.nodes || [];
   } catch (error) {
     handleError(error);
     return [];

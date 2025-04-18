@@ -1,26 +1,18 @@
 import { gql } from "@apollo/client";
 import client from "@/utils/apolloClient";
 import { handleError } from "@/utils/errorHandler";
+import leagueXpData from "@/constants/leagueXp.json"; // Import league data from JSON
 
 // Define the GraphQL query to fetch the voyager's XP
 const GET_VOYAGER_XP = gql`
-  query GetVoyagerXP($uid: uuid!) {
-    voyager(where: { uid: { _eq: $uid } }) {
-      totalXP
+  query GetVoyagerXP($uid: UUID!) {
+    voyagerByUid(uid: $uid) {
+      totalXp
     }
   }
 `;
 
-// Define the GraphQL query to fetch the league based on XP
-const GET_LEAGUE_BY_XP = gql`
-  query GetLeagueByXP($xp: Int!) {
-    league(where: { minXP: { _lte: $xp }, maxXP: { _gte: $xp } }) {
-      name
-    }
-  }
-`;
-
-export async function getVoyagerLeague(uid: string): Promise<string> {
+export async function getVoyagerLeague(uid: string): Promise<number> {
   try {
     // Fetch the totalXP of the voyager
     const { data: voyagerData } = await client.query({
@@ -28,18 +20,20 @@ export async function getVoyagerLeague(uid: string): Promise<string> {
       variables: { uid },
     });
 
-    const xp = voyagerData?.voyager?.[0]?.totalXP ?? 0;
+    // Ensure the voyager data is correctly accessed
+    const xp = voyagerData?.voyagerByUid?.totalXp ?? 0;
 
-    // Fetch the league based on the totalXP
-    const { data: leagueData } = await client.query({
-      query: GET_LEAGUE_BY_XP,
-      variables: { xp },
-    });
+    // Find the league based on the XP value from the local JSON
+    const league = Object.entries(leagueXpData)
+      .find(([key, { minXp, maxXp }]) => {
+        // Check if XP falls within the range (handle null maxXp)
+        return xp >= minXp && (maxXp === null || xp <= maxXp);
+      });
 
     // Return the league name or "Unknown" if no league found
-    return leagueData?.league?.[0]?.name ?? "Unknown";
+    return league ? Number(league[0]) : 1;
   } catch (error) {
     handleError(error);
-    return "Unknown";
+    return 1;
   }
 }

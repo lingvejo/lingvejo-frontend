@@ -3,9 +3,11 @@ import client from "@/utils/apolloClient";
 import { handleError } from "@/utils/errorHandler";
 
 const IS_WIZARD_IN_COUNCIL = gql`
-  query IsWizardInCouncil($uid: uuid!) {
-    wizardCouncil(where: { uid: { _eq: $uid } }) {
-      appointedAt
+  query IsWizardInCouncil($uid: UUID!) {
+    allWizardCouncils(condition: {uid: $uid}) {
+      nodes {
+        appointedAt
+      }
     }
   }
 `;

@@ -22,7 +22,7 @@
       "@/*": ["./src/*"]
     },
     "typeRoots": ["./node_modules/@types", "./src/types"], // Add this to include custom types
-    "types": ["node", "next", "global"] // Add any additional types as needed (e.g., "node" for Node.js types)
+    "types": ["node", "next"] // Add any additional types as needed (e.g., "node" for Node.js types)
   },
   "include": [
     "next-env.d.ts",

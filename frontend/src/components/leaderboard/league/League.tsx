@@ -2,13 +2,13 @@
 
 import { useState, useEffect } from 'react';
 import { Stack, Breadcrumbs, Text, Center, Pagination } from '@mantine/core';
-import { getAllLeagues } from '@/utils/data/queries/getAllLeagues';
 import { getVoyagersInLeague } from '@/utils/data/queries/getVoyagersInLeague';
 import LoadingScreen from '@/components/core/loading/LoadingScreen';
 import { useTranslations } from 'next-intl';
 import LeagueList from './LeagueList';
 import VoyagerList from './VoyagerList';
 import { Voyager } from '@/contexts/VoyagerContext';
+import leagueXp from '@/constants/leagueXp.json'; // Import the league XP data
 
 interface League {
   id: number;
@@ -18,24 +18,25 @@ interface League {
 }
 
 export default function LeaguePage() {
-  const t = useTranslations('league');
+  const t = useTranslations('leagues');
   const [leagues, setLeagues] = useState<League[]>([]);
   const [selectedLeague, setSelectedLeague] = useState<League | null>(null);
   const [voyagers, setVoyagers] = useState<Voyager[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);  // No need for `true` since we're not fetching from a remote source
   const [loadingVoyagers, setLoadingVoyagers] = useState(false);
   const [page, setPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(3);
 
+  // Use useEffect to load league data from the JSON file when the component mounts
   useEffect(() => {
-    async function fetchLeagues() {
-      setLoading(true);
-      const data = await getAllLeagues();
-      setLeagues(data);
-      setLoading(false);
-    }
-    fetchLeagues();
-  }, []);
+    const leaguesWithXp = Object.entries(leagueXp).map(([id, xp]) => ({
+      id: parseInt(id),
+      name: t(id), // Translate league name using the `t` function
+      minXP: xp.minXp,
+      maxXP: xp.maxXp,
+    }));
+    setLeagues(leaguesWithXp);
+  }, [t]); // Re-run if the translations change
 
   useEffect(() => {
     async function fetchVoyagers() {
@@ -70,7 +71,7 @@ export default function LeaguePage() {
 
   return (
     <Stack spacing="lg">
-      {selectedLeague &&
+      {selectedLeague && (
         <Breadcrumbs>
           <Text
             component="span"
@@ -81,7 +82,7 @@ export default function LeaguePage() {
           </Text>
           <Text>{selectedLeague.name}</Text>
         </Breadcrumbs>
-      }
+      )}
 
       {!selectedLeague ? (
         <LeagueList
@@ -90,6 +91,7 @@ export default function LeaguePage() {
           page={page}
           setPage={setPage}
           onSelect={setSelectedLeague}
+          t={t} // Pass translations for league names
         />
       ) : loadingVoyagers ? (
         <LoadingScreen />

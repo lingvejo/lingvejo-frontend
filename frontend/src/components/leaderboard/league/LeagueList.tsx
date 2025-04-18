@@ -3,7 +3,7 @@
 import { Card, Stack, Text, Badge } from '@mantine/core';
 import { League } from '@/types/League'; // Ensure League type is exported properly
 import PaginatedGridView from '@/components/core/PaginatedGridView';
-import { useTranslations } from 'next-intl';
+import { UseTranslations } from 'next-intl'; // Import the type for translation function
 
 type Props = {
   leagues: League[];
@@ -11,6 +11,7 @@ type Props = {
   page: number;
   setPage: (p: number) => void;
   onSelect: (league: League) => void;
+  t: UseTranslations;
 };
 
 export default function LeagueList({
@@ -19,9 +20,8 @@ export default function LeagueList({
   page,
   setPage,
   onSelect,
+  t
 }: Props) {
-  const t = useTranslations('league');
-
   return (
     <PaginatedGridView
       title={t('title')}

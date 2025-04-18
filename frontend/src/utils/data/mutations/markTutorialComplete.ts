@@ -1,30 +1,29 @@
-// utils/data/mutations/markTutorialComplete.ts
 import { gql } from "@apollo/client";
-import client from "@/utils/apolloClient";
+import client from "@/utils/apolloClient";  // Use your Apollo Client setup
 import { handleError } from "@/utils/errorHandler";
 
+// GraphQL mutation to mark tutorial completion for PostGraphile
 const MARK_TUTORIAL_COMPLETE = gql`
-  mutation MarkTutorialComplete($voyagerId: Int!) {
-    update_voyager_by_pk(
-      pk_columns: { id: $voyagerId }
-      _set: { completedTutorial: true }
-    ) {
-      id
+  mutation MarkTutorialComplete($uid: UUID!) {
+    updateVoyagerByUid(input: {voyagerPatch: {completedTutorial: true}, uid: $uid}) {
+      voyager {
+        completedTutorial
+      }
     }
   }
 `;
 
-export async function markTutorialComplete(voyagerId: number) {
+export async function markTutorialComplete(uid: string): Promise<boolean> {
   try {
-    await client.mutate({
+    const { data } = await client.mutate({
       mutation: MARK_TUTORIAL_COMPLETE,
-      variables: {
-        voyagerId,
-      },
+      variables: { uid },
     });
-    return true;
+
+    // Check if the update was successful and return true if so
+    return data?.updateVoyagerByUid?.voyager?.completedTutorial || false;
   } catch (error) {
-    handleError(error);
-    return false;
+    handleError(error);  // Handle the error (logging, reporting, etc.)
+    return false;  // Return false if there's an error
   }
 }

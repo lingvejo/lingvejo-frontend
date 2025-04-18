@@ -6,13 +6,13 @@ import StarSystemView from './StarSystemView';
 import GalaxyView from './GalaxyView';
 
 const GalaxyMap = () => {
-  const [systems, setSystems] = useState([]);
-  const [selectedSystem, setSelectedSystem] = useState(null);
+  const [systems, setSystems] = useState<SolarSystem[]>([]); // Set the correct type for systems
+  const [selectedSystem, setSelectedSystem] = useState<SolarSystem | null>(null); // Correct type for selectedSystem
 
   useEffect(() => {
     const fetchData = async () => {
       const data = await getSolarSystemData();
-      setSystems(data);
+      setSystems(data); // Ensure data matches the SolarSystem type
     };
     fetchData();
   }, []);
@@ -64,7 +64,7 @@ const GalaxyMap = () => {
           ) : (
             <StarSystemView
               systemName={selectedSystem.name}
-              planets={selectedSystem.planets}
+              planets={selectedSystem.planetsBySolarSystemId.nodes}
               onPlanetClick={() => {}}
               planetInfoOpened={false}
             />

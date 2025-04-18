@@ -2,18 +2,24 @@ import { gql } from '@apollo/client';
 import client from '@/utils/apolloClient';
 import { handleError } from '@/utils/errorHandler';
 
+// Define the GraphQL query to fetch journal entries for a given month
 const GET_JOURNAL_ENTRIES_FOR_MONTH = gql`
-  query GetJournalEntriesForMonth($uid: uuid!, $start: date!, $end: date!) {
-    journalEntry(
-      where: {
-        uid: { _eq: $uid }
-        entryDate: { _gte: $start, _lte: $end }
+  query GetJournalEntriesForMonth($uid: UUID!, $start: Date!, $end: Date!) {
+    allJournalEntries(
+      filter: {
+        uid: { equalTo: $uid },
+        entryDate: {
+          greaterThanOrEqualTo: $start,
+          lessThanOrEqualTo:   $end
+        }
       }
-      order_by: { entryDate: asc }
+      orderBy: ENTRY_DATE_ASC
     ) {
-      id
-      entryDate
-      content
+      nodes {
+        id
+        entryDate
+        content
+      }
     }
   }
 `;
@@ -33,12 +39,13 @@ export async function getJournalEntriesForMonth(
     const { data } = await client.query({
       query: GET_JOURNAL_ENTRIES_FOR_MONTH,
       variables: { uid, start, end },
-      fetchPolicy: 'network-only',
+      fetchPolicy: 'network-only', // Ensures fresh data from the server
     });
 
-    return data?.journalEntry ?? [];
+    // Return the fetched journal entries or an empty array if no data is returned
+    return data?.allJournalEntries?.nodes ?? [];
   } catch (error) {
-    handleError(error);
+    handleError(error); // Ensure error handling
     return [];
   }
 }

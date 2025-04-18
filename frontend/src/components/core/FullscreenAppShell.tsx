@@ -19,8 +19,8 @@ export default function FullscreenAppShell() {
   const completedTutorial = voyager?.completedTutorial === true;
 
   const handleTutorialComplete = async () => {
-    if (voyager?.id) {
-      const success = await markTutorialComplete(voyager.id);
+    if (voyager?.uid) {
+      const success = await markTutorialComplete(voyager?.uid);
       if (success) {
         location.reload(); // Simplest way to re-fetch context
       }

@@ -3,23 +3,22 @@ import client from "@/utils/apolloClient";
 import { handleError } from "@/utils/errorHandler";
 
 const GET_ADVENTURING_PLANETS = gql`
-  query GetAdventuringPlanets($uid: uuid!) {
-    adventureProgress(
-      where: { uid: { _eq: $uid } }
-      order_by: { completedAt: desc }
-    ) {
-      planet {
-        id
-        name
-        iso
+  query GetAdventuringPlanets($uid: UUID!) {
+    allAdventureProgresses(condition: { uid: $uid }, orderBy: COMPLETED_AT_DESC) {
+      nodes {
+        planetByPlanetId {
+          id
+          name
+          iso
+        }
+        planetQuestByQuestId {
+          title
+        }
+        planetSettlementBySettlementId {
+          name
+        }
+        completedAt
       }
-      planetQuest {
-        title
-      }
-      planetSettlement {
-        name
-      }
-      completedAt
     }
   }
 `;
@@ -44,17 +43,18 @@ export async function getAdventuringPlanets(uid: string): Promise<
     const seenPlanets = new Set<number>();
     const result = [];
 
-    for (const progress of data.adventureProgress) {
-      const planetId = progress.planet.id;
+    for (const progress of data.allAdventureProgresses.nodes) {
+      const planet = progress.planetByPlanetId;
+      const planetId = planet.id;
 
       if (!seenPlanets.has(planetId)) {
         seenPlanets.add(planetId);
         result.push({
           planetId,
-          planetName: progress.planet.name,
-          iso: progress.planet.iso,
-          latestQuest: progress.planetQuest?.name ?? "Unknown quest",
-          settlementName: progress.planetSettlement?.name ?? "Unknown settlement",
+          planetName: planet.name,
+          iso: planet.iso,
+          latestQuest: progress.planetQuestByPlanetQuestId?.title ?? "Unknown quest",
+          settlementName: progress.planetSettlementByPlanetSettlementId?.name ?? "Unknown settlement",
           completedAt: progress.completedAt,
         });
       }
